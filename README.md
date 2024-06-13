@@ -16,4 +16,4 @@ docker compose up
 ```
 
 
-http://localhost:8080/v1/graphql
+http://localhost:8080
