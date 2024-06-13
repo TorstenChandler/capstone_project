@@ -36,24 +36,24 @@ create table accounts (
 
 create table "entry"(
     id uuid primary key default gen_random_uuid(),
-    "user_id" int4 REFERENCES user(id),
+    "user_id" int4 REFERENCES "user"(id),
     text text not null,
     date timestamptz not null default now()
 );
 
 create table emotion(
     id uuid primary key REFERENCES entry(id),
-    joy float not null (happy >= 0 AND happy <= 1),
-    love float not null (love >= 0 AND love <= 1),
-    optimism float not null (optimism >= 0 AND optimism <= 1),
-    trust float not null (trust >= 0 AND trust <= 1),
-    surprise float not null (surprise >= 0 AND surprise <= 1),
-    anticipation float not null (anticipation >= 0 AND anticipation <= 1),
-    sadness float not null (sadness >= 0 AND sadness <= 1),
-    anger float not null (anger >= 0 AND anger <= 1),
-    disgust float not null (disgust >= 0 AND disgust <= 1),
-    fear float not null (fear >= 0 AND fear <= 1),
-    pessimism float not null (pessimism >= 0 AND pessimism <= 1)
+    joy float not null CHECK(joy >= 0 AND joy <= 1),
+    love float not null CHECK(love >= 0 AND love <= 1),
+    optimism float not null CHECK(optimism >= 0 AND optimism <= 1),
+    trust float not null CHECK(trust >= 0 AND trust <= 1),
+    surprise float not null CHECK(surprise >= 0 AND surprise <= 1),
+    anticipation float not null CHECK(anticipation >= 0 AND anticipation <= 1),
+    sadness float not null CHECK(sadness >= 0 AND sadness <= 1),
+    anger float not null CHECK(anger >= 0 AND anger <= 1),
+    disgust float not null CHECK(disgust >= 0 AND disgust <= 1),
+    fear float not null CHECK(fear >= 0 AND fear <= 1),
+    pessimism float not null CHECK(pessimism >= 0 AND pessimism <= 1)
 );
 
 create table topic(

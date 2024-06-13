@@ -31,15 +31,15 @@ async def entry_inserted(entry:Entry):
     #@TODOS: CALCULATE EMOTIONS AND TOPICS AND INSERT IN TABLES
     emotionsModel = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-emotion-multilabel-latest", return_all_scores=True)
     detectedEmotions =  emotionsModel(entry.text)[0]
-    emotions =  (item['value'] for item in detectedEmotions)
+    emotions =  tuple(item['value'] for item in detectedEmotions)
   
     with psycopg.connect(get_conn_str()) as conn:
         with conn.cursor() as cur:
             # Insert data into the table
             insert_query = '''
-            INSERT INTO emotions (userId, anger, anticipation, disgust, fear, joy,love,optimism,pessimism,sadness,surprise,trust) VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)
+            INSERT INTO emotions (user_id, anger, anticipation, disgust, fear, joy,love,optimism,pessimism,sadness,surprise,trust) VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)
             '''
-            cur.execute(insert_query, (entry.userId,) + emotions)
+            cur.execute(insert_query, tuple(entry.user_id) + emotions)
             
             # Commit the transaction
             conn.commit()
