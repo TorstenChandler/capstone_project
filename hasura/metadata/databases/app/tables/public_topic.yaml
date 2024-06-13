@@ -1,0 +1,19 @@
+table:
+  name: topic
+  schema: public
+object_relationships:
+  - name: entry
+    using:
+      foreign_key_constraint_on: id
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - family
+        - friendship
+        - id
+      filter:
+        entry:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""

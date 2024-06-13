@@ -1,1 +1,0 @@
-create table "user"(id uuid primary key);
