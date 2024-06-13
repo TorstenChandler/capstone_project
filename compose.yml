@@ -7,6 +7,6 @@ services:
     env_file:
       - .env
     volumes:
-      - ./dataset:/docker-entrypoint-initdb.d
+      - ./database:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
