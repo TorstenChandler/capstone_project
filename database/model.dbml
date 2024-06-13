@@ -1,0 +1,56 @@
+table user {
+    id serial4 [primary key]  // default nextval('users_id_seq'::regclass)
+    name varchar(255)
+    email varchar(255)
+    emailVerified timestamptz
+    image text
+}
+
+table session {
+    id serial4 [primary key] // default nextval('sessions_id_seq'::regclass)
+    userId int4 [ref: -user.id, not null]
+    expires timestamptz [not null]
+    sessionToken varchar(255) [not null]
+}
+
+table verification_token{
+    identifier text [not null]
+    expires timestamptz [not null]
+    token text [not null]
+}
+
+table accounts {
+    id serial4 [primary key]
+    userId int4 [ref: -user.id]
+    type varchar(255)
+    provider varchar(255)
+    providerAccountId varchar(255)
+    refresh_token text
+    access_token text 
+    expires_at int8
+    id_token text
+    scope text
+    session_state text
+    token_type text
+}
+
+table entry{
+    id serial4 [primary key] // default nextval('entry_id_seq'::regclass)
+    userID int4 [ref: -user.id, not null]
+    text text [not null]
+    date timestamptz [not null] //default now()
+}
+
+table emotion{
+    id int4 [primary key, ref: -entry.id]
+    happy float [not null] // constraint >=0 && <= 1
+    sad float [not null] // constraint >=0 && <= 1 
+    // ... all emotions detected by the classifier
+}
+
+table topic{
+    id int4 [primary key, ref: -entry.id]
+    friendship float [not null] // constraint >=0 && <= 1
+    family float [not null] // constraint >=0 && <= 1 
+    // ... all topics detected by the classifier
+}
