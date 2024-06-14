@@ -1,3 +1,5 @@
+CREATE EXTENSION vector;
+
 create table "user" (
     id serial4 primary key,
     name varchar(255),
@@ -61,3 +63,10 @@ create table topic(
     friendship float not null,
     family float not null
 );
+
+create table text_embedding(
+    id uuid primary key REFERENCES entry(id),
+    
+
+);
+

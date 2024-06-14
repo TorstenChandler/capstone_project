@@ -35,19 +35,18 @@ async def new_entry(entry:Entry):
 
 
 @app.post("/ask")
-async def ask(request:Request, question:str):
+def ask(request:Request, question:str):
     return JSONResponse(jsonable_encoder({"answer": ""}))
 
 
-
 @app.post("/entry_inserted")
-async def entry_inserted(entry:Entry):
-    #@TODOS: CALCULATE EMOTIONS AND TOPICS AND INSERT IN TABLES
-    #emotionsModel = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-emotion-multilabel-latest", return_all_scores=True)
-    #detectedEmotions =  emotionsModel(entry.text)[0]
-    #emotions =  tuple(item['value'] for item in detectedEmotions)
-    topics = ()
-    vectors = []
+def entry_inserted(entry:Entry):
+    emotions = emotions(entry)
+    topics = topics(entry)
+    embedding(entry, emotions,topics)
+    return JSONResponse(jsonable_encoder({"recived": True}))
+
+def emotions(entry):
     emotions = (entry.id,0.1,0.2, 0.3,0.4, 0.5,0.6, 0.7,0.8, 0.9,0.10, 0.11)
     time.sleep(1)
     with psycopg.connect(get_conn_str()) as conn:
@@ -61,8 +60,10 @@ async def entry_inserted(entry:Entry):
             
             # Commit the transaction
             conn.commit()
-    return JSONResponse(jsonable_encoder({"recived": True}))
 
+def topics(entry):
+    pass
 
-
-
+def embedding(entry,emotions,topics):
+    to_be_vectorized = f"date: {entry.date}, topics:[entry.]"
+    pass
