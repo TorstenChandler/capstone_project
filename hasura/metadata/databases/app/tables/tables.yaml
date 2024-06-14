@@ -1,0 +1,7 @@
+- "!include public_accounts.yaml"
+- "!include public_emotion.yaml"
+- "!include public_entry.yaml"
+- "!include public_session.yaml"
+- "!include public_topic.yaml"
+- "!include public_user.yaml"
+- "!include public_verification_token.yaml"

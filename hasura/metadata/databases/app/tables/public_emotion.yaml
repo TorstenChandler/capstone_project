@@ -1,0 +1,27 @@
+table:
+  name: emotion
+  schema: public
+object_relationships:
+  - name: entry
+    using:
+      foreign_key_constraint_on: id
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - anger
+        - anticipation
+        - disgust
+        - fear
+        - joy
+        - love
+        - optimism
+        - pessimism
+        - sadness
+        - surprise
+        - trust
+      filter:
+        entry:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""

@@ -1,0 +1,6 @@
+fastapi
+pydantic
+psycopg
+python-dotenv
+#transformers
+#torch
