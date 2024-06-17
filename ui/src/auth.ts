@@ -1,0 +1,30 @@
+import { SvelteKitAuth } from "@auth/sveltekit"
+import PostgresAdapter from "@auth/pg-adapter"
+import type { Provider } from "@auth/sveltekit/providers"
+import GitHub from "@auth/sveltekit/providers/github"
+import pkg from 'pg';
+const {Pool} = pkg;
+ 
+const pool = new Pool({
+  host: "localhost",
+  port: 5432,
+  user: "user",
+  password: "password",
+  database: "db",
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+})
+
+const providers: Provider[] = [
+    GitHub
+]
+
+export const { handle,signIn,signOut } = SvelteKitAuth({
+    adapter: PostgresAdapter(pool),
+    providers: [],
+    pages: {
+        signIn: "/signin",
+    },
+    secret: "98ads087as8079210zhjmdasd"
+})

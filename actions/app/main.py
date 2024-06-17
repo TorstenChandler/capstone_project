@@ -6,7 +6,10 @@ from fastapi.responses import JSONResponse
 import time
 import psycopg
 from typing import List
-#from transformers import pipeline
+from transformers import pipeline
+from threading import Thread
+
+
 
 def get_conn_str():
     return f"""
@@ -27,42 +30,105 @@ class Entry(BaseModel):
     date: str
 
 
+
+
 @app.post("/new_entry")
 async def new_entry(entry:Entry):
     #@TODO SAVE ENTRY TO DATABASE
     return JSONResponse(jsonable_encoder({"message": "SAD TO HEAR..."}))
 
 
-
 @app.post("/ask")
 def ask(request:Request, question:str):
     return JSONResponse(jsonable_encoder({"answer": ""}))
 
-
-@app.post("/entry_inserted")
-def entry_inserted(entry:Entry):
-    emotions = emotions(entry)
-    topics = topics(entry)
-    embedding(entry, emotions,topics)
-    return JSONResponse(jsonable_encoder({"recived": True}))
-
-def emotions(entry):
-    emotions = (entry.id,0.1,0.2, 0.3,0.4, 0.5,0.6, 0.7,0.8, 0.9,0.10, 0.11)
-    time.sleep(1)
+@app.post("/timeline/feelings")
+async def feelings(request:Request):
+    body = await request.json()
+    entries = []
+    series = []
+        
+    labels = ["joy", "love", "optimism", "trust","surprise","anticipation","sadness","anger","disgust", "fear","pessimism"]
     with psycopg.connect(get_conn_str()) as conn:
         with conn.cursor() as cur:
             # Insert data into the table
             # column names need to be ordered in accordance to output of classifier!
-            insert_query = '''
-            INSERT INTO emotion (id, anger, anticipation, disgust, fear, joy,love,optimism,pessimism,sadness,surprise,trust) VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)
+            load_query = f'''
+             SELECT emotion.id, 
+                    emotion.joy, 
+                    emotion.love, 
+                    emotion.optimism, 
+                    emotion.trust, 
+                    emotion.surprise, 
+                    emotion.anticipation,
+                    emotion.sadness,
+                    emotion.anger,
+                    emotion.disgust,
+                    emotion.fear,
+                    emotion.pessimism
+                FROM emotion
+                JOIN entry ON emotion.id = entry.id
+                WHERE entry.user_id = %s
+                ORDER BY entry.date;
             '''
-            cur.execute(insert_query, emotions)
+            print(body["session_variables"])
+            cur.execute(load_query, (body["session_variables"]["x-hasura-user-id"],))
+            
+            # Commit the transaction
+            emotions = cur.fetchall()
+            entries = [emotion[0] for emotion in emotions]
+            for i in range(len(labels)):
+                series.append({"name":labels[i], "data": [emotion[i+1] for emotion in emotions]})
+            return JSONResponse(jsonable_encoder({"entries":entries, "series":series}))
+
+@app.post("/entry_inserted")
+def entry_inserted(entry:Entry):
+    Thread(target=process, args=(entry,)).start()
+    return JSONResponse(jsonable_encoder({"received": True}))
+
+def process(entry):
+    emotions = classify_emotions(entry)
+    topics = classify_topics(entry)
+    #embedding(entry, emotions,topics)
+
+def classify_emotions(entry):
+    classifier = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-emotion-multilabel-latest", top_k=None)
+    emotions = classifier(entry.text)[0]
+    emotionValues = []
+    emotionLabels = []
+    for emotion in emotions:
+        emotionLabels.append(emotion["label"])
+        emotionValues.append(emotion["score"])
+    emotionLabels = ','.join(emotionLabels)
+    with psycopg.connect(get_conn_str()) as conn:
+        with conn.cursor() as cur:
+            # Insert data into the table
+            # column names need to be ordered in accordance to output of classifier!
+            insert_query = f'''
+            INSERT INTO emotion (id, {emotionLabels}) VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)
+            '''
+            cur.execute(insert_query, tuple([entry.id] + emotionValues))
             
             # Commit the transaction
             conn.commit()
+    return emotions
 
-def topics(entry):
-    pass
+def classify_topics(entry):
+    classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+    topics = classifier(entry.text, ['friends', 'relation', 'work', "hobby", "goals"])
+    labels = ",".join(topics["labels"])
+    with psycopg.connect(get_conn_str()) as conn:
+        with conn.cursor() as cur:
+            # Insert data into the table
+            # column names need to be ordered in accordance to output of classifier!
+            insert_query = f'''
+            INSERT INTO topic (id, {labels}) VALUES (%s, %s,%s, %s,%s, %s)
+            '''
+            cur.execute(insert_query, tuple([entry.id]) + tuple(topics["scores"]))
+            
+            # Commit the transaction
+            conn.commit()
+    return topics
 
 def embedding(entry,emotions,topics):
     to_be_vectorized = f"date: {entry.date}, topics:[entry.]"

@@ -9,8 +9,11 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - family
-        - friendship
+        - friends
+        - relation
+        - work
+        - hobby
+        - goals
         - id
       filter:
         entry:

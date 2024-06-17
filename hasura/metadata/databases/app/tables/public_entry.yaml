@@ -65,7 +65,7 @@ delete_permissions:
 event_triggers:
   - name: entry_inserted
     definition:
-      enable_manual: false
+      enable_manual: true
       insert:
         columns: '*'
     retry_conf:
