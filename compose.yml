@@ -1,12 +1,12 @@
 version: "3.8"
 services:
   database:
-    image: postgres:latest
+    image: postgres:16.1
     restart: always
     env_file:
       - .env
     volumes:
-      - database:/var/lib/postgresql
+      - dx:/var/lib/postgresql
     ports:
       - $POSTGRES_PORT:5432
     networks:
@@ -24,7 +24,7 @@ services:
       - app
 
   graphql:
-    image: hasura/graphql-engine:v2.40.0.cli-migrations-v3
+    image: hasura/graphql-engine:v2.38.0.cli-migrations-v3
     ports:
       - ${HASURA_PORT}:8080
     restart: always
@@ -36,8 +36,9 @@ services:
       ## enable the console served by server
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
       ## enable debugging mode. It is recommended to disable this in production
-      HASURA_GRAPHQL_DEV_MODE: "true"
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      #HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup 
+      #startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET}
       HASURA_GRAPHQL_MIGRATIONS_DIR: /hasura-migrations
       HASURA_GRAPHQL_METADATA_DIR: /hasura-metadata
@@ -46,11 +47,11 @@ services:
     networks:
       - app
     volumes:
-      - ./hasura/metadata:/hasura-metadata
+      - ./hasura/metadata:/xwhasura-metadata
       - ./hasura/migrations:/hasura-migrations
     
 networks:
   app:
 
 volumes:
-  database: {}
+  dx:
