@@ -30,17 +30,56 @@ class Entry(BaseModel):
     date: str
 
 
+
+
 @app.post("/new_entry")
 async def new_entry(entry:Entry):
     #@TODO SAVE ENTRY TO DATABASE
     return JSONResponse(jsonable_encoder({"message": "SAD TO HEAR..."}))
 
 
-
 @app.post("/ask")
 def ask(request:Request, question:str):
     return JSONResponse(jsonable_encoder({"answer": ""}))
 
+@app.post("/timeline/feelings")
+async def feelings(request:Request):
+    body = await request.json()
+    entries = []
+    series = []
+        
+    labels = ["joy", "love", "optimism", "trust","surprise","anticipation","sadness","anger","disgust", "fear","pessimism"]
+    with psycopg.connect(get_conn_str()) as conn:
+        with conn.cursor() as cur:
+            # Insert data into the table
+            # column names need to be ordered in accordance to output of classifier!
+            load_query = f'''
+             SELECT emotion.id, 
+                    emotion.joy, 
+                    emotion.love, 
+                    emotion.optimism, 
+                    emotion.trust, 
+                    emotion.surprise, 
+                    emotion.anticipation,
+                    emotion.sadness,
+                    emotion.anger,
+                    emotion.disgust,
+                    emotion.fear,
+                    emotion.pessimism
+                FROM emotion
+                JOIN entry ON emotion.id = entry.id
+                WHERE entry.user_id = %s
+                ORDER BY entry.date;
+            '''
+            print(body["session_variables"])
+            cur.execute(load_query, (body["session_variables"]["x-hasura-user-id"],))
+            
+            # Commit the transaction
+            emotions = cur.fetchall()
+            entries = [emotion[0] for emotion in emotions]
+            for i in range(len(labels)):
+                series.append({"name":labels[i], "data": [emotion[i+1] for emotion in emotions]})
+            return JSONResponse(jsonable_encoder({"entries":entries, "series":series}))
 
 @app.post("/entry_inserted")
 def entry_inserted(entry:Entry):
