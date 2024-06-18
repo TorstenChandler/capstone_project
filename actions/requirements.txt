@@ -4,3 +4,11 @@ psycopg
 python-dotenv
 transformers
 torch
+python-dotenv
+langchain
+langchain_community
+langchain_core
+langchain_postgres 
+langchain_cohere
+pandas
+numpy

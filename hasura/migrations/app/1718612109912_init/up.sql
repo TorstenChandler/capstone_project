@@ -1,3 +1,5 @@
+'CREATE EXTENSION IF NOT EXISTS vector;'
+
 SET check_function_bodies = false;
 CREATE TABLE public.accounts (
     id integer NOT NULL,
@@ -50,7 +52,9 @@ CREATE TABLE public.entry (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id integer,
     text text NOT NULL,
-    date timestamp with time zone DEFAULT now() NOT NULL
+    date timestamp with time zone DEFAULT now() NOT NULL,
+    embedding_text text,
+    embedding vector(4096)
 );
 CREATE TABLE public.session (
     id integer NOT NULL,
