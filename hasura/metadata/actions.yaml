@@ -1,6 +1,13 @@
-actions: []
+actions:
+  - name: emotions
+    definition:
+      kind: ""
+      handler: http://actions:80/timeline/emotions
+      forward_client_headers: true
 custom_types:
   enums: []
   input_objects: []
-  objects: []
+  objects:
+    - name: TimeLine
+    - name: Series
   scalars: []

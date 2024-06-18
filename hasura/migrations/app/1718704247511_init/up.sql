@@ -1,6 +1,3 @@
-'CREATE EXTENSION IF NOT EXISTS vector;'
-
-SET check_function_bodies = false;
 CREATE TABLE public.accounts (
     id integer NOT NULL,
     userid integer,

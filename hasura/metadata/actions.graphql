@@ -1,0 +1,14 @@
+type Query {
+  feelings: TimeLine
+}
+
+type TimeLine {
+  entries: [String!]!
+  series: [Series!]!
+}
+
+type Series {
+  name: String!
+  data: [Float!]!
+}
+
