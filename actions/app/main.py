@@ -8,17 +8,24 @@ import psycopg
 from typing import List
 from transformers import pipeline
 from threading import Thread
-
+import pandas as pd
+from dotenv import load_dotenv
+from langchain_community.embeddings import OllamaEmbeddings
+from rag_model import ask_rag, populate_vector_table
 
 
 def get_conn_str():
-    return f"""
-    dbname=db
-    user=user
-    password=password
-    host=database
-    port=5432
+    load_dotenv()
+
+    connection_str = f"""
+        dbname={os.getenv('POSTGRES_DB')} 
+        user={os.getenv('POSTGRES_USER')} 
+        password={os.getenv('POSTGRES_PASSWORD')} 
+        host={os.getenv('POSTGRES_HOST')} 
+        port={os.getenv('POSTGRES_PORT')} 
     """
+    
+    return connection_str
 
 app = FastAPI()
 
@@ -35,12 +42,15 @@ class Entry(BaseModel):
 @app.post("/new_entry")
 async def new_entry(entry:Entry):
     #@TODO SAVE ENTRY TO DATABASE
+    insert_entry_with_embedding(entry)
+    #@TODO CHAT RESPONSE
     return JSONResponse(jsonable_encoder({"message": "SAD TO HEAR..."}))
 
 
 @app.post("/ask")
-def ask(request:Request, question:str):
-    return JSONResponse(jsonable_encoder({"answer": ""}))
+def ask(request:Request, user_id, question:str):
+    answer = ask_rag(user_id, question)
+    return JSONResponse(jsonable_encoder({"answer": answer}))
 
 @app.post("/timeline/feelings")
 async def feelings(request:Request):
@@ -130,6 +140,25 @@ def classify_topics(entry):
             conn.commit()
     return topics
 
-def embedding(entry,emotions,topics):
-    to_be_vectorized = f"date: {entry.date}, topics:[entry.]"
-    pass
+def get_embedding(text: str) -> list[float]:
+    embeddings = OllamaEmbeddings(model='llama3')
+    return embeddings.embed_query(text)
+
+def insert_entry_with_embedding(entry):
+    with psycopg.connect(get_conn_str()) as conn:
+        with conn.cursor() as cur:
+            # Insert data into the table
+            embedding_text = f"date: {entry.date}; text:{entry.text}"
+            insert_query = '''
+                INSERT INTO entry (id, user_id, text, date, embedding_text, embedding) VALUES (%s, %s, %s, %s, %s, %s)
+            '''
+            cur.execute(insert_query, (entry.id, entry.user_id, entry.text, entry.date, embedding_text, get_embedding(embedding_text)))
+                    
+            # Commit the transaction
+            conn.commit()
+            
+    #close the connection
+    conn.close()
+
+
+    
