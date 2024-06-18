@@ -42,8 +42,8 @@ async def new_entry(entry:Entry):
 def ask(request:Request, question:str):
     return JSONResponse(jsonable_encoder({"answer": ""}))
 
-@app.post("/timeline/feelings")
-async def feelings(request:Request):
+@app.post("/timeline/emotions")
+async def emotions(request:Request):
     body = await request.json()
     entries = []
     series = []

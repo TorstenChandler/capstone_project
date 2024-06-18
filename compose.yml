@@ -24,9 +24,14 @@ services:
       - app
 
   graphql:
-    image: hasura/graphql-engine:v2.38.0.cli-migrations-v3
+    image: hasura/graphql-engine:v2.40.0.cli-migrations-v3
+    volumes:
+      - ./hasura/migrations:/hasura-migrations
+      - ./hasura/metadata:/hasura-metadata
     ports:
-      - ${HASURA_PORT}:8080
+      - "8080:8080"
+    depends_on:
+      - database
     restart: always
     environment:
       ## postgres database to store Hasura metadata
@@ -36,20 +41,14 @@ services:
       ## enable the console served by server
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
       ## enable debugging mode. It is recommended to disable this in production
-      #HASURA_GRAPHQL_DEV_MODE: "true"
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup 
-      #startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      ## uncomment next line to set an admin secret
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET}
-      HASURA_GRAPHQL_MIGRATIONS_DIR: /hasura-migrations
-      HASURA_GRAPHQL_METADATA_DIR: /hasura-metadata
-    depends_on:
-      - database
     networks:
       - app
-    volumes:
-      - ./hasura/metadata:/xwhasura-metadata
-      - ./hasura/migrations:/hasura-migrations
-    
+
+     
 networks:
   app:
 

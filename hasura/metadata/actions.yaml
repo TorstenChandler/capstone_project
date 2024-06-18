@@ -1,8 +1,8 @@
 actions:
-  - name: feelings
+  - name: emotions
     definition:
       kind: ""
-      handler: http://actions:80/timeline/feelings
+      handler: http://actions:80/timeline/emotions
       forward_client_headers: true
 custom_types:
   enums: []

@@ -15,5 +15,8 @@ docker compose build
 docker compose up
 ```
 
+## Architecture
+
+![architecture](specs/Architecture.svg)
 
 http://localhost:8080
