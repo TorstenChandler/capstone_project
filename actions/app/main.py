@@ -11,7 +11,7 @@ from threading import Thread
 import pandas as pd
 from dotenv import load_dotenv
 from langchain_community.embeddings import OllamaEmbeddings
-from rag_model import ask_rag, populate_vector_table, generate_entry_response
+from app.rag_model import ask_rag, populate_vector_table, generate_entry_response
 
 
 def get_conn_str():
