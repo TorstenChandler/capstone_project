@@ -1,3 +1,4 @@
+
 from langchain.chains import create_retrieval_chain, RetrievalQA
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
@@ -11,9 +12,22 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from main import get_conn_str
 import psycopg
 import ast
-from dotenv import load_dotenv
 import pandas as pd
 import os
+
+import psycopg
+from ..dependencies import get_conn_str
+from fastapi import APIRouter,Request
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+
+router = APIRouter()
+
+
+@router.post("/ask")
+async def ask(request:Request):
+    pass
+
 
 default_model_name="llama3"
 

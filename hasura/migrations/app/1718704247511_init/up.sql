@@ -1,10 +1,10 @@
 CREATE EXTENSION vector;
 CREATE TABLE public.accounts (
     id integer NOT NULL,
-    userid integer,
+    "userId" integer,
     type character varying(255),
     provider character varying(255),
-    provideraccountid character varying(255),
+    "providerAccountId" character varying(255),
     refresh_token text,
     access_token text,
     expires_at bigint,
@@ -54,20 +54,20 @@ CREATE TABLE public.entry (
     embedding_text text,
     embedding vector(4096)
 );
-CREATE TABLE public.session (
+CREATE TABLE public."sessions" (
     id integer NOT NULL,
-    userid integer NOT NULL,
+    "userId" integer NOT NULL,
     expires timestamp with time zone NOT NULL,
-    sessiontoken character varying(255) NOT NULL
+    "sessionToken" character varying(255) NOT NULL
 );
-CREATE SEQUENCE public.session_id_seq
+CREATE SEQUENCE public.sessions_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-ALTER SEQUENCE public.session_id_seq OWNED BY public.session.id;
+ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 CREATE TABLE public.topic (
     id uuid NOT NULL,
     friends double precision NOT NULL,
@@ -81,11 +81,11 @@ CREATE TABLE public.topic (
     CONSTRAINT topic_relation_check CHECK (((relation >= (0)::double precision) AND (relation <= (1)::double precision))),
     CONSTRAINT topic_work_check CHECK (((work >= (0)::double precision) AND (work <= (1)::double precision)))
 );
-CREATE TABLE public."user" (
+CREATE TABLE public."users" (
     id integer NOT NULL,
     name character varying(255),
     email character varying(255),
-    emailverified timestamp with time zone,
+    "emailVerified" timestamp with time zone,
     image text
 );
 CREATE SEQUENCE public.user_id_seq
@@ -95,30 +95,30 @@ CREATE SEQUENCE public.user_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-ALTER SEQUENCE public.user_id_seq OWNED BY public."user".id;
+ALTER SEQUENCE public.user_id_seq OWNED BY public."users".id;
 CREATE TABLE public.verification_token (
     identifier text NOT NULL,
     expires timestamp with time zone NOT NULL,
     token text NOT NULL
 );
 ALTER TABLE ONLY public.accounts ALTER COLUMN id SET DEFAULT nextval('public.accounts_id_seq'::regclass);
-ALTER TABLE ONLY public.session ALTER COLUMN id SET DEFAULT nextval('public.session_id_seq'::regclass);
-ALTER TABLE ONLY public."user" ALTER COLUMN id SET DEFAULT nextval('public.user_id_seq'::regclass);
+ALTER TABLE ONLY public.sessions ALTER COLUMN id SET DEFAULT nextval('public.sessions_id_seq'::regclass);
+ALTER TABLE ONLY public."users" ALTER COLUMN id SET DEFAULT nextval('public.user_id_seq'::regclass);
 ALTER TABLE ONLY public.accounts
     ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.emotion
     ADD CONSTRAINT emotion_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.entry
     ADD CONSTRAINT entry_pkey PRIMARY KEY (id);
-ALTER TABLE ONLY public.session
-    ADD CONSTRAINT session_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.sessions
+    ADD CONSTRAINT sessions_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.topic
     ADD CONSTRAINT topic_pkey PRIMARY KEY (id);
-ALTER TABLE ONLY public."user"
+ALTER TABLE ONLY public."users"
     ADD CONSTRAINT user_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.emotion
     ADD CONSTRAINT emotion_id_fkey FOREIGN KEY (id) REFERENCES public.entry(id) ON DELETE CASCADE;
 ALTER TABLE ONLY public.entry
-    ADD CONSTRAINT entry_user_id_fkey FOREIGN KEY (user_id) REFERENCES public."user"(id);
+    ADD CONSTRAINT entry_user_id_fkey FOREIGN KEY (user_id) REFERENCES public."users"(id);
 ALTER TABLE ONLY public.topic
     ADD CONSTRAINT topic_id_fkey FOREIGN KEY (id) REFERENCES public.entry(id) ON DELETE CASCADE;

@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   database:
     image: ankane/pgvector
@@ -11,18 +10,6 @@ services:
       - $POSTGRES_PORT:5432
     networks:
       - app
-      
-  # database_vector:
-  #   image: ankane/pgvector
-  #   ports:
-  #     - 5432:5432
-  #   restart: always
-  #   env_file:
-  #     - .env
-  #   volumes:
-  #     - database:/var/lib/postgresql
-  #   networks:
-  #     - app
 
   actions:
     image: actions
