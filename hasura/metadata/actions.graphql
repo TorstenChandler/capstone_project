@@ -1,5 +1,5 @@
 type Query {
-  feelings: TimeLine
+  emotions: TimeLine
 }
 
 type TimeLine {
