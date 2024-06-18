@@ -52,8 +52,8 @@ def ask(request:Request, user_id, question:str):
     answer = ask_rag(user_id, question)
     return JSONResponse(jsonable_encoder({"answer": answer}))
 
-@app.post("/timeline/feelings")
-async def feelings(request:Request):
+@app.post("/timeline/emotions")
+async def emotions(request:Request):
     body = await request.json()
     entries = []
     series = []

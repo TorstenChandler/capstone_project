@@ -1,3 +1,4 @@
+CREATE EXTENSION vector;
 CREATE TABLE public.accounts (
     id integer NOT NULL,
     userid integer,
