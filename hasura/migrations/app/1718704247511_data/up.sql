@@ -2,8 +2,6 @@ SET check_function_bodies = false;
 INSERT INTO public.users (id, name, email, "emailVerified", image) VALUES (1, 'Yannik Olmo Hake', 'yannik.hake@gmail.com', NULL, 'https://avatars.githubusercontent.com/u/129378013?v=4');
 SELECT pg_catalog.setval('public.user_id_seq', 1, true);
 
-
-
 SET check_function_bodies = false;
 INSERT INTO public.entry (id, user_id, text, date, embedding_text, embedding) VALUES ('fb4c564e-0ff3-4f18-b97a-dbc01810d405', 1, 'Feeling motivated. Hit a new personal record on bench press today. The gym was packed with New Year''s resolutioners, but I managed.', '2024-01-04 00:00:00+00', NULL, NULL);
 INSERT INTO public.entry (id, user_id, text, date, embedding_text, embedding) VALUES ('77f2e0d8-6323-430d-9249-54d4a696cf91', 1, 'Feeling motivated. Hit a new personal record on bench press today. The gym was packed with New Year''s resolutioners, but I managed.', '2024-01-04 00:00:00+00', NULL, NULL);
