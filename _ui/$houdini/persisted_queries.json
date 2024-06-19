@@ -1,3 +1,0 @@
-{
-    "7a6e06e7328ab78a5f1d9208e64597e5983128a0876d964c88c8f6483ef1c80a": "query Entries {\n  entries: entry {\n    id\n    date\n    text\n  }\n}\n"
-}

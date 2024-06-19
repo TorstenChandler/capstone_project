@@ -1,7 +1,0 @@
-query Entries {
-    entries: entry{
-        id
-        date
-        text
-    }
-}
