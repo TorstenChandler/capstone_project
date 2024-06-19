@@ -2,9 +2,6 @@ SET check_function_bodies = false;
 INSERT INTO public.users (id, name, email, "emailVerified", image) VALUES (1, 'Yannik Olmo Hake', 'yannik.hake@gmail.com', NULL, 'https://avatars.githubusercontent.com/u/129378013?v=4');
 SELECT pg_catalog.setval('public.user_id_seq', 1, true);
 
-
-
-
 SET check_function_bodies = false;
 INSERT INTO public.sessions (id, "userId", expires, "sessionToken") VALUES (2, 1, '2024-07-19 12:36:51.245+00', 'b4961934-6b53-4202-95b4-ba6d7908b35c');
 SELECT pg_catalog.setval('public.sessions_id_seq', 2, true);
