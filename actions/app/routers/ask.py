@@ -25,7 +25,10 @@ router = APIRouter()
 
 
 @router.post("/ask")
-async def ask(request:Request):
+async def ask(request:Request,question:str):
+    body = await request.json()
+    user_id = body["session_variables"]["x-hasura-user-id"]
+    
     pass
 
 
