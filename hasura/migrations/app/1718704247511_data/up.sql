@@ -2,9 +2,7 @@ SET check_function_bodies = false;
 INSERT INTO public.users (id, name, email, "emailVerified", image) VALUES (1, 'Yannik Olmo Hake', 'yannik.hake@gmail.com', NULL, 'https://avatars.githubusercontent.com/u/129378013?v=4');
 SELECT pg_catalog.setval('public.user_id_seq', 1, true);
 
-SET check_function_bodies = false;
-INSERT INTO public.sessions (id, "userId", expires, "sessionToken") VALUES (2, 1, '2024-07-19 12:36:51.245+00', 'b4961934-6b53-4202-95b4-ba6d7908b35c');
-SELECT pg_catalog.setval('public.sessions_id_seq', 2, true);
+
 
 SET check_function_bodies = false;
 INSERT INTO public.entry (id, user_id, text, date, embedding_text, embedding) VALUES ('fb4c564e-0ff3-4f18-b97a-dbc01810d405', 1, 'Feeling motivated. Hit a new personal record on bench press today. The gym was packed with New Year''s resolutioners, but I managed.', '2024-01-04 00:00:00+00', NULL, NULL);
