@@ -28,8 +28,17 @@ router = APIRouter()
 async def ask(request:Request,question:str):
     body = await request.json()
     user_id = body["session_variables"]["x-hasura-user-id"]
-    
-    pass
+    vectorstore = populate_vector_table(user_id)
+    retriever = vectorstore.as_retriever(
+        search_type='similarity',#“similarity” (default), “mmr”, or “similarity_score_threshold”.
+        search_kwargs={"k": 3, 'filter':{'user_id':user_id}}
+        )
+    rag_chain = init_rag_chain(retriever)
+    response = rag_chain.invoke({"input": question})
+    print("\nQuestion : ", input)
+    print("Answer : ", response)#["answer"]
+    return response["answer"]
+
 
 
 default_model_name="llama3"
@@ -73,17 +82,17 @@ def generate_entry_response(text):
 
     return output
 
-def ask_rag(user_id, input):
-    vectorstore = populate_vector_table(user_id)
-    retriever = vectorstore.as_retriever(
-        search_type='similarity',#“similarity” (default), “mmr”, or “similarity_score_threshold”.
-        search_kwargs={"k": 3, 'filter':{'user_id':user_id}}
-        )
-    rag_chain = init_rag_chain(retriever)
-    response = rag_chain.invoke({"input": input})
-    print("\nQuestion : ", input)
-    print("Answer : ", response)#["answer"]
-    return response["answer"]
+#def ask_rag(user_id, input):
+#    vectorstore = populate_vector_table(user_id)
+#    retriever = vectorstore.as_retriever(
+#        search_type='similarity',#“similarity” (default), “mmr”, or “similarity_score_threshold”.
+#        search_kwargs={"k": 3, 'filter':{'user_id':user_id}}
+#        )
+#    rag_chain = init_rag_chain(retriever)
+#    response = rag_chain.invoke({"input": input})
+#    print("\nQuestion : ", input)
+#    print("Answer : ", response)#["answer"]
+#    return response["answer"]
 
 def populate_vector_table(user_id):
     with psycopg.connect(get_conn_str()) as conn:

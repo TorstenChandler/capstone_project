@@ -15,13 +15,13 @@ class Entry(BaseModel):
 
 router = APIRouter()
 @router.post("/entry_inserted")
-def entry_inserted(entry:Entry):
-    Thread(target=process, args=(entry,)).start()
+async def entry_inserted(entry:Entry):
+    process(entry)
     return JSONResponse(jsonable_encoder({"received": True}))
 
-def process(entry):
+async def process(entry):
     emotions = classify_emotions(entry)
-    topics = classify_topics(entry)
+    #topics = classify_topics(entry)
     #embedding(entry, emotions,topics)
 
 def classify_emotions(entry):
