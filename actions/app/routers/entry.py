@@ -5,6 +5,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from threading import Thread
 from pydantic import BaseModel
+from transformers import pipeline
 
 class Entry(BaseModel):
     id: str
@@ -46,7 +47,7 @@ def classify_emotions(entry):
     return emotions
 
 def classify_topics(entry):
-    classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+    classifier = pipeline("zero-shot-classification", model="eleldar/theme-classification")
     topics = classifier(entry.text, ['friends', 'relation', 'work', "hobby", "goals"])
     labels = ",".join(topics["labels"])
     with psycopg.connect(get_conn_str()) as conn:
@@ -62,39 +63,19 @@ def classify_topics(entry):
             conn.commit()
     return topics
 
-def embedding(entry, emotions, topics):
-    embedding_text = f"date: {entry.date}; emotions:{emotions}, topics:{topics} text:{entry.text}"
-    engine = OllamaEmbeddings(model='llama3')
-    vectorized = engine.embed_query(embedding_text)
-    with psycopg.connect(get_conn_str()) as conn:
-        with conn.cursor() as cur:
-            # Insert data into the table
-            insert_query = '''
-                UPDATE entry set embedding_text = %s, embedding = %s  where id = %s (%s, %s, %s)
-            '''
-            cur.execute(insert_query, (embedding_text, vectorized, entry.id))      
-            # Commit the transaction
-            conn.commit()
-            
-    #close the connection
-    conn.close()
-
-def get_embedding(text: str) -> list[float]:
-    embeddings = OllamaEmbeddings(model='llama3')
-    return embeddings.embed_query(text)
-
-def insert_entry_with_embedding(entry):
-    with psycopg.connect(get_conn_str()) as conn:
-        with conn.cursor() as cur:
-            # Insert data into the table
-            embedding_text = f"date: {entry.date}; text:{entry.text}"
-            insert_query = '''
-                INSERT INTO entry (id, user_id, text, date, embedding_text, embedding) VALUES (%s, %s, %s, %s, %s, %s)
-            '''
-            cur.execute(insert_query, (entry.id, entry.user_id, entry.text, entry.date, embedding_text, get_embedding(embedding_text)))
-                    
-            # Commit the transaction
-            conn.commit()
-            
-    #close the connection
-    conn.close()
+#def embedding(entry, emotions, topics):
+#    embedding_text = f"date: {entry.date}; emotions:{emotions}, topics:{topics} text:{entry.text}"
+#    engine = OllamaEmbeddings(model='llama3')
+#    vectorized = engine.embed_query(embedding_text)
+#    with psycopg.connect(get_conn_str()) as conn:
+#        with conn.cursor() as cur:
+#            # Insert data into the table
+#            insert_query = '''
+#                UPDATE entry set embedding_text = %s, embedding = %s  where id = %s (%s, %s, %s)
+#            '''
+#            cur.execute(insert_query, (embedding_text, vectorized, entry.id))      
+#            # Commit the transaction
+#            conn.commit()
+#            
+#    #close the connection
+#    conn.close()
