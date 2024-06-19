@@ -3,9 +3,9 @@ INSERT INTO public.users (id, name, email, "emailVerified", image) VALUES (1, 'Y
 SELECT pg_catalog.setval('public.user_id_seq', 1, true);
 
 
-SET check_function_bodies = false;
-INSERT INTO public.accounts (id, "userId", type, provider, "providerAccountId", refresh_token, access_token, expires_at, id_token, scope, session_state, token_type) VALUES (1, 1, 'oauth', 'github', '129378013', NULL, '', NULL, NULL, 'read:user,user:email', NULL, 'bearer');
-SELECT pg_catalog.setval('public.accounts_id_seq', 1, true);
+--SET check_function_bodies = false;
+--INSERT INTO public.accounts (id, "userId", type, provider, "providerAccountId", refresh_token, access_token, expires_at, id_token, scope, session_state, token_type) VALUES (1, 1, 'oauth', 'github', '129378013', NULL, '', NULL, NULL, 'read:user,user:email', NULL, 'bearer');
+--SELECT pg_catalog.setval('public.accounts_id_seq', 1, true);
 
 SET check_function_bodies = false;
 INSERT INTO public.sessions (id, "userId", expires, "sessionToken") VALUES (2, 1, '2024-07-19 12:36:51.245+00', 'b4961934-6b53-4202-95b4-ba6d7908b35c');
