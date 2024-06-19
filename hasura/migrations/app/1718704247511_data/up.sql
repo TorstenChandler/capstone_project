@@ -4,7 +4,7 @@ SELECT pg_catalog.setval('public.user_id_seq', 1, true);
 
 
 SET check_function_bodies = false;
-INSERT INTO public.accounts (id, "userId", type, provider, "providerAccountId", refresh_token, access_token, expires_at, id_token, scope, session_state, token_type) VALUES (1, 1, 'oauth', 'github', '129378013', NULL, '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', NULL, NULL, 'read:user,user:email', NULL, 'bearer');
+INSERT INTO public.accounts (id, "userId", type, provider, "providerAccountId", refresh_token, access_token, expires_at, id_token, scope, session_state, token_type) VALUES (1, 1, 'oauth', 'github', '129378013', NULL, '', NULL, NULL, 'read:user,user:email', NULL, 'bearer');
 SELECT pg_catalog.setval('public.accounts_id_seq', 1, true);
 
 SET check_function_bodies = false;
