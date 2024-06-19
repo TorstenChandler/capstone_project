@@ -5,6 +5,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from threading import Thread
 from pydantic import BaseModel
+import asyncio
 from transformers import pipeline
 
 class Entry(BaseModel):
@@ -16,12 +17,12 @@ class Entry(BaseModel):
 router = APIRouter()
 @router.post("/entry_inserted")
 async def entry_inserted(entry:Entry):
-    process(entry)
+    asyncio.create_task(process(entry))
     return JSONResponse(jsonable_encoder({"received": True}))
 
 async def process(entry):
     emotions = classify_emotions(entry)
-    #topics = classify_topics(entry)
+    topics = classify_topics(entry)
     #embedding(entry, emotions,topics)
 
 def classify_emotions(entry):

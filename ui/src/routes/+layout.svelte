@@ -21,7 +21,7 @@
 			</AppRailAnchor>
 		</svelte:fragment>
 	</AppRail>
-	<div class="grow">
+	<div class="grow p-5">
 		<slot/>
 	</div>
 </div>
