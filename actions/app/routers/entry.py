@@ -1,6 +1,6 @@
 import psycopg
 from ..dependencies import get_conn_str
-from fastapi import APIRouter,Request
+from fastapi import APIRouter,Request, BackgroundTasks
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from threading import Thread
@@ -16,8 +16,8 @@ class Entry(BaseModel):
 
 router = APIRouter()
 @router.post("/entry_inserted")
-async def entry_inserted(entry:Entry):
-    asyncio.create_task(process(entry))
+async def entry_inserted(entry:Entry,background_tasks: BackgroundTasks):
+    background_tasks.add_task(process,entry)
     return JSONResponse(jsonable_encoder({"received": True}))
 
 async def process(entry):
