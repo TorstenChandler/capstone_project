@@ -13,24 +13,19 @@ async def emotions(request:Request):
     entries = []
     series = []
         
-    labels = ["joy", "love", "optimism", "trust","surprise","anticipation","sadness","anger","disgust", "fear","pessimism"]
+    labels = ['anger', 'fear', 'joy', 'love', 'sadness', 'surprise']
     with psycopg.connect(get_conn_str()) as conn:
         with conn.cursor() as cur:
             # Insert data into the table
             # column names need to be ordered in accordance to output of classifier!
             load_query = f'''
              SELECT emotion.id, 
+                    emotion.anger, 
+                    emotion.fear, 
                     emotion.joy, 
                     emotion.love, 
-                    emotion.optimism, 
-                    emotion.trust, 
-                    emotion.surprise, 
-                    emotion.anticipation,
-                    emotion.sadness,
-                    emotion.anger,
-                    emotion.disgust,
-                    emotion.fear,
-                    emotion.pessimism
+                    emotion.sadness, 
+                    emotion.surprise
                 FROM emotion
                 JOIN entry ON emotion.id = entry.id
                 WHERE entry.user_id = %s

@@ -25,11 +25,22 @@ def process(entry):
     #embedding(entry, emotions,topics)
 
 def classify_emotions(entry):
-    classifier = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-emotion-multilabel-latest", top_k=None)
-    emotions = classifier(entry.text)[0]
+    classifier = pipeline(model="Dimi-G/roberta-base-emotion", top_k=None)
+    emotions = classifier(entry.text)
+
+    #function to sort the order of the dictionary output
+    def order_labels(emotions):
+        labels_order = ['anger', 'fear', 'joy', 'love', 'sadness', 'surprise']
+        order_dict = {label: index for index, label in enumerate(labels_order)}
+        # Sort based on the desired order
+        ordered_output = sorted(emotions, key=lambda x: order_dict[x['label'].lower()]) 
+        return ordered_output 
+    
+    ordered_emotions = order_labels(emotions)
+
     emotionValues = []
     emotionLabels = []
-    for emotion in emotions:
+    for emotion in ordered_emotions:
         emotionLabels.append(emotion["label"])
         emotionValues.append(emotion["score"])
     emotionLabels = ','.join(emotionLabels)
@@ -38,7 +49,7 @@ def classify_emotions(entry):
             # Insert data into the table
             # column names need to be ordered in accordance to output of classifier!
             insert_query = f'''
-            INSERT INTO emotion (id, {emotionLabels}) VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)
+            INSERT INTO emotion (id, {emotionLabels}) VALUES (%s, %s,%s, %s,%s, %s)
             '''
             cur.execute(insert_query, tuple([entry.id] + emotionValues))
             
@@ -48,8 +59,22 @@ def classify_emotions(entry):
 
 def classify_topics(entry):
     classifier = pipeline("zero-shot-classification", model="eleldar/theme-classification")
-    topics = classifier(entry.text, ['friends', 'relation', 'work', "hobby", "goals"])
-    labels = ",".join(topics["labels"])
+    topics = classifier(entry.text, ['friends', 'goals', 'hobby', 'relation', 'work'])
+    
+    #bringing the classifier results in the desired order and format
+    results = {}
+    for result in zip(topics['labels'], topics['scores']):
+        results[result[0]] = result[1]
+    
+    def remap_dict(results, desired_order):
+        sorted_results = {key:results[key] for key in desired_order }
+        return sorted_results
+
+    desired_order = ['friends', 'goals', 'hobby', 'relation', 'work']
+    sorted_results = remap_dict(results, desired_order)
+    labels = ','.join(sorted_results.keys())
+    topic_values = list(sorted_results.values())
+
     with psycopg.connect(get_conn_str()) as conn:
         with conn.cursor() as cur:
             # Insert data into the table
@@ -57,8 +82,8 @@ def classify_topics(entry):
             insert_query = f'''
             INSERT INTO topic (id, {labels}) VALUES (%s, %s,%s, %s,%s, %s)
             '''
-            cur.execute(insert_query, tuple([entry.id]) + tuple(topics["scores"]))
-            
+            cur.execute(insert_query, tuple([entry.id]+ topic_values))
+                    
             # Commit the transaction
             conn.commit()
     return topics
