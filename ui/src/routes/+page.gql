@@ -1,0 +1,9 @@
+query UserEmotions{
+    emotions{
+        entries
+        series{
+            name
+            data
+        }
+    }
+}
