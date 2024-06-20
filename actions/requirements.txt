@@ -6,10 +6,9 @@ torch
 python-dotenv
 numpy==1.26.4
 
-#langchain
-#langchain_community
-#langchain_core
-#langchain_postgres 
-#langchain_cohere
-#pandas
-#numpy
+langchain
+langchain_community
+langchain_core
+langchain_postgres 
+langchain_cohere
+pandas

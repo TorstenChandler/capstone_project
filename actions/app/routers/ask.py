@@ -9,20 +9,19 @@ from langchain_community.llms import Ollama
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_community.chat_message_histories import ChatMessageHistory
-from main import get_conn_str
 import psycopg
 import ast
 import pandas as pd
 import os
-
 import psycopg
-from ..dependencies import get_conn_str
 from fastapi import APIRouter,Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
+from dotenv import load_dotenv
+from ..dependencies import get_conn_str
 
 router = APIRouter()
-
+default_model_name="llama3"
 
 @router.post("/ask")
 async def ask(request:Request,question:str):
@@ -38,10 +37,6 @@ async def ask(request:Request,question:str):
     print("\nQuestion : ", input)
     print("Answer : ", response)#["answer"]
     return response["answer"]
-
-
-
-default_model_name="llama3"
 
 def generate_entry_response(text):
     llm = init_ollama("llama3")
@@ -82,26 +77,16 @@ def generate_entry_response(text):
 
     return output
 
-#def ask_rag(user_id, input):
-#    vectorstore = populate_vector_table(user_id)
-#    retriever = vectorstore.as_retriever(
-#        search_type='similarity',#“similarity” (default), “mmr”, or “similarity_score_threshold”.
-#        search_kwargs={"k": 3, 'filter':{'user_id':user_id}}
-#        )
-#    rag_chain = init_rag_chain(retriever)
-#    response = rag_chain.invoke({"input": input})
-#    print("\nQuestion : ", input)
-#    print("Answer : ", response)#["answer"]
-#    return response["answer"]
-
 def populate_vector_table(user_id):
     with psycopg.connect(get_conn_str()) as conn:
-        sql = f"SELECT id, user_id, text, date, embedding_text, embedding FROM entry where user_id = {user_id}"
+        sql = f"SELECT id, user_id, text, date, embedding_text, embedding FROM public.entry where user_id = {user_id}"
         df = pd.read_sql(sql=sql, con=conn)
         df.embedding = df.embedding.map(ast.literal_eval)
 
         load_dotenv()
+
         connection = f"postgresql+psycopg://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
+        #connection= "postgresql+psycopg://postgres:password@database:5432/postgres"
         collection_name = "embeddings"
         embeddings = OllamaEmbeddings(model=default_model_name)
 
@@ -151,7 +136,5 @@ def init_rag_chain(retriever, model_name=default_model_name):
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
     return rag_chain
 
-if __name__ == "__main__":
-    pass
 
 
