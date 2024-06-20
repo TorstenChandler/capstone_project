@@ -123,7 +123,7 @@ def embedding(entry, emotions, topics):
     conn.close()
 
 def generate_entry_response(text):
-    llm = Ollama(model="llama3")
+    llm = Ollama(model="llama3",  base_url="http://host.docker.internal:11434", verbose=False)
 
     #Start a question answer chat prompt
     system_prompt = (
