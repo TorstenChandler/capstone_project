@@ -45,7 +45,7 @@ def classify_emotions(entry):
         labels_order = ['anger', 'fear', 'joy', 'love', 'sadness', 'surprise']
         order_dict = {label: index for index, label in enumerate(labels_order)}
         # Sort based on the desired order
-        ordered_output = sorted(emotions, key=lambda x: order_dict[x['label'].lower()]) 
+        ordered_output = sorted(emotions[0], key=lambda x: order_dict[x['label'].lower()]) 
         return ordered_output 
     
     ordered_emotions = order_labels(emotions)
