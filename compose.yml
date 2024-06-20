@@ -61,6 +61,9 @@ services:
     #   - OLLAMA_KEEP_ALIVE=24h
     #   - OLLAMA_HOST=0.0.0.0
     restart: always
+    #build:
+    #  context: ./ollama
+    #  dockerfile: Dockerfile
     networks:
        - app
 
@@ -76,12 +79,11 @@ services:
     ports:
       - 8090:8080
     environment: # https://docs.openwebui.com/getting-started/env-configuration#default_models
-      - OLLAMA_BASE_URLS=http://host.docker.internal:11434 
+      - OLLAMA_BASE_URLS=http://host.docker.internal:11434
       - WEBUI_URL=http://localhost:8090
       - ENV=dev
       - WEBUI_AUTH=False
       - WEBUI_NAME=team_standup
-      - WEBUI_URL=http://localhost:8090
       - WEBUI_SECRET_KEY=t0p-s3cr3t
     restart: unless-stopped
     networks:
@@ -93,6 +95,4 @@ networks:
 volumes:
   dx:
   ollama:
-  external: true
   ollama-webui:
-  external: true
