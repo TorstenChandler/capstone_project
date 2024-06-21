@@ -48,26 +48,24 @@ services:
     networks:
       - app
 
-  ollama:
-    image: ollama/ollama:latest
-    ports:
-      - 11434:11434
-    volumes:
-      - ./ollama/ollama:/root/.ollama
-    container_name: ollama
-    #pull_policy: always
-    #tty: true
-    #   environment:
-    #   - OLLAMA_KEEP_ALIVE=24h
-    #   - OLLAMA_HOST=0.0.0.0
-    restart: always
-    #build:
-    #  context: ./ollama
-    #  dockerfile: Dockerfile
-    networks:
-       - app
-
-
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   ports:
+  #     - 11434:11434
+  #   volumes:
+  #     - ./ollama/ollama:/root/.ollama
+  #   container_name: ollama
+  #   #pull_policy: always
+  #   #tty: true
+  #   #   environment:
+  #   #   - OLLAMA_KEEP_ALIVE=24h
+  #   #   - OLLAMA_HOST=0.0.0.0
+  #   restart: always
+  #   #build:
+  #   #  context: ./ollama
+  #   #  dockerfile: Dockerfile
+  #   networks:
+  #      - app
 
   ollama-webui:
     image: ghcr.io/open-webui/open-webui:main
@@ -88,6 +86,19 @@ services:
     restart: unless-stopped
     networks:
        - app
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+        - 11434:11434
+    volumes:
+        - ./ollama/ollama:/root/.ollama
+        - ./entrypoint.sh:/entrypoint.sh
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: always
+    entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
 
 networks:
   app:
