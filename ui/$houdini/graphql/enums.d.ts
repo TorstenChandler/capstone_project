@@ -154,6 +154,39 @@ export declare const emotion_update_column: {
 /** update columns of table "emotion" */
 export type emotion_update_column$options = ValuesOf<typeof emotion_update_column>
  
+/** select columns of table "emotions_timeline" */
+export declare const emotions_timeline_select_column: {
+    /** column name */
+    readonly anger: "anger";
+    /** column name */
+    readonly anticipation: "anticipation";
+    /** column name */
+    readonly disgust: "disgust";
+    /** column name */
+    readonly entries: "entries";
+    /** column name */
+    readonly fear: "fear";
+    /** column name */
+    readonly joy: "joy";
+    /** column name */
+    readonly love: "love";
+    /** column name */
+    readonly optimism: "optimism";
+    /** column name */
+    readonly pessimism: "pessimism";
+    /** column name */
+    readonly sadness: "sadness";
+    /** column name */
+    readonly surprise: "surprise";
+    /** column name */
+    readonly trust: "trust";
+    /** column name */
+    readonly user_id: "user_id";
+}
+
+/** select columns of table "emotions_timeline" */
+export type emotions_timeline_select_column$options = ValuesOf<typeof emotions_timeline_select_column>
+ 
 /** unique or primary key constraints on table "entry" */
 export declare const entry_constraint: {
     /** unique or primary key constraint on columns "id" */

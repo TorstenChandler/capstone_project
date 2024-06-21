@@ -1,6 +1,7 @@
 fastapi
 pydantic
-psycopg
+psycopg2
+asyncpg
 transformers
 torch
 python-dotenv

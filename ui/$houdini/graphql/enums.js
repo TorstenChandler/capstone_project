@@ -279,6 +279,74 @@ export const emotion_update_column = {
     "trust": "trust"
 };
 
+/** select columns of table "emotions_timeline" */
+export const emotions_timeline_select_column = {
+    /**
+     * column name
+    */
+    "anger": "anger",
+
+    /**
+     * column name
+    */
+    "anticipation": "anticipation",
+
+    /**
+     * column name
+    */
+    "disgust": "disgust",
+
+    /**
+     * column name
+    */
+    "entries": "entries",
+
+    /**
+     * column name
+    */
+    "fear": "fear",
+
+    /**
+     * column name
+    */
+    "joy": "joy",
+
+    /**
+     * column name
+    */
+    "love": "love",
+
+    /**
+     * column name
+    */
+    "optimism": "optimism",
+
+    /**
+     * column name
+    */
+    "pessimism": "pessimism",
+
+    /**
+     * column name
+    */
+    "sadness": "sadness",
+
+    /**
+     * column name
+    */
+    "surprise": "surprise",
+
+    /**
+     * column name
+    */
+    "trust": "trust",
+
+    /**
+     * column name
+    */
+    "user_id": "user_id"
+};
+
 /** unique or primary key constraints on table "entry" */
 export const entry_constraint = {
     /**

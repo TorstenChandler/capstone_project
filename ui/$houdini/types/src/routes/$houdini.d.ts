@@ -1,6 +1,6 @@
 import type * as Kit from '@sveltejs/kit';
-import { UserEmotions$result, UserEmotions$input } from '../../../artifacts/UserEmotions';
-import { UserEmotionsStore } from '../../../plugins/houdini-svelte/stores/UserEmotions';
+import { EmotionsTimeline$result, EmotionsTimeline$input } from '../../../artifacts/EmotionsTimeline';
+import { EmotionsTimelineStore } from '../../../plugins/houdini-svelte/stores/EmotionsTimeline';
 
 type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 // @ts-ignore
@@ -14,8 +14,8 @@ type EnsureDefined<T> = T extends null | undefined ? {} : T;
 type OptionalUnion<U extends Record<string, any>, A extends keyof U = U extends U ? keyof U : never> = U extends unknown ? { [P in Exclude<A, keyof U>]?: never } & U : never;
 export type Snapshot<T = any> = Kit.Snapshot<T>;
 type PageParentData = EnsureDefined<LayoutData>;
-type LayoutRouteId = RouteId | "/" | "/entry/new" | "/signin" | null
-type LayoutParams = RouteParams & {  }
+type LayoutRouteId = RouteId | "/" | "/entry/[id]" | "/entry/new" | "/signin" | null
+type LayoutParams = RouteParams & { id?: string }
 type LayoutServerParentData = EnsureDefined<{}>;
 type LayoutParentData = EnsureDefined<{}>;
 						type MakeOptional<Target, Keys extends keyof Target> = Omit<Target, Keys> & {
@@ -27,7 +27,7 @@ type PageParams = PageLoadEvent['params'];
 export type PageServerData = null;
 export type PageLoad<OutputData extends OutputDataShape<PageParentData> = OutputDataShape<PageParentData>> = Kit.Load<RouteParams, PageServerData, PageParentData, OutputData, RouteId>;
 export type PageLoadEvent = Parameters<PageLoad>[0];
-export type PageData = Expand<Expand<Omit<PageParentData, keyof PageParentData & EnsureDefined<PageServerData>> & OptionalUnion<EnsureDefined<PageParentData & EnsureDefined<PageServerData>>>> & { UserEmotions: UserEmotionsStore }>;
+export type PageData = Expand<Expand<Omit<PageParentData, keyof PageParentData & EnsureDefined<PageServerData>> & OptionalUnion<EnsureDefined<PageParentData & EnsureDefined<PageServerData>>>> & { EmotionsTimeline: EmotionsTimelineStore }>;
 export type LayoutServerLoad<OutputData extends Partial<App.PageData> & Record<string, any> | void = Partial<App.PageData> & Record<string, any> | void> = Kit.ServerLoad<LayoutParams, LayoutServerParentData, OutputData, LayoutRouteId>;
 export type LayoutServerLoadEvent = Parameters<LayoutServerLoad>[0];
 export type LayoutServerData = Expand<OptionalUnion<EnsureDefined<Kit.LoadProperties<Awaited<ReturnType<typeof import('./proxy+layout.server.js').load>>>>>>;

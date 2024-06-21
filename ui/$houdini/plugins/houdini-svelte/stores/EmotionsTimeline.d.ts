@@ -1,18 +1,18 @@
-import type { UserEmotions$input, UserEmotions$result, QueryStore, QueryStoreFetchParams} from '$houdini'
+import type { EmotionsTimeline$input, EmotionsTimeline$result, QueryStore, QueryStoreFetchParams} from '$houdini'
 
-export declare class UserEmotionsStore extends QueryStore<UserEmotions$result, UserEmotions$input> {
+export declare class EmotionsTimelineStore extends QueryStore<EmotionsTimeline$result, EmotionsTimeline$input> {
 	/**
 	 * ### Route Loads
 	 * In a route's load function, manually instantiating a store can be used to look at the result:
 	 *
 	 * ```js
 	 * export async function load(event) {
-	 * 	const store = new UserEmotionsStoreStore()
+	 * 	const store = new EmotionsTimelineStoreStore()
 	 * 	const { data } = await store.fetch({event})
 	 *  console.log('do something with', data)
 	 *
 	 * 	return {
-	 * 		UserEmotionsStore: store,
+	 * 		EmotionsTimelineStore: store,
 	 * 	}
 	 * }
 	 *
@@ -22,7 +22,7 @@ export declare class UserEmotionsStore extends QueryStore<UserEmotions$result, U
 	 * When performing a client-side only fetch, the best practice to use a store _manually_ is to do the following:
 	 *
 	 * ```js
-	 * const store = new UserEmotionsStoreStore()
+	 * const store = new EmotionsTimelineStoreStore()
 	 *
 	 * $: browser && store.fetch({ variables });
 	 * ```
@@ -38,7 +38,7 @@ export declare class UserEmotionsStore extends QueryStore<UserEmotions$result, U
  * Usually your load function will look like this:
  *
  * ```js
- * import { load_UserEmotions } from '$houdini';
+ * import { load_EmotionsTimeline } from '$houdini';
  * import type { PageLoad } from './$types';
  *
  * export const load: PageLoad = async (event) => {
@@ -46,7 +46,7 @@ export declare class UserEmotionsStore extends QueryStore<UserEmotions$result, U
  *     id: // Something like: event.url.searchParams.get('id')
  *   };
  *
- *   return await load_UserEmotions({ event, variables });
+ *   return await load_EmotionsTimeline({ event, variables });
  * };
  * ```
  *
@@ -54,7 +54,7 @@ export declare class UserEmotionsStore extends QueryStore<UserEmotions$result, U
  * You can trigger them in parallel with `loadAll` function
  *
  * ```js
- * import { loadAll, load_UserEmotions } from '$houdini';
+ * import { loadAll, load_EmotionsTimeline } from '$houdini';
  * import type { PageLoad } from './$types';
  *
  * export const load: PageLoad = async (event) => {
@@ -63,10 +63,10 @@ export declare class UserEmotionsStore extends QueryStore<UserEmotions$result, U
  *   };
  *
  *   return await await loadAll(
- *     load_UserEmotions({ event, variables }),
+ *     load_EmotionsTimeline({ event, variables }),
  *     // load_ANOTHER_STORE
  *   );
  * };
  * ```
  */
-export declare const load_UserEmotions: (params: QueryStoreFetchParams<UserEmotions$result, UserEmotions$input>) => Promise<{UserEmotions: UserEmotionsStore}>
+export declare const load_EmotionsTimeline: (params: QueryStoreFetchParams<EmotionsTimeline$result, EmotionsTimeline$input>) => Promise<{EmotionsTimeline: EmotionsTimelineStore}>

@@ -28,11 +28,6 @@ input Int_comparison_exp {
   _nin: [Int!]
 }
 
-type Series {
-  data: [Float!]!
-  name: String!
-}
-
 """
 Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 """
@@ -84,11 +79,6 @@ input String_comparison_exp {
 
   """does the column match the given SQL regular expression"""
   _similar: String
-}
-
-type TimeLine {
-  entries: [String!]!
-  series: [Series!]!
 }
 
 """
@@ -942,6 +932,247 @@ type emotion_variance_fields {
 }
 
 """
+columns and relationships of "emotions_timeline"
+"""
+type emotions_timeline {
+  anger(
+    """JSON select path"""
+    path: String
+  ): json
+  anticipation(
+    """JSON select path"""
+    path: String
+  ): json
+  disgust(
+    """JSON select path"""
+    path: String
+  ): json
+  entries(
+    """JSON select path"""
+    path: String
+  ): json
+  fear(
+    """JSON select path"""
+    path: String
+  ): json
+  joy(
+    """JSON select path"""
+    path: String
+  ): json
+  love(
+    """JSON select path"""
+    path: String
+  ): json
+  optimism(
+    """JSON select path"""
+    path: String
+  ): json
+  pessimism(
+    """JSON select path"""
+    path: String
+  ): json
+  sadness(
+    """JSON select path"""
+    path: String
+  ): json
+  surprise(
+    """JSON select path"""
+    path: String
+  ): json
+  trust(
+    """JSON select path"""
+    path: String
+  ): json
+  user_id: Int
+}
+
+"""
+aggregated selection of "emotions_timeline"
+"""
+type emotions_timeline_aggregate {
+  aggregate: emotions_timeline_aggregate_fields
+  nodes: [emotions_timeline!]!
+}
+
+"""
+aggregate fields of "emotions_timeline"
+"""
+type emotions_timeline_aggregate_fields {
+  avg: emotions_timeline_avg_fields
+  count(columns: [emotions_timeline_select_column!], distinct: Boolean): Int!
+  max: emotions_timeline_max_fields
+  min: emotions_timeline_min_fields
+  stddev: emotions_timeline_stddev_fields
+  stddev_pop: emotions_timeline_stddev_pop_fields
+  stddev_samp: emotions_timeline_stddev_samp_fields
+  sum: emotions_timeline_sum_fields
+  var_pop: emotions_timeline_var_pop_fields
+  var_samp: emotions_timeline_var_samp_fields
+  variance: emotions_timeline_variance_fields
+}
+
+"""aggregate avg on columns"""
+type emotions_timeline_avg_fields {
+  user_id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "emotions_timeline". All fields are combined with a logical 'AND'.
+"""
+input emotions_timeline_bool_exp {
+  _and: [emotions_timeline_bool_exp!]
+  _not: emotions_timeline_bool_exp
+  _or: [emotions_timeline_bool_exp!]
+  anger: json_comparison_exp
+  anticipation: json_comparison_exp
+  disgust: json_comparison_exp
+  entries: json_comparison_exp
+  fear: json_comparison_exp
+  joy: json_comparison_exp
+  love: json_comparison_exp
+  optimism: json_comparison_exp
+  pessimism: json_comparison_exp
+  sadness: json_comparison_exp
+  surprise: json_comparison_exp
+  trust: json_comparison_exp
+  user_id: Int_comparison_exp
+}
+
+"""aggregate max on columns"""
+type emotions_timeline_max_fields {
+  user_id: Int
+}
+
+"""aggregate min on columns"""
+type emotions_timeline_min_fields {
+  user_id: Int
+}
+
+"""Ordering options when selecting data from "emotions_timeline"."""
+input emotions_timeline_order_by {
+  anger: order_by
+  anticipation: order_by
+  disgust: order_by
+  entries: order_by
+  fear: order_by
+  joy: order_by
+  love: order_by
+  optimism: order_by
+  pessimism: order_by
+  sadness: order_by
+  surprise: order_by
+  trust: order_by
+  user_id: order_by
+}
+
+"""
+select columns of table "emotions_timeline"
+"""
+enum emotions_timeline_select_column {
+  """column name"""
+  anger
+
+  """column name"""
+  anticipation
+
+  """column name"""
+  disgust
+
+  """column name"""
+  entries
+
+  """column name"""
+  fear
+
+  """column name"""
+  joy
+
+  """column name"""
+  love
+
+  """column name"""
+  optimism
+
+  """column name"""
+  pessimism
+
+  """column name"""
+  sadness
+
+  """column name"""
+  surprise
+
+  """column name"""
+  trust
+
+  """column name"""
+  user_id
+}
+
+"""aggregate stddev on columns"""
+type emotions_timeline_stddev_fields {
+  user_id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type emotions_timeline_stddev_pop_fields {
+  user_id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type emotions_timeline_stddev_samp_fields {
+  user_id: Float
+}
+
+"""
+Streaming cursor of the table "emotions_timeline"
+"""
+input emotions_timeline_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: emotions_timeline_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input emotions_timeline_stream_cursor_value_input {
+  anger: json
+  anticipation: json
+  disgust: json
+  entries: json
+  fear: json
+  joy: json
+  love: json
+  optimism: json
+  pessimism: json
+  sadness: json
+  surprise: json
+  trust: json
+  user_id: Int
+}
+
+"""aggregate sum on columns"""
+type emotions_timeline_sum_fields {
+  user_id: Int
+}
+
+"""aggregate var_pop on columns"""
+type emotions_timeline_var_pop_fields {
+  user_id: Float
+}
+
+"""aggregate var_samp on columns"""
+type emotions_timeline_var_samp_fields {
+  user_id: Float
+}
+
+"""aggregate variance on columns"""
+type emotions_timeline_variance_fields {
+  user_id: Float
+}
+
+"""
 columns and relationships of "entry"
 """
 type entry {
@@ -956,6 +1187,9 @@ type entry {
 
   """An object relationship"""
   topics: topic
+
+  """An object relationship"""
+  user: users
   user_id: Int
 }
 
@@ -965,6 +1199,17 @@ aggregated selection of "entry"
 type entry_aggregate {
   aggregate: entry_aggregate_fields
   nodes: [entry!]!
+}
+
+input entry_aggregate_bool_exp {
+  count: entry_aggregate_bool_exp_count
+}
+
+input entry_aggregate_bool_exp_count {
+  arguments: [entry_select_column!]
+  distinct: Boolean
+  filter: entry_bool_exp
+  predicate: Int_comparison_exp!
 }
 
 """
@@ -984,9 +1229,43 @@ type entry_aggregate_fields {
   variance: entry_variance_fields
 }
 
+"""
+order by aggregate values of table "entry"
+"""
+input entry_aggregate_order_by {
+  avg: entry_avg_order_by
+  count: order_by
+  max: entry_max_order_by
+  min: entry_min_order_by
+  stddev: entry_stddev_order_by
+  stddev_pop: entry_stddev_pop_order_by
+  stddev_samp: entry_stddev_samp_order_by
+  sum: entry_sum_order_by
+  var_pop: entry_var_pop_order_by
+  var_samp: entry_var_samp_order_by
+  variance: entry_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "entry"
+"""
+input entry_arr_rel_insert_input {
+  data: [entry_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: entry_on_conflict
+}
+
 """aggregate avg on columns"""
 type entry_avg_fields {
   user_id: Float
+}
+
+"""
+order by avg() on columns of table "entry"
+"""
+input entry_avg_order_by {
+  user_id: order_by
 }
 
 """
@@ -1003,6 +1282,7 @@ input entry_bool_exp {
   id: uuid_comparison_exp
   text: String_comparison_exp
   topics: topic_bool_exp
+  user: users_bool_exp
   user_id: Int_comparison_exp
 }
 
@@ -1034,6 +1314,7 @@ input entry_insert_input {
   id: uuid
   text: String
   topics: topic_obj_rel_insert_input
+  user: users_obj_rel_insert_input
   user_id: Int
 }
 
@@ -1046,6 +1327,17 @@ type entry_max_fields {
   user_id: Int
 }
 
+"""
+order by max() on columns of table "entry"
+"""
+input entry_max_order_by {
+  date: order_by
+  embedding_text: order_by
+  id: order_by
+  text: order_by
+  user_id: order_by
+}
+
 """aggregate min on columns"""
 type entry_min_fields {
   date: timestamptz
@@ -1053,6 +1345,17 @@ type entry_min_fields {
   id: uuid
   text: String
   user_id: Int
+}
+
+"""
+order by min() on columns of table "entry"
+"""
+input entry_min_order_by {
+  date: order_by
+  embedding_text: order_by
+  id: order_by
+  text: order_by
+  user_id: order_by
 }
 
 """
@@ -1094,6 +1397,7 @@ input entry_order_by {
   id: order_by
   text: order_by
   topics: topic_order_by
+  user: users_order_by
   user_id: order_by
 }
 
@@ -1142,14 +1446,35 @@ type entry_stddev_fields {
   user_id: Float
 }
 
+"""
+order by stddev() on columns of table "entry"
+"""
+input entry_stddev_order_by {
+  user_id: order_by
+}
+
 """aggregate stddev_pop on columns"""
 type entry_stddev_pop_fields {
   user_id: Float
 }
 
+"""
+order by stddev_pop() on columns of table "entry"
+"""
+input entry_stddev_pop_order_by {
+  user_id: order_by
+}
+
 """aggregate stddev_samp on columns"""
 type entry_stddev_samp_fields {
   user_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "entry"
+"""
+input entry_stddev_samp_order_by {
+  user_id: order_by
 }
 
 """
@@ -1176,6 +1501,13 @@ input entry_stream_cursor_value_input {
 """aggregate sum on columns"""
 type entry_sum_fields {
   user_id: Int
+}
+
+"""
+order by sum() on columns of table "entry"
+"""
+input entry_sum_order_by {
+  user_id: order_by
 }
 
 """
@@ -1217,14 +1549,35 @@ type entry_var_pop_fields {
   user_id: Float
 }
 
+"""
+order by var_pop() on columns of table "entry"
+"""
+input entry_var_pop_order_by {
+  user_id: order_by
+}
+
 """aggregate var_samp on columns"""
 type entry_var_samp_fields {
   user_id: Float
 }
 
+"""
+order by var_samp() on columns of table "entry"
+"""
+input entry_var_samp_order_by {
+  user_id: order_by
+}
+
 """aggregate variance on columns"""
 type entry_variance_fields {
   user_id: Float
+}
+
+"""
+order by variance() on columns of table "entry"
+"""
+input entry_variance_order_by {
+  user_id: order_by
 }
 
 scalar float8
@@ -1242,6 +1595,23 @@ input float8_comparison_exp {
   _lte: float8
   _neq: float8
   _nin: [float8!]
+}
+
+scalar json
+
+"""
+Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'.
+"""
+input json_comparison_exp {
+  _eq: json
+  _gt: json
+  _gte: json
+  _in: [json!]
+  _is_null: Boolean
+  _lt: json
+  _lte: json
+  _neq: json
+  _nin: [json!]
 }
 
 """mutation root"""
@@ -1811,7 +2181,46 @@ type query_root {
 
   """fetch data from the table: "emotion" using primary key columns"""
   emotion_by_pk(id: uuid!): emotion
-  emotions: TimeLine
+
+  """
+  fetch data from the table: "emotions_timeline"
+  """
+  emotions_timeline(
+    """distinct select on columns"""
+    distinct_on: [emotions_timeline_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotions_timeline_order_by!]
+
+    """filter the rows returned"""
+    where: emotions_timeline_bool_exp
+  ): [emotions_timeline!]!
+
+  """
+  fetch aggregated fields from the table: "emotions_timeline"
+  """
+  emotions_timeline_aggregate(
+    """distinct select on columns"""
+    distinct_on: [emotions_timeline_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotions_timeline_order_by!]
+
+    """filter the rows returned"""
+    where: emotions_timeline_bool_exp
+  ): emotions_timeline_aggregate!
 
   """
   fetch data from the table: "entry"
@@ -2387,6 +2796,60 @@ type subscription_root {
     """filter the rows returned"""
     where: emotion_bool_exp
   ): [emotion!]!
+
+  """
+  fetch data from the table: "emotions_timeline"
+  """
+  emotions_timeline(
+    """distinct select on columns"""
+    distinct_on: [emotions_timeline_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotions_timeline_order_by!]
+
+    """filter the rows returned"""
+    where: emotions_timeline_bool_exp
+  ): [emotions_timeline!]!
+
+  """
+  fetch aggregated fields from the table: "emotions_timeline"
+  """
+  emotions_timeline_aggregate(
+    """distinct select on columns"""
+    distinct_on: [emotions_timeline_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotions_timeline_order_by!]
+
+    """filter the rows returned"""
+    where: emotions_timeline_bool_exp
+  ): emotions_timeline_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "emotions_timeline"
+  """
+  emotions_timeline_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [emotions_timeline_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: emotions_timeline_bool_exp
+  ): [emotions_timeline!]!
 
   """
   fetch data from the table: "entry"
@@ -3011,6 +3474,42 @@ columns and relationships of "users"
 type users {
   email: String
   emailVerified: timestamptz
+
+  """An array relationship"""
+  entries(
+    """distinct select on columns"""
+    distinct_on: [entry_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [entry_order_by!]
+
+    """filter the rows returned"""
+    where: entry_bool_exp
+  ): [entry!]!
+
+  """An aggregate relationship"""
+  entries_aggregate(
+    """distinct select on columns"""
+    distinct_on: [entry_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [entry_order_by!]
+
+    """filter the rows returned"""
+    where: entry_bool_exp
+  ): entry_aggregate!
   id: Int!
   image: String
   name: String
@@ -3055,6 +3554,8 @@ input users_bool_exp {
   _or: [users_bool_exp!]
   email: String_comparison_exp
   emailVerified: timestamptz_comparison_exp
+  entries: entry_bool_exp
+  entries_aggregate: entry_aggregate_bool_exp
   id: Int_comparison_exp
   image: String_comparison_exp
   name: String_comparison_exp
@@ -3083,6 +3584,7 @@ input type for inserting data into table "users"
 input users_insert_input {
   email: String
   emailVerified: timestamptz
+  entries: entry_arr_rel_insert_input
   id: Int
   image: String
   name: String
@@ -3118,6 +3620,16 @@ type users_mutation_response {
 }
 
 """
+input type for inserting object relation for remote table "users"
+"""
+input users_obj_rel_insert_input {
+  data: users_insert_input!
+
+  """upsert condition"""
+  on_conflict: users_on_conflict
+}
+
+"""
 on_conflict condition type for table "users"
 """
 input users_on_conflict {
@@ -3130,6 +3642,7 @@ input users_on_conflict {
 input users_order_by {
   email: order_by
   emailVerified: order_by
+  entries_aggregate: entry_aggregate_order_by
   id: order_by
   image: order_by
   name: order_by

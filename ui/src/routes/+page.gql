@@ -1,9 +1,16 @@
-query UserEmotions{
-    emotions{
-        entries
-        series{
-            name
-            data
-        }
-    }
+query EmotionsTimeline {
+  timeline: emotions_timeline {
+    entries
+    love
+    joy
+    optimism
+    anticipation
+    surprise
+    trust
+    sadness
+    pessimism
+    fear
+    disgust
+    anger
+  }
 }

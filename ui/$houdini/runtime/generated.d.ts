@@ -1,12 +1,15 @@
 import type { Record } from "./public/record";
-import { UserEmotions$result, UserEmotions$input } from "../artifacts/UserEmotions";
-import { UserEmotionsStore } from "../plugins/houdini-svelte/stores/UserEmotions";
+import { EmotionsTimeline$result, EmotionsTimeline$input } from "../artifacts/EmotionsTimeline";
+import { EmotionsTimelineStore } from "../plugins/houdini-svelte/stores/EmotionsTimeline";
+import { Entry$result, Entry$input } from "../artifacts/Entry";
+import { EntryStore } from "../plugins/houdini-svelte/stores/Entry";
 import type { verification_token_select_column } from "$houdini/graphql/enums";
 import type { users_select_column } from "$houdini/graphql/enums";
 import type { topic_select_column } from "$houdini/graphql/enums";
 import type { sessions_select_column } from "$houdini/graphql/enums";
 import type { order_by } from "$houdini/graphql/enums";
 import type { entry_select_column } from "$houdini/graphql/enums";
+import type { emotions_timeline_select_column } from "$houdini/graphql/enums";
 import type { emotion_select_column } from "$houdini/graphql/enums";
 import type { ValueOf } from "$houdini/runtime/lib/types";
 import type { accounts_select_column } from "$houdini/graphql/enums";
@@ -100,6 +103,77 @@ type topic_order_by = {
     work?: ValueOf<typeof order_by> | null | undefined;
 };
 
+type entry_avg_order_by = {
+    user_id?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type entry_max_order_by = {
+    date?: ValueOf<typeof order_by> | null | undefined;
+    embedding_text?: ValueOf<typeof order_by> | null | undefined;
+    id?: ValueOf<typeof order_by> | null | undefined;
+    text?: ValueOf<typeof order_by> | null | undefined;
+    user_id?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type entry_min_order_by = {
+    date?: ValueOf<typeof order_by> | null | undefined;
+    embedding_text?: ValueOf<typeof order_by> | null | undefined;
+    id?: ValueOf<typeof order_by> | null | undefined;
+    text?: ValueOf<typeof order_by> | null | undefined;
+    user_id?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type entry_stddev_order_by = {
+    user_id?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type entry_stddev_pop_order_by = {
+    user_id?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type entry_stddev_samp_order_by = {
+    user_id?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type entry_sum_order_by = {
+    user_id?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type entry_var_pop_order_by = {
+    user_id?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type entry_var_samp_order_by = {
+    user_id?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type entry_variance_order_by = {
+    user_id?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type entry_aggregate_order_by = {
+    avg?: entry_avg_order_by | null | undefined;
+    count?: ValueOf<typeof order_by> | null | undefined;
+    max?: entry_max_order_by | null | undefined;
+    min?: entry_min_order_by | null | undefined;
+    stddev?: entry_stddev_order_by | null | undefined;
+    stddev_pop?: entry_stddev_pop_order_by | null | undefined;
+    stddev_samp?: entry_stddev_samp_order_by | null | undefined;
+    sum?: entry_sum_order_by | null | undefined;
+    var_pop?: entry_var_pop_order_by | null | undefined;
+    var_samp?: entry_var_samp_order_by | null | undefined;
+    variance?: entry_variance_order_by | null | undefined;
+};
+
+type users_order_by = {
+    email?: ValueOf<typeof order_by> | null | undefined;
+    emailVerified?: ValueOf<typeof order_by> | null | undefined;
+    entries_aggregate?: entry_aggregate_order_by | null | undefined;
+    id?: ValueOf<typeof order_by> | null | undefined;
+    image?: ValueOf<typeof order_by> | null | undefined;
+    name?: ValueOf<typeof order_by> | null | undefined;
+};
+
 type entry_order_by = {
     date?: ValueOf<typeof order_by> | null | undefined;
     embedding?: ValueOf<typeof order_by> | null | undefined;
@@ -108,6 +182,7 @@ type entry_order_by = {
     id?: ValueOf<typeof order_by> | null | undefined;
     text?: ValueOf<typeof order_by> | null | undefined;
     topics?: topic_order_by | null | undefined;
+    user?: users_order_by | null | undefined;
     user_id?: ValueOf<typeof order_by> | null | undefined;
 };
 
@@ -188,6 +263,30 @@ type topic_bool_exp = {
     work?: float8_comparison_exp | null | undefined;
 };
 
+type entry_aggregate_bool_exp_count = {
+    arguments?: (ValueOf<typeof entry_select_column>)[] | null | undefined;
+    distinct?: boolean | null | undefined;
+    filter?: entry_bool_exp | null | undefined;
+    predicate: Int_comparison_exp;
+};
+
+type entry_aggregate_bool_exp = {
+    count?: entry_aggregate_bool_exp_count | null | undefined;
+};
+
+type users_bool_exp = {
+    _and?: (users_bool_exp)[] | null | undefined;
+    _not?: users_bool_exp | null | undefined;
+    _or?: (users_bool_exp)[] | null | undefined;
+    email?: String_comparison_exp | null | undefined;
+    emailVerified?: timestamptz_comparison_exp | null | undefined;
+    entries?: entry_bool_exp | null | undefined;
+    entries_aggregate?: entry_aggregate_bool_exp | null | undefined;
+    id?: Int_comparison_exp | null | undefined;
+    image?: String_comparison_exp | null | undefined;
+    name?: String_comparison_exp | null | undefined;
+};
+
 type entry_bool_exp = {
     _and?: (entry_bool_exp)[] | null | undefined;
     _not?: entry_bool_exp | null | undefined;
@@ -199,6 +298,7 @@ type entry_bool_exp = {
     id?: uuid_comparison_exp | null | undefined;
     text?: String_comparison_exp | null | undefined;
     topics?: topic_bool_exp | null | undefined;
+    user?: users_bool_exp | null | undefined;
     user_id?: Int_comparison_exp | null | undefined;
 };
 
@@ -221,6 +321,53 @@ type emotion_bool_exp = {
     trust?: float8_comparison_exp | null | undefined;
 };
 
+type emotions_timeline_order_by = {
+    anger?: ValueOf<typeof order_by> | null | undefined;
+    anticipation?: ValueOf<typeof order_by> | null | undefined;
+    disgust?: ValueOf<typeof order_by> | null | undefined;
+    entries?: ValueOf<typeof order_by> | null | undefined;
+    fear?: ValueOf<typeof order_by> | null | undefined;
+    joy?: ValueOf<typeof order_by> | null | undefined;
+    love?: ValueOf<typeof order_by> | null | undefined;
+    optimism?: ValueOf<typeof order_by> | null | undefined;
+    pessimism?: ValueOf<typeof order_by> | null | undefined;
+    sadness?: ValueOf<typeof order_by> | null | undefined;
+    surprise?: ValueOf<typeof order_by> | null | undefined;
+    trust?: ValueOf<typeof order_by> | null | undefined;
+    user_id?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type json_comparison_exp = {
+    _eq?: any | null | undefined;
+    _gt?: any | null | undefined;
+    _gte?: any | null | undefined;
+    _in?: (any)[] | null | undefined;
+    _is_null?: boolean | null | undefined;
+    _lt?: any | null | undefined;
+    _lte?: any | null | undefined;
+    _neq?: any | null | undefined;
+    _nin?: (any)[] | null | undefined;
+};
+
+type emotions_timeline_bool_exp = {
+    _and?: (emotions_timeline_bool_exp)[] | null | undefined;
+    _not?: emotions_timeline_bool_exp | null | undefined;
+    _or?: (emotions_timeline_bool_exp)[] | null | undefined;
+    anger?: json_comparison_exp | null | undefined;
+    anticipation?: json_comparison_exp | null | undefined;
+    disgust?: json_comparison_exp | null | undefined;
+    entries?: json_comparison_exp | null | undefined;
+    fear?: json_comparison_exp | null | undefined;
+    joy?: json_comparison_exp | null | undefined;
+    love?: json_comparison_exp | null | undefined;
+    optimism?: json_comparison_exp | null | undefined;
+    pessimism?: json_comparison_exp | null | undefined;
+    sadness?: json_comparison_exp | null | undefined;
+    surprise?: json_comparison_exp | null | undefined;
+    trust?: json_comparison_exp | null | undefined;
+    user_id?: Int_comparison_exp | null | undefined;
+};
+
 type sessions_order_by = {
     expires?: ValueOf<typeof order_by> | null | undefined;
     id?: ValueOf<typeof order_by> | null | undefined;
@@ -236,25 +383,6 @@ type sessions_bool_exp = {
     id?: Int_comparison_exp | null | undefined;
     sessionToken?: String_comparison_exp | null | undefined;
     userId?: Int_comparison_exp | null | undefined;
-};
-
-type users_order_by = {
-    email?: ValueOf<typeof order_by> | null | undefined;
-    emailVerified?: ValueOf<typeof order_by> | null | undefined;
-    id?: ValueOf<typeof order_by> | null | undefined;
-    image?: ValueOf<typeof order_by> | null | undefined;
-    name?: ValueOf<typeof order_by> | null | undefined;
-};
-
-type users_bool_exp = {
-    _and?: (users_bool_exp)[] | null | undefined;
-    _not?: users_bool_exp | null | undefined;
-    _or?: (users_bool_exp)[] | null | undefined;
-    email?: String_comparison_exp | null | undefined;
-    emailVerified?: timestamptz_comparison_exp | null | undefined;
-    id?: Int_comparison_exp | null | undefined;
-    image?: String_comparison_exp | null | undefined;
-    name?: String_comparison_exp | null | undefined;
 };
 
 type verification_token_order_by = {
@@ -274,34 +402,6 @@ type verification_token_bool_exp = {
 
 export declare type CacheTypeDef = {
     types: {
-        Series: {
-            idFields: never;
-            fields: {
-                data: {
-                    type: (number)[];
-                    args: never;
-                };
-                name: {
-                    type: string;
-                    args: never;
-                };
-            };
-            fragments: [];
-        };
-        TimeLine: {
-            idFields: never;
-            fields: {
-                entries: {
-                    type: (string)[];
-                    args: never;
-                };
-                series: {
-                    type: (Record<CacheTypeDef, "Series">)[];
-                    args: never;
-                };
-            };
-            fragments: [];
-        };
         accounts: {
             idFields: {
                 id: number;
@@ -1364,6 +1464,255 @@ export declare type CacheTypeDef = {
             };
             fragments: [];
         };
+        emotions_timeline: {
+            idFields: never;
+            fields: {
+                anger: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                anticipation: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                disgust: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                entries: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                fear: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                joy: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                love: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                optimism: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                pessimism: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                sadness: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                surprise: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                trust: {
+                    type: any | null;
+                    args: {
+                        path?: string | null | undefined;
+                    };
+                };
+                user_id: {
+                    type: number | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_aggregate: {
+            idFields: never;
+            fields: {
+                aggregate: {
+                    type: Record<CacheTypeDef, "emotions_timeline_aggregate_fields"> | null;
+                    args: never;
+                };
+                nodes: {
+                    type: (Record<CacheTypeDef, "emotions_timeline">)[];
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_aggregate_fields: {
+            idFields: never;
+            fields: {
+                avg: {
+                    type: Record<CacheTypeDef, "emotions_timeline_avg_fields"> | null;
+                    args: never;
+                };
+                count: {
+                    type: number;
+                    args: {
+                        columns?: (ValueOf<typeof emotions_timeline_select_column>)[] | null | undefined;
+                        distinct?: boolean | null | undefined;
+                    };
+                };
+                max: {
+                    type: Record<CacheTypeDef, "emotions_timeline_max_fields"> | null;
+                    args: never;
+                };
+                min: {
+                    type: Record<CacheTypeDef, "emotions_timeline_min_fields"> | null;
+                    args: never;
+                };
+                stddev: {
+                    type: Record<CacheTypeDef, "emotions_timeline_stddev_fields"> | null;
+                    args: never;
+                };
+                stddev_pop: {
+                    type: Record<CacheTypeDef, "emotions_timeline_stddev_pop_fields"> | null;
+                    args: never;
+                };
+                stddev_samp: {
+                    type: Record<CacheTypeDef, "emotions_timeline_stddev_samp_fields"> | null;
+                    args: never;
+                };
+                sum: {
+                    type: Record<CacheTypeDef, "emotions_timeline_sum_fields"> | null;
+                    args: never;
+                };
+                var_pop: {
+                    type: Record<CacheTypeDef, "emotions_timeline_var_pop_fields"> | null;
+                    args: never;
+                };
+                var_samp: {
+                    type: Record<CacheTypeDef, "emotions_timeline_var_samp_fields"> | null;
+                    args: never;
+                };
+                variance: {
+                    type: Record<CacheTypeDef, "emotions_timeline_variance_fields"> | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_avg_fields: {
+            idFields: never;
+            fields: {
+                user_id: {
+                    type: number | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_max_fields: {
+            idFields: never;
+            fields: {
+                user_id: {
+                    type: number | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_min_fields: {
+            idFields: never;
+            fields: {
+                user_id: {
+                    type: number | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_stddev_fields: {
+            idFields: never;
+            fields: {
+                user_id: {
+                    type: number | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_stddev_pop_fields: {
+            idFields: never;
+            fields: {
+                user_id: {
+                    type: number | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_stddev_samp_fields: {
+            idFields: never;
+            fields: {
+                user_id: {
+                    type: number | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_sum_fields: {
+            idFields: never;
+            fields: {
+                user_id: {
+                    type: number | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_var_pop_fields: {
+            idFields: never;
+            fields: {
+                user_id: {
+                    type: number | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_var_samp_fields: {
+            idFields: never;
+            fields: {
+                user_id: {
+                    type: number | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
+        emotions_timeline_variance_fields: {
+            idFields: never;
+            fields: {
+                user_id: {
+                    type: number | null;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
         entry: {
             idFields: {
                 id: any;
@@ -1395,6 +1744,10 @@ export declare type CacheTypeDef = {
                 };
                 topics: {
                     type: Record<CacheTypeDef, "topic"> | null;
+                    args: never;
+                };
+                user: {
+                    type: Record<CacheTypeDef, "users"> | null;
                     args: never;
                 };
                 user_id: {
@@ -1676,9 +2029,25 @@ export declare type CacheTypeDef = {
                         id: any;
                     };
                 };
-                emotions: {
-                    type: Record<CacheTypeDef, "TimeLine"> | null;
-                    args: never;
+                emotions_timeline: {
+                    type: (Record<CacheTypeDef, "emotions_timeline">)[];
+                    args: {
+                        distinct_on?: (ValueOf<typeof emotions_timeline_select_column>)[] | null | undefined;
+                        limit?: number | null | undefined;
+                        offset?: number | null | undefined;
+                        order_by?: (emotions_timeline_order_by)[] | null | undefined;
+                        where?: emotions_timeline_bool_exp | null | undefined;
+                    };
+                };
+                emotions_timeline_aggregate: {
+                    type: Record<CacheTypeDef, "emotions_timeline_aggregate">;
+                    args: {
+                        distinct_on?: (ValueOf<typeof emotions_timeline_select_column>)[] | null | undefined;
+                        limit?: number | null | undefined;
+                        offset?: number | null | undefined;
+                        order_by?: (emotions_timeline_order_by)[] | null | undefined;
+                        where?: emotions_timeline_bool_exp | null | undefined;
+                    };
                 };
                 entry: {
                     type: (Record<CacheTypeDef, "entry">)[];
@@ -2490,6 +2859,26 @@ export declare type CacheTypeDef = {
                     type: any | null;
                     args: never;
                 };
+                entries: {
+                    type: (Record<CacheTypeDef, "entry">)[];
+                    args: {
+                        distinct_on?: (ValueOf<typeof entry_select_column>)[] | null | undefined;
+                        limit?: number | null | undefined;
+                        offset?: number | null | undefined;
+                        order_by?: (entry_order_by)[] | null | undefined;
+                        where?: entry_bool_exp | null | undefined;
+                    };
+                };
+                entries_aggregate: {
+                    type: Record<CacheTypeDef, "entry_aggregate">;
+                    args: {
+                        distinct_on?: (ValueOf<typeof entry_select_column>)[] | null | undefined;
+                        limit?: number | null | undefined;
+                        offset?: number | null | undefined;
+                        order_by?: (entry_order_by)[] | null | undefined;
+                        where?: entry_bool_exp | null | undefined;
+                    };
+                };
                 id: {
                     type: number;
                     args: never;
@@ -2843,5 +3232,5 @@ export declare type CacheTypeDef = {
         };
     };
     lists: {};
-    queries: [[UserEmotionsStore, UserEmotions$result, UserEmotions$input]];
+    queries: [[EntryStore, Entry$result, Entry$input], [EmotionsTimelineStore, EmotionsTimeline$result, EmotionsTimeline$input]];
 };

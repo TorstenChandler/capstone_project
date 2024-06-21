@@ -1,0 +1,24 @@
+table:
+  name: emotions_timeline
+  schema: public
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - user_id
+        - anger
+        - anticipation
+        - disgust
+        - entries
+        - fear
+        - joy
+        - love
+        - optimism
+        - pessimism
+        - sadness
+        - surprise
+        - trust
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""

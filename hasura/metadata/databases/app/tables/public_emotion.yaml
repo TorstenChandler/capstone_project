@@ -13,6 +13,7 @@ select_permissions:
         - anticipation
         - disgust
         - fear
+        - id
         - joy
         - love
         - optimism
