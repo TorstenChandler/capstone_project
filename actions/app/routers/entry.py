@@ -19,7 +19,7 @@ class Entry(BaseModel):
 
 def process(entry):
     emotions = classify_emotions(entry)
-    topics = classify_topics(entry)
+    #topics = classify_topics(entry)
     #embedding(entry, emotions,topics)
    
 

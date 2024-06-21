@@ -1,8 +1,8 @@
 {
     "eee6c069e68265941a11a02ee6eec51b73968dcc92f0959c659a0c7b4cd1c6aa": "query Entry($id: uuid!) {\n  entry: entry_by_pk(id: $id) {\n    id\n    text\n    date\n  }\n}\n",
+    "a1bb9c01017180e54231891af541192ec338b67608ff2d5efcecfb6da1325761": "query EmotionsTimeline {\n  timeline: emotions_timeline {\n    entries\n    love\n    joy\n    optimism\n    anticipation\n    surprise\n    trust\n    sadness\n    pessimism\n    fear\n    disgust\n    anger\n  }\n}\n",
     "4c266e5cbb122d5654d71a21998a1fe46330a3a60f7a4f7fa164985c2476b9d2": "subscription SubscriptionEmotionsTimeline {\n  timeline: emotions_timeline {\n    entries\n    love\n    joy\n    optimism\n    anticipation\n    surprise\n    trust\n    sadness\n    pessimism\n    fear\n    disgust\n    anger\n  }\n}\n",
     "371f60b3ba0148e7a0ad54a89115829b28b5fb0579f01fab7772ab049596c8a4": "mutation deleteEntry($id: uuid!) {\n  delete_entry_by_pk(id: $id) {\n    id\n  }\n}\n",
     "8e7212fd3fe73704610e6319d16de551f41a4b0d0a03b7970e297b4140127409": "subscription EntryUpdates($id: uuid!) {\n  entry: entry_by_pk(id: $id) {\n    id\n    text\n    date\n    emotions {\n      joy\n      love\n      optimism\n      trust\n      surprise\n      sadness\n      anger\n      disgust\n      fear\n      pessimism\n      id\n    }\n  }\n}\n",
-    "a1bb9c01017180e54231891af541192ec338b67608ff2d5efcecfb6da1325761": "query EmotionsTimeline {\n  timeline: emotions_timeline {\n    entries\n    love\n    joy\n    optimism\n    anticipation\n    surprise\n    trust\n    sadness\n    pessimism\n    fear\n    disgust\n    anger\n  }\n}\n",
     "e22b4b82a36efeac63c529483674c33f9c152601fe6cfc26697cf83ef4988763": "mutation saveEntry($entry: entry_insert_input!) {\n  insert_entry_one(object: $entry) {\n    id\n  }\n}\n"
 }
