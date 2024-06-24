@@ -7,6 +7,6 @@ def get_conn_str():
         dbname=db
         user=user
         password=password
-        host=localhost
+        host=database
         port=5432
     """

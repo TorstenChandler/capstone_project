@@ -1,0 +1,8 @@
+query Entry($id: uuid!) {
+				entry: entry_by_pk(id: $id) {
+					id
+					text
+					date
+				}
+			}
+	

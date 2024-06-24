@@ -19,4 +19,10 @@ const pool = new Pool({
 export const { handle, signIn,signOut } = SvelteKitAuth({
   adapter: PostgresAdapter(pool),
   providers: [GitHub],
+  callbacks: {
+    session({ session, user }) {
+      session.user.id = user.id
+      return session
+    }
+  }
 }) 

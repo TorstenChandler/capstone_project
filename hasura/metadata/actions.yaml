@@ -1,9 +1,4 @@
-actions:
-  - name: emotions
-    definition:
-      kind: ""
-      handler: http://actions:80/timeline/emotions
-      forward_client_headers: true
+actions: []
 custom_types:
   enums: []
   input_objects: []
