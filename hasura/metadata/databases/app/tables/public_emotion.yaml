@@ -10,17 +10,13 @@ select_permissions:
     permission:
       columns:
         - anger
-        - anticipation
-        - disgust
         - fear
         - id
         - joy
         - love
-        - optimism
-        - pessimism
         - sadness
         - surprise
-        - trust
+       
       filter:
         entry:
           user_id:
