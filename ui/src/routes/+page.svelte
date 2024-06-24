@@ -8,14 +8,9 @@
 				entries
 				love
 				joy
-				optimism
-				anticipation
 				surprise
-				trust
 				sadness
-				pessimism
 				fear
-				disgust
 				anger
 			}
 		}

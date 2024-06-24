@@ -11,14 +11,9 @@ export type EmotionsTimeline$result = {
         readonly entries: any | null;
         readonly love: any | null;
         readonly joy: any | null;
-        readonly optimism: any | null;
-        readonly anticipation: any | null;
         readonly surprise: any | null;
-        readonly trust: any | null;
         readonly sadness: any | null;
-        readonly pessimism: any | null;
         readonly fear: any | null;
-        readonly disgust: any | null;
         readonly anger: any | null;
     })[];
 };
@@ -28,20 +23,15 @@ export type EmotionsTimeline$input = null;
 export type EmotionsTimeline$artifact = {
     "name": "EmotionsTimeline";
     "kind": "HoudiniQuery";
-    "hash": "a1bb9c01017180e54231891af541192ec338b67608ff2d5efcecfb6da1325761";
+    "hash": "7ff0effdce28d8da220d5035799e3d598d228f00808f17d7250dcf85274e3a68";
     "raw": `query EmotionsTimeline {
   timeline: emotions_timeline {
     entries
     love
     joy
-    optimism
-    anticipation
     surprise
-    trust
     sadness
-    pessimism
     fear
-    disgust
     anger
   }
 }
@@ -72,27 +62,9 @@ export type EmotionsTimeline$artifact = {
                             "nullable": true;
                             "visible": true;
                         };
-                        "optimism": {
-                            "type": "json";
-                            "keyRaw": "optimism";
-                            "nullable": true;
-                            "visible": true;
-                        };
-                        "anticipation": {
-                            "type": "json";
-                            "keyRaw": "anticipation";
-                            "nullable": true;
-                            "visible": true;
-                        };
                         "surprise": {
                             "type": "json";
                             "keyRaw": "surprise";
-                            "nullable": true;
-                            "visible": true;
-                        };
-                        "trust": {
-                            "type": "json";
-                            "keyRaw": "trust";
                             "nullable": true;
                             "visible": true;
                         };
@@ -102,21 +74,9 @@ export type EmotionsTimeline$artifact = {
                             "nullable": true;
                             "visible": true;
                         };
-                        "pessimism": {
-                            "type": "json";
-                            "keyRaw": "pessimism";
-                            "nullable": true;
-                            "visible": true;
-                        };
                         "fear": {
                             "type": "json";
                             "keyRaw": "fear";
-                            "nullable": true;
-                            "visible": true;
-                        };
-                        "disgust": {
-                            "type": "json";
-                            "keyRaw": "disgust";
                             "nullable": true;
                             "visible": true;
                         };

@@ -163,16 +163,6 @@ export const emotion_select_column = {
     /**
      * column name
     */
-    "anticipation": "anticipation",
-
-    /**
-     * column name
-    */
-    "disgust": "disgust",
-
-    /**
-     * column name
-    */
     "fear": "fear",
 
     /**
@@ -193,27 +183,12 @@ export const emotion_select_column = {
     /**
      * column name
     */
-    "optimism": "optimism",
-
-    /**
-     * column name
-    */
-    "pessimism": "pessimism",
-
-    /**
-     * column name
-    */
     "sadness": "sadness",
 
     /**
      * column name
     */
-    "surprise": "surprise",
-
-    /**
-     * column name
-    */
-    "trust": "trust"
+    "surprise": "surprise"
 };
 
 /** update columns of table "emotion" */
@@ -226,16 +201,6 @@ export const emotion_update_column = {
     /**
      * column name
     */
-    "anticipation": "anticipation",
-
-    /**
-     * column name
-    */
-    "disgust": "disgust",
-
-    /**
-     * column name
-    */
     "fear": "fear",
 
     /**
@@ -256,27 +221,12 @@ export const emotion_update_column = {
     /**
      * column name
     */
-    "optimism": "optimism",
-
-    /**
-     * column name
-    */
-    "pessimism": "pessimism",
-
-    /**
-     * column name
-    */
     "sadness": "sadness",
 
     /**
      * column name
     */
-    "surprise": "surprise",
-
-    /**
-     * column name
-    */
-    "trust": "trust"
+    "surprise": "surprise"
 };
 
 /** select columns of table "emotions_timeline" */
@@ -285,16 +235,6 @@ export const emotions_timeline_select_column = {
      * column name
     */
     "anger": "anger",
-
-    /**
-     * column name
-    */
-    "anticipation": "anticipation",
-
-    /**
-     * column name
-    */
-    "disgust": "disgust",
 
     /**
      * column name
@@ -319,27 +259,12 @@ export const emotions_timeline_select_column = {
     /**
      * column name
     */
-    "optimism": "optimism",
-
-    /**
-     * column name
-    */
-    "pessimism": "pessimism",
-
-    /**
-     * column name
-    */
     "sadness": "sadness",
 
     /**
      * column name
     */
     "surprise": "surprise",
-
-    /**
-     * column name
-    */
-    "trust": "trust",
 
     /**
      * column name

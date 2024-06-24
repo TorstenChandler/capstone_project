@@ -119,18 +119,13 @@ export default {
                 "_not": "emotion_bool_exp",
                 "_or": "emotion_bool_exp",
                 "anger": "float8_comparison_exp",
-                "anticipation": "float8_comparison_exp",
-                "disgust": "float8_comparison_exp",
                 "entry": "entry_bool_exp",
                 "fear": "float8_comparison_exp",
                 "id": "uuid_comparison_exp",
                 "joy": "float8_comparison_exp",
                 "love": "float8_comparison_exp",
-                "optimism": "float8_comparison_exp",
-                "pessimism": "float8_comparison_exp",
                 "sadness": "float8_comparison_exp",
-                "surprise": "float8_comparison_exp",
-                "trust": "float8_comparison_exp"
+                "surprise": "float8_comparison_exp"
             },
 
             "topic_bool_exp": {
@@ -210,18 +205,13 @@ export default {
 
             "emotion_insert_input": {
                 "anger": "float8",
-                "anticipation": "float8",
-                "disgust": "float8",
                 "entry": "entry_obj_rel_insert_input",
                 "fear": "float8",
                 "id": "uuid",
                 "joy": "float8",
                 "love": "float8",
-                "optimism": "float8",
-                "pessimism": "float8",
                 "sadness": "float8",
-                "surprise": "float8",
-                "trust": "float8"
+                "surprise": "float8"
             },
 
             "emotion_on_conflict": {

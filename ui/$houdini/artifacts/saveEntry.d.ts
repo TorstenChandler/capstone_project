@@ -98,18 +98,13 @@ type emotion_bool_exp = {
     _not?: emotion_bool_exp | null | undefined;
     _or?: (emotion_bool_exp)[] | null | undefined;
     anger?: float8_comparison_exp | null | undefined;
-    anticipation?: float8_comparison_exp | null | undefined;
-    disgust?: float8_comparison_exp | null | undefined;
     entry?: entry_bool_exp | null | undefined;
     fear?: float8_comparison_exp | null | undefined;
     id?: uuid_comparison_exp | null | undefined;
     joy?: float8_comparison_exp | null | undefined;
     love?: float8_comparison_exp | null | undefined;
-    optimism?: float8_comparison_exp | null | undefined;
-    pessimism?: float8_comparison_exp | null | undefined;
     sadness?: float8_comparison_exp | null | undefined;
     surprise?: float8_comparison_exp | null | undefined;
-    trust?: float8_comparison_exp | null | undefined;
 };
 
 type topic_bool_exp = {
@@ -189,18 +184,13 @@ type entry_obj_rel_insert_input = {
 
 type emotion_insert_input = {
     anger?: any | null | undefined;
-    anticipation?: any | null | undefined;
-    disgust?: any | null | undefined;
     entry?: entry_obj_rel_insert_input | null | undefined;
     fear?: any | null | undefined;
     id?: any | null | undefined;
     joy?: any | null | undefined;
     love?: any | null | undefined;
-    optimism?: any | null | undefined;
-    pessimism?: any | null | undefined;
     sadness?: any | null | undefined;
     surprise?: any | null | undefined;
-    trust?: any | null | undefined;
 };
 
 type emotion_on_conflict = {
@@ -393,18 +383,13 @@ export type saveEntry$artifact = {
                 "_not": "emotion_bool_exp";
                 "_or": "emotion_bool_exp";
                 "anger": "float8_comparison_exp";
-                "anticipation": "float8_comparison_exp";
-                "disgust": "float8_comparison_exp";
                 "entry": "entry_bool_exp";
                 "fear": "float8_comparison_exp";
                 "id": "uuid_comparison_exp";
                 "joy": "float8_comparison_exp";
                 "love": "float8_comparison_exp";
-                "optimism": "float8_comparison_exp";
-                "pessimism": "float8_comparison_exp";
                 "sadness": "float8_comparison_exp";
                 "surprise": "float8_comparison_exp";
-                "trust": "float8_comparison_exp";
             };
             "topic_bool_exp": {
                 "_and": "topic_bool_exp";
@@ -475,18 +460,13 @@ export type saveEntry$artifact = {
             };
             "emotion_insert_input": {
                 "anger": "float8";
-                "anticipation": "float8";
-                "disgust": "float8";
                 "entry": "entry_obj_rel_insert_input";
                 "fear": "float8";
                 "id": "uuid";
                 "joy": "float8";
                 "love": "float8";
-                "optimism": "float8";
-                "pessimism": "float8";
                 "sadness": "float8";
                 "surprise": "float8";
-                "trust": "float8";
             };
             "emotion_on_conflict": {
                 "constraint": "emotion_constraint";

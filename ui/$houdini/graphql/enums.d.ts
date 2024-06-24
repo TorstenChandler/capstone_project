@@ -97,10 +97,6 @@ export declare const emotion_select_column: {
     /** column name */
     readonly anger: "anger";
     /** column name */
-    readonly anticipation: "anticipation";
-    /** column name */
-    readonly disgust: "disgust";
-    /** column name */
     readonly fear: "fear";
     /** column name */
     readonly id: "id";
@@ -109,15 +105,9 @@ export declare const emotion_select_column: {
     /** column name */
     readonly love: "love";
     /** column name */
-    readonly optimism: "optimism";
-    /** column name */
-    readonly pessimism: "pessimism";
-    /** column name */
     readonly sadness: "sadness";
     /** column name */
     readonly surprise: "surprise";
-    /** column name */
-    readonly trust: "trust";
 }
 
 /** select columns of table "emotion" */
@@ -128,10 +118,6 @@ export declare const emotion_update_column: {
     /** column name */
     readonly anger: "anger";
     /** column name */
-    readonly anticipation: "anticipation";
-    /** column name */
-    readonly disgust: "disgust";
-    /** column name */
     readonly fear: "fear";
     /** column name */
     readonly id: "id";
@@ -140,15 +126,9 @@ export declare const emotion_update_column: {
     /** column name */
     readonly love: "love";
     /** column name */
-    readonly optimism: "optimism";
-    /** column name */
-    readonly pessimism: "pessimism";
-    /** column name */
     readonly sadness: "sadness";
     /** column name */
     readonly surprise: "surprise";
-    /** column name */
-    readonly trust: "trust";
 }
 
 /** update columns of table "emotion" */
@@ -159,10 +139,6 @@ export declare const emotions_timeline_select_column: {
     /** column name */
     readonly anger: "anger";
     /** column name */
-    readonly anticipation: "anticipation";
-    /** column name */
-    readonly disgust: "disgust";
-    /** column name */
     readonly entries: "entries";
     /** column name */
     readonly fear: "fear";
@@ -171,15 +147,9 @@ export declare const emotions_timeline_select_column: {
     /** column name */
     readonly love: "love";
     /** column name */
-    readonly optimism: "optimism";
-    /** column name */
-    readonly pessimism: "pessimism";
-    /** column name */
     readonly sadness: "sadness";
     /** column name */
     readonly surprise: "surprise";
-    /** column name */
-    readonly trust: "trust";
     /** column name */
     readonly user_id: "user_id";
 }

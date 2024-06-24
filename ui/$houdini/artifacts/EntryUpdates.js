@@ -1,7 +1,7 @@
 export default {
     "name": "EntryUpdates",
     "kind": "HoudiniSubscription",
-    "hash": "8e7212fd3fe73704610e6319d16de551f41a4b0d0a03b7970e297b4140127409",
+    "hash": "7fb66c4784c1d39d3aa2a25f8293997038e43c9a05966bf54a2f0069502f859c",
 
     "raw": `subscription EntryUpdates($id: uuid!) {
   entry: entry_by_pk(id: $id) {
@@ -9,17 +9,13 @@ export default {
     text
     date
     emotions {
-      joy
+      id
       love
-      optimism
-      trust
+      joy
       surprise
       sadness
-      anger
-      disgust
       fear
-      pessimism
-      id
+      anger
     }
   }
 }
@@ -61,9 +57,9 @@ export default {
 
                             "selection": {
                                 "fields": {
-                                    "joy": {
-                                        "type": "float8",
-                                        "keyRaw": "joy",
+                                    "id": {
+                                        "type": "uuid",
+                                        "keyRaw": "id",
                                         "visible": true
                                     },
 
@@ -73,15 +69,9 @@ export default {
                                         "visible": true
                                     },
 
-                                    "optimism": {
+                                    "joy": {
                                         "type": "float8",
-                                        "keyRaw": "optimism",
-                                        "visible": true
-                                    },
-
-                                    "trust": {
-                                        "type": "float8",
-                                        "keyRaw": "trust",
+                                        "keyRaw": "joy",
                                         "visible": true
                                     },
 
@@ -97,33 +87,15 @@ export default {
                                         "visible": true
                                     },
 
-                                    "anger": {
-                                        "type": "float8",
-                                        "keyRaw": "anger",
-                                        "visible": true
-                                    },
-
-                                    "disgust": {
-                                        "type": "float8",
-                                        "keyRaw": "disgust",
-                                        "visible": true
-                                    },
-
                                     "fear": {
                                         "type": "float8",
                                         "keyRaw": "fear",
                                         "visible": true
                                     },
 
-                                    "pessimism": {
+                                    "anger": {
                                         "type": "float8",
-                                        "keyRaw": "pessimism",
-                                        "visible": true
-                                    },
-
-                                    "id": {
-                                        "type": "uuid",
-                                        "keyRaw": "id",
+                                        "keyRaw": "anger",
                                         "visible": true
                                     }
                                 }
@@ -156,4 +128,4 @@ export default {
     }
 };
 
-"HoudiniHash=89cd7e0ba39f0a78206aa1f083fe367a48e2b5f35aba75c239aa0ae26795c17e";
+"HoudiniHash=c58277f8a15700aa870b1f64e24fe5082886195d82ce3b07e65c1902c5647f9b";

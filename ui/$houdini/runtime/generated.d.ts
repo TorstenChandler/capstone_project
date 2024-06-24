@@ -188,18 +188,13 @@ type entry_order_by = {
 
 type emotion_order_by = {
     anger?: ValueOf<typeof order_by> | null | undefined;
-    anticipation?: ValueOf<typeof order_by> | null | undefined;
-    disgust?: ValueOf<typeof order_by> | null | undefined;
     entry?: entry_order_by | null | undefined;
     fear?: ValueOf<typeof order_by> | null | undefined;
     id?: ValueOf<typeof order_by> | null | undefined;
     joy?: ValueOf<typeof order_by> | null | undefined;
     love?: ValueOf<typeof order_by> | null | undefined;
-    optimism?: ValueOf<typeof order_by> | null | undefined;
-    pessimism?: ValueOf<typeof order_by> | null | undefined;
     sadness?: ValueOf<typeof order_by> | null | undefined;
     surprise?: ValueOf<typeof order_by> | null | undefined;
-    trust?: ValueOf<typeof order_by> | null | undefined;
 };
 
 type float8_comparison_exp = {
@@ -307,33 +302,23 @@ type emotion_bool_exp = {
     _not?: emotion_bool_exp | null | undefined;
     _or?: (emotion_bool_exp)[] | null | undefined;
     anger?: float8_comparison_exp | null | undefined;
-    anticipation?: float8_comparison_exp | null | undefined;
-    disgust?: float8_comparison_exp | null | undefined;
     entry?: entry_bool_exp | null | undefined;
     fear?: float8_comparison_exp | null | undefined;
     id?: uuid_comparison_exp | null | undefined;
     joy?: float8_comparison_exp | null | undefined;
     love?: float8_comparison_exp | null | undefined;
-    optimism?: float8_comparison_exp | null | undefined;
-    pessimism?: float8_comparison_exp | null | undefined;
     sadness?: float8_comparison_exp | null | undefined;
     surprise?: float8_comparison_exp | null | undefined;
-    trust?: float8_comparison_exp | null | undefined;
 };
 
 type emotions_timeline_order_by = {
     anger?: ValueOf<typeof order_by> | null | undefined;
-    anticipation?: ValueOf<typeof order_by> | null | undefined;
-    disgust?: ValueOf<typeof order_by> | null | undefined;
     entries?: ValueOf<typeof order_by> | null | undefined;
     fear?: ValueOf<typeof order_by> | null | undefined;
     joy?: ValueOf<typeof order_by> | null | undefined;
     love?: ValueOf<typeof order_by> | null | undefined;
-    optimism?: ValueOf<typeof order_by> | null | undefined;
-    pessimism?: ValueOf<typeof order_by> | null | undefined;
     sadness?: ValueOf<typeof order_by> | null | undefined;
     surprise?: ValueOf<typeof order_by> | null | undefined;
-    trust?: ValueOf<typeof order_by> | null | undefined;
     user_id?: ValueOf<typeof order_by> | null | undefined;
 };
 
@@ -354,17 +339,12 @@ type emotions_timeline_bool_exp = {
     _not?: emotions_timeline_bool_exp | null | undefined;
     _or?: (emotions_timeline_bool_exp)[] | null | undefined;
     anger?: json_comparison_exp | null | undefined;
-    anticipation?: json_comparison_exp | null | undefined;
-    disgust?: json_comparison_exp | null | undefined;
     entries?: json_comparison_exp | null | undefined;
     fear?: json_comparison_exp | null | undefined;
     joy?: json_comparison_exp | null | undefined;
     love?: json_comparison_exp | null | undefined;
-    optimism?: json_comparison_exp | null | undefined;
-    pessimism?: json_comparison_exp | null | undefined;
     sadness?: json_comparison_exp | null | undefined;
     surprise?: json_comparison_exp | null | undefined;
-    trust?: json_comparison_exp | null | undefined;
     user_id?: Int_comparison_exp | null | undefined;
 };
 
@@ -820,14 +800,6 @@ export declare type CacheTypeDef = {
                     type: any;
                     args: never;
                 };
-                anticipation: {
-                    type: any;
-                    args: never;
-                };
-                disgust: {
-                    type: any;
-                    args: never;
-                };
                 entry: {
                     type: Record<CacheTypeDef, "entry">;
                     args: never;
@@ -848,23 +820,11 @@ export declare type CacheTypeDef = {
                     type: any;
                     args: never;
                 };
-                optimism: {
-                    type: any;
-                    args: never;
-                };
-                pessimism: {
-                    type: any;
-                    args: never;
-                };
                 sadness: {
                     type: any;
                     args: never;
                 };
                 surprise: {
-                    type: any;
-                    args: never;
-                };
-                trust: {
                     type: any;
                     args: never;
                 };
@@ -945,14 +905,6 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                anticipation: {
-                    type: number | null;
-                    args: never;
-                };
-                disgust: {
-                    type: number | null;
-                    args: never;
-                };
                 fear: {
                     type: number | null;
                     args: never;
@@ -965,23 +917,11 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                optimism: {
-                    type: number | null;
-                    args: never;
-                };
-                pessimism: {
-                    type: number | null;
-                    args: never;
-                };
                 sadness: {
                     type: number | null;
                     args: never;
                 };
                 surprise: {
-                    type: number | null;
-                    args: never;
-                };
-                trust: {
                     type: number | null;
                     args: never;
                 };
@@ -997,14 +937,6 @@ export declare type CacheTypeDef = {
                     type: any | null;
                     args: never;
                 };
-                anticipation: {
-                    type: any | null;
-                    args: never;
-                };
-                disgust: {
-                    type: any | null;
-                    args: never;
-                };
                 fear: {
                     type: any | null;
                     args: never;
@@ -1021,23 +953,11 @@ export declare type CacheTypeDef = {
                     type: any | null;
                     args: never;
                 };
-                optimism: {
-                    type: any | null;
-                    args: never;
-                };
-                pessimism: {
-                    type: any | null;
-                    args: never;
-                };
                 sadness: {
                     type: any | null;
                     args: never;
                 };
                 surprise: {
-                    type: any | null;
-                    args: never;
-                };
-                trust: {
                     type: any | null;
                     args: never;
                 };
@@ -1053,14 +973,6 @@ export declare type CacheTypeDef = {
                     type: any | null;
                     args: never;
                 };
-                anticipation: {
-                    type: any | null;
-                    args: never;
-                };
-                disgust: {
-                    type: any | null;
-                    args: never;
-                };
                 fear: {
                     type: any | null;
                     args: never;
@@ -1077,23 +989,11 @@ export declare type CacheTypeDef = {
                     type: any | null;
                     args: never;
                 };
-                optimism: {
-                    type: any | null;
-                    args: never;
-                };
-                pessimism: {
-                    type: any | null;
-                    args: never;
-                };
                 sadness: {
                     type: any | null;
                     args: never;
                 };
                 surprise: {
-                    type: any | null;
-                    args: never;
-                };
-                trust: {
                     type: any | null;
                     args: never;
                 };
@@ -1121,14 +1021,6 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                anticipation: {
-                    type: number | null;
-                    args: never;
-                };
-                disgust: {
-                    type: number | null;
-                    args: never;
-                };
                 fear: {
                     type: number | null;
                     args: never;
@@ -1141,23 +1033,11 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                optimism: {
-                    type: number | null;
-                    args: never;
-                };
-                pessimism: {
-                    type: number | null;
-                    args: never;
-                };
                 sadness: {
                     type: number | null;
                     args: never;
                 };
                 surprise: {
-                    type: number | null;
-                    args: never;
-                };
-                trust: {
                     type: number | null;
                     args: never;
                 };
@@ -1171,14 +1051,6 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                anticipation: {
-                    type: number | null;
-                    args: never;
-                };
-                disgust: {
-                    type: number | null;
-                    args: never;
-                };
                 fear: {
                     type: number | null;
                     args: never;
@@ -1191,23 +1063,11 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                optimism: {
-                    type: number | null;
-                    args: never;
-                };
-                pessimism: {
-                    type: number | null;
-                    args: never;
-                };
                 sadness: {
                     type: number | null;
                     args: never;
                 };
                 surprise: {
-                    type: number | null;
-                    args: never;
-                };
-                trust: {
                     type: number | null;
                     args: never;
                 };
@@ -1221,14 +1081,6 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                anticipation: {
-                    type: number | null;
-                    args: never;
-                };
-                disgust: {
-                    type: number | null;
-                    args: never;
-                };
                 fear: {
                     type: number | null;
                     args: never;
@@ -1241,23 +1093,11 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                optimism: {
-                    type: number | null;
-                    args: never;
-                };
-                pessimism: {
-                    type: number | null;
-                    args: never;
-                };
                 sadness: {
                     type: number | null;
                     args: never;
                 };
                 surprise: {
-                    type: number | null;
-                    args: never;
-                };
-                trust: {
                     type: number | null;
                     args: never;
                 };
@@ -1271,14 +1111,6 @@ export declare type CacheTypeDef = {
                     type: any | null;
                     args: never;
                 };
-                anticipation: {
-                    type: any | null;
-                    args: never;
-                };
-                disgust: {
-                    type: any | null;
-                    args: never;
-                };
                 fear: {
                     type: any | null;
                     args: never;
@@ -1291,23 +1123,11 @@ export declare type CacheTypeDef = {
                     type: any | null;
                     args: never;
                 };
-                optimism: {
-                    type: any | null;
-                    args: never;
-                };
-                pessimism: {
-                    type: any | null;
-                    args: never;
-                };
                 sadness: {
                     type: any | null;
                     args: never;
                 };
                 surprise: {
-                    type: any | null;
-                    args: never;
-                };
-                trust: {
                     type: any | null;
                     args: never;
                 };
@@ -1321,14 +1141,6 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                anticipation: {
-                    type: number | null;
-                    args: never;
-                };
-                disgust: {
-                    type: number | null;
-                    args: never;
-                };
                 fear: {
                     type: number | null;
                     args: never;
@@ -1341,23 +1153,11 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                optimism: {
-                    type: number | null;
-                    args: never;
-                };
-                pessimism: {
-                    type: number | null;
-                    args: never;
-                };
                 sadness: {
                     type: number | null;
                     args: never;
                 };
                 surprise: {
-                    type: number | null;
-                    args: never;
-                };
-                trust: {
                     type: number | null;
                     args: never;
                 };
@@ -1371,14 +1171,6 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                anticipation: {
-                    type: number | null;
-                    args: never;
-                };
-                disgust: {
-                    type: number | null;
-                    args: never;
-                };
                 fear: {
                     type: number | null;
                     args: never;
@@ -1391,23 +1183,11 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                optimism: {
-                    type: number | null;
-                    args: never;
-                };
-                pessimism: {
-                    type: number | null;
-                    args: never;
-                };
                 sadness: {
                     type: number | null;
                     args: never;
                 };
                 surprise: {
-                    type: number | null;
-                    args: never;
-                };
-                trust: {
                     type: number | null;
                     args: never;
                 };
@@ -1421,14 +1201,6 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                anticipation: {
-                    type: number | null;
-                    args: never;
-                };
-                disgust: {
-                    type: number | null;
-                    args: never;
-                };
                 fear: {
                     type: number | null;
                     args: never;
@@ -1441,23 +1213,11 @@ export declare type CacheTypeDef = {
                     type: number | null;
                     args: never;
                 };
-                optimism: {
-                    type: number | null;
-                    args: never;
-                };
-                pessimism: {
-                    type: number | null;
-                    args: never;
-                };
                 sadness: {
                     type: number | null;
                     args: never;
                 };
                 surprise: {
-                    type: number | null;
-                    args: never;
-                };
-                trust: {
                     type: number | null;
                     args: never;
                 };
@@ -1468,18 +1228,6 @@ export declare type CacheTypeDef = {
             idFields: never;
             fields: {
                 anger: {
-                    type: any | null;
-                    args: {
-                        path?: string | null | undefined;
-                    };
-                };
-                anticipation: {
-                    type: any | null;
-                    args: {
-                        path?: string | null | undefined;
-                    };
-                };
-                disgust: {
                     type: any | null;
                     args: {
                         path?: string | null | undefined;
@@ -1509,18 +1257,6 @@ export declare type CacheTypeDef = {
                         path?: string | null | undefined;
                     };
                 };
-                optimism: {
-                    type: any | null;
-                    args: {
-                        path?: string | null | undefined;
-                    };
-                };
-                pessimism: {
-                    type: any | null;
-                    args: {
-                        path?: string | null | undefined;
-                    };
-                };
                 sadness: {
                     type: any | null;
                     args: {
@@ -1528,12 +1264,6 @@ export declare type CacheTypeDef = {
                     };
                 };
                 surprise: {
-                    type: any | null;
-                    args: {
-                        path?: string | null | undefined;
-                    };
-                };
-                trust: {
                     type: any | null;
                     args: {
                         path?: string | null | undefined;

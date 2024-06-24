@@ -480,8 +480,6 @@ columns and relationships of "emotion"
 """
 type emotion {
   anger: float8!
-  anticipation: float8!
-  disgust: float8!
 
   """An object relationship"""
   entry: entry!
@@ -489,11 +487,8 @@ type emotion {
   id: uuid!
   joy: float8!
   love: float8!
-  optimism: float8!
-  pessimism: float8!
   sadness: float8!
   surprise: float8!
-  trust: float8!
 }
 
 """
@@ -524,16 +519,11 @@ type emotion_aggregate_fields {
 """aggregate avg on columns"""
 type emotion_avg_fields {
   anger: Float
-  anticipation: Float
-  disgust: Float
   fear: Float
   joy: Float
   love: Float
-  optimism: Float
-  pessimism: Float
   sadness: Float
   surprise: Float
-  trust: Float
 }
 
 """
@@ -544,18 +534,13 @@ input emotion_bool_exp {
   _not: emotion_bool_exp
   _or: [emotion_bool_exp!]
   anger: float8_comparison_exp
-  anticipation: float8_comparison_exp
-  disgust: float8_comparison_exp
   entry: entry_bool_exp
   fear: float8_comparison_exp
   id: uuid_comparison_exp
   joy: float8_comparison_exp
   love: float8_comparison_exp
-  optimism: float8_comparison_exp
-  pessimism: float8_comparison_exp
   sadness: float8_comparison_exp
   surprise: float8_comparison_exp
-  trust: float8_comparison_exp
 }
 
 """
@@ -573,16 +558,11 @@ input type for incrementing numeric columns in table "emotion"
 """
 input emotion_inc_input {
   anger: float8
-  anticipation: float8
-  disgust: float8
   fear: float8
   joy: float8
   love: float8
-  optimism: float8
-  pessimism: float8
   sadness: float8
   surprise: float8
-  trust: float8
 }
 
 """
@@ -590,50 +570,35 @@ input type for inserting data into table "emotion"
 """
 input emotion_insert_input {
   anger: float8
-  anticipation: float8
-  disgust: float8
   entry: entry_obj_rel_insert_input
   fear: float8
   id: uuid
   joy: float8
   love: float8
-  optimism: float8
-  pessimism: float8
   sadness: float8
   surprise: float8
-  trust: float8
 }
 
 """aggregate max on columns"""
 type emotion_max_fields {
   anger: float8
-  anticipation: float8
-  disgust: float8
   fear: float8
   id: uuid
   joy: float8
   love: float8
-  optimism: float8
-  pessimism: float8
   sadness: float8
   surprise: float8
-  trust: float8
 }
 
 """aggregate min on columns"""
 type emotion_min_fields {
   anger: float8
-  anticipation: float8
-  disgust: float8
   fear: float8
   id: uuid
   joy: float8
   love: float8
-  optimism: float8
-  pessimism: float8
   sadness: float8
   surprise: float8
-  trust: float8
 }
 
 """
@@ -669,18 +634,13 @@ input emotion_on_conflict {
 """Ordering options when selecting data from "emotion"."""
 input emotion_order_by {
   anger: order_by
-  anticipation: order_by
-  disgust: order_by
   entry: entry_order_by
   fear: order_by
   id: order_by
   joy: order_by
   love: order_by
-  optimism: order_by
-  pessimism: order_by
   sadness: order_by
   surprise: order_by
-  trust: order_by
 }
 
 """primary key columns input for table: emotion"""
@@ -696,12 +656,6 @@ enum emotion_select_column {
   anger
 
   """column name"""
-  anticipation
-
-  """column name"""
-  disgust
-
-  """column name"""
   fear
 
   """column name"""
@@ -714,19 +668,10 @@ enum emotion_select_column {
   love
 
   """column name"""
-  optimism
-
-  """column name"""
-  pessimism
-
-  """column name"""
   sadness
 
   """column name"""
   surprise
-
-  """column name"""
-  trust
 }
 
 """
@@ -734,62 +679,42 @@ input type for updating data in table "emotion"
 """
 input emotion_set_input {
   anger: float8
-  anticipation: float8
-  disgust: float8
   fear: float8
   id: uuid
   joy: float8
   love: float8
-  optimism: float8
-  pessimism: float8
   sadness: float8
   surprise: float8
-  trust: float8
 }
 
 """aggregate stddev on columns"""
 type emotion_stddev_fields {
   anger: Float
-  anticipation: Float
-  disgust: Float
   fear: Float
   joy: Float
   love: Float
-  optimism: Float
-  pessimism: Float
   sadness: Float
   surprise: Float
-  trust: Float
 }
 
 """aggregate stddev_pop on columns"""
 type emotion_stddev_pop_fields {
   anger: Float
-  anticipation: Float
-  disgust: Float
   fear: Float
   joy: Float
   love: Float
-  optimism: Float
-  pessimism: Float
   sadness: Float
   surprise: Float
-  trust: Float
 }
 
 """aggregate stddev_samp on columns"""
 type emotion_stddev_samp_fields {
   anger: Float
-  anticipation: Float
-  disgust: Float
   fear: Float
   joy: Float
   love: Float
-  optimism: Float
-  pessimism: Float
   sadness: Float
   surprise: Float
-  trust: Float
 }
 
 """
@@ -806,32 +731,22 @@ input emotion_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input emotion_stream_cursor_value_input {
   anger: float8
-  anticipation: float8
-  disgust: float8
   fear: float8
   id: uuid
   joy: float8
   love: float8
-  optimism: float8
-  pessimism: float8
   sadness: float8
   surprise: float8
-  trust: float8
 }
 
 """aggregate sum on columns"""
 type emotion_sum_fields {
   anger: float8
-  anticipation: float8
-  disgust: float8
   fear: float8
   joy: float8
   love: float8
-  optimism: float8
-  pessimism: float8
   sadness: float8
   surprise: float8
-  trust: float8
 }
 
 """
@@ -840,12 +755,6 @@ update columns of table "emotion"
 enum emotion_update_column {
   """column name"""
   anger
-
-  """column name"""
-  anticipation
-
-  """column name"""
-  disgust
 
   """column name"""
   fear
@@ -860,19 +769,10 @@ enum emotion_update_column {
   love
 
   """column name"""
-  optimism
-
-  """column name"""
-  pessimism
-
-  """column name"""
   sadness
 
   """column name"""
   surprise
-
-  """column name"""
-  trust
 }
 
 input emotion_updates {
@@ -889,46 +789,31 @@ input emotion_updates {
 """aggregate var_pop on columns"""
 type emotion_var_pop_fields {
   anger: Float
-  anticipation: Float
-  disgust: Float
   fear: Float
   joy: Float
   love: Float
-  optimism: Float
-  pessimism: Float
   sadness: Float
   surprise: Float
-  trust: Float
 }
 
 """aggregate var_samp on columns"""
 type emotion_var_samp_fields {
   anger: Float
-  anticipation: Float
-  disgust: Float
   fear: Float
   joy: Float
   love: Float
-  optimism: Float
-  pessimism: Float
   sadness: Float
   surprise: Float
-  trust: Float
 }
 
 """aggregate variance on columns"""
 type emotion_variance_fields {
   anger: Float
-  anticipation: Float
-  disgust: Float
   fear: Float
   joy: Float
   love: Float
-  optimism: Float
-  pessimism: Float
   sadness: Float
   surprise: Float
-  trust: Float
 }
 
 """
@@ -936,14 +821,6 @@ columns and relationships of "emotions_timeline"
 """
 type emotions_timeline {
   anger(
-    """JSON select path"""
-    path: String
-  ): json
-  anticipation(
-    """JSON select path"""
-    path: String
-  ): json
-  disgust(
     """JSON select path"""
     path: String
   ): json
@@ -963,23 +840,11 @@ type emotions_timeline {
     """JSON select path"""
     path: String
   ): json
-  optimism(
-    """JSON select path"""
-    path: String
-  ): json
-  pessimism(
-    """JSON select path"""
-    path: String
-  ): json
   sadness(
     """JSON select path"""
     path: String
   ): json
   surprise(
-    """JSON select path"""
-    path: String
-  ): json
-  trust(
     """JSON select path"""
     path: String
   ): json
@@ -1024,17 +889,12 @@ input emotions_timeline_bool_exp {
   _not: emotions_timeline_bool_exp
   _or: [emotions_timeline_bool_exp!]
   anger: json_comparison_exp
-  anticipation: json_comparison_exp
-  disgust: json_comparison_exp
   entries: json_comparison_exp
   fear: json_comparison_exp
   joy: json_comparison_exp
   love: json_comparison_exp
-  optimism: json_comparison_exp
-  pessimism: json_comparison_exp
   sadness: json_comparison_exp
   surprise: json_comparison_exp
-  trust: json_comparison_exp
   user_id: Int_comparison_exp
 }
 
@@ -1051,17 +911,12 @@ type emotions_timeline_min_fields {
 """Ordering options when selecting data from "emotions_timeline"."""
 input emotions_timeline_order_by {
   anger: order_by
-  anticipation: order_by
-  disgust: order_by
   entries: order_by
   fear: order_by
   joy: order_by
   love: order_by
-  optimism: order_by
-  pessimism: order_by
   sadness: order_by
   surprise: order_by
-  trust: order_by
   user_id: order_by
 }
 
@@ -1071,12 +926,6 @@ select columns of table "emotions_timeline"
 enum emotions_timeline_select_column {
   """column name"""
   anger
-
-  """column name"""
-  anticipation
-
-  """column name"""
-  disgust
 
   """column name"""
   entries
@@ -1091,19 +940,10 @@ enum emotions_timeline_select_column {
   love
 
   """column name"""
-  optimism
-
-  """column name"""
-  pessimism
-
-  """column name"""
   sadness
 
   """column name"""
   surprise
-
-  """column name"""
-  trust
 
   """column name"""
   user_id
@@ -1138,17 +978,12 @@ input emotions_timeline_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input emotions_timeline_stream_cursor_value_input {
   anger: json
-  anticipation: json
-  disgust: json
   entries: json
   fear: json
   joy: json
   love: json
-  optimism: json
-  pessimism: json
   sadness: json
   surprise: json
-  trust: json
   user_id: Int
 }
 

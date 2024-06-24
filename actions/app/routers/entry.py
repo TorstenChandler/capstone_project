@@ -1,6 +1,6 @@
 
 from ..dependencies import get_conn_str
-from fastapi import APIRouter,Request,BackgroundTasks
+from fastapi import APIRouter,Request, BackgroundTasks
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -14,9 +14,8 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_community.chat_message_histories import ChatMessageHistory
 from uuid import uuid4
-from threading import Thread
 import psycopg2
-
+from threading import Thread
 
 class Entry(BaseModel):
     id: str
@@ -28,12 +27,13 @@ router = APIRouter()
 @router.post("/entry_inserted")
 async def entry_inserted(entry:Entry,background_tasks: BackgroundTasks):
     background_tasks.add_task(process,entry)
-    return JSONResponse(jsonable_encoder({"received": True}))
+    response = generate_entry_response(entry.text)
+    return JSONResponse(jsonable_encoder({"received": response}))
 
-def process(entry):
+async def process(entry):
     emotions = classify_emotions(entry)
-    #topics = classify_topics(entry)
-    #embedding(entry, emotions,topics)
+    topics = classify_topics(entry)
+    embedding(entry, emotions,topics)
    
 
 router = APIRouter()
@@ -44,11 +44,12 @@ async def entry_inserted(request:Request, entry:Entry):
 
 
 def classify_emotions(entry):
-   
-    #classifier = pipeline(model="Dimi-G/roberta-base-emotion", top_k=None)
-    #emotions = classifier(entry.text)
-#
-    ##function to sort the order of the dictionary output
+    conn = psycopg2.connect(get_conn_str())
+    cursor = conn.cursor()
+    classifier = pipeline(model="Dimi-G/roberta-base-emotion", top_k=None)
+    emotions = classifier(entry.text)[0]
+
+    #function to sort the order of the dictionary output
     #def order_labels(emotions):
     #    labels_order = ['anger', 'fear', 'joy', 'love', 'sadness', 'surprise']
     #    order_dict = {label: index for index, label in enumerate(labels_order)}
@@ -58,17 +59,12 @@ def classify_emotions(entry):
     #
     #ordered_emotions = order_labels(emotions)
 
-    conn = psycopg2.connect(get_conn_str())
-    cursor = conn.cursor()
-    classifier = pipeline("text-classification", model="Dimi-G/roberta-base-emotion", top_k=None)
-    emotions = classifier(entry.text)[0]
     emotionValues = []
     emotionLabels = []
     for emotion in emotions:
         emotionLabels.append(emotion["label"])
         emotionValues.append(emotion["score"])
     emotionLabels = ','.join(emotionLabels)
-   
     insert_query = f'''
     INSERT INTO emotion (id, {emotionLabels}) VALUES (%s , %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     '''
@@ -80,8 +76,22 @@ def classify_topics(entry):
     cursor = conn.cursor()
     classifier = pipeline("zero-shot-classification", model="eleldar/theme-classification")
     topics = classifier(entry.text, ['friends', 'relation', 'work', "hobby", "goals"])
+    topics = classifier(entry.text, ['friends', 'goals', 'hobby', 'relation', 'work'])
     labels = ",".join(topics["labels"])
+    #bringing the classifier results in the desired order and format
+    results = {}
+    for result in zip(topics['labels'], topics['scores']):
+        results[result[0]] = result[1]
     
+    def remap_dict(results, desired_order):
+        sorted_results = {key:results[key] for key in desired_order }
+        return sorted_results
+
+    desired_order = ['friends', 'goals', 'hobby', 'relation', 'work']
+    sorted_results = remap_dict(results, desired_order)
+    labels = ','.join(sorted_results.keys())
+    topic_values = list(sorted_results.values())
+
     insert_query = f'''
     INSERT INTO topic (id, {labels}) VALUES (%s,%s,%s,%s,%s,%s)
     '''
@@ -89,20 +99,63 @@ def classify_topics(entry):
     conn.commit()
     return topics
 
+def embedding(entry, emotions, topics):
+    embedding_text = f"date: {entry.date}; emotions:{emotions}, topics:{topics} text:{entry.text}"
+    engine = OllamaEmbeddings(model='llama3')
+    vectorized = engine.embed_query(embedding_text)
+    with psycopg.connect(get_conn_str()) as conn:
+        with conn.cursor() as cur:
+           # Insert data into the table
+            updated_query = '''
+                UPDATE entry set embedding_text = %s, embedding = %s  where id = %s (%s, %s, %s)
+            '''
+            #cur.execute(insert_query, (embedding_text, vectorized, entry.id))  
+            insert_query = '''
+                     INSERT INTO entry (id, user_id, text, date, embedding_text, embedding) VALUES (%s, %s, %s, %s, %s, %s)
+                '''
+            cur.execute(insert_query, (entry.id, entry.user_id, entry.text, entry.date, embedding_text, vectorized))
+                
+           # Commit the transaction
+            conn.commit()
+           
+   #close the connection
+    conn.close()
 
-#def embedding(entry, emotions, topics):
-#    embedding_text = f"date: {entry.date}; emotions:{emotions}, topics:{topics} text:{entry.text}"
-#    engine = OllamaEmbeddings(model='llama3')
-#    vectorized = engine.embed_query(embedding_text)
-#    with psycopg.connect(get_conn_str()) as conn:
-#        with conn.cursor() as cur:
-#            # Insert data into the table
-#            insert_query = '''
-#                UPDATE entry set embedding_text = %s, embedding = %s  where id = %s (%s, %s, %s)
-#            '''
-#            cur.execute(insert_query, (embedding_text, vectorized, entry.id))      
-#            # Commit the transaction
-#            conn.commit()
-#            
-#    #close the connection
-#    conn.close()
+def generate_entry_response(text):
+    llm = Ollama(model="llama3",  base_url="http://host.docker.internal:11434", verbose=False)
+
+    #Start a question answer chat prompt
+    system_prompt = (
+        """You are an emotionally intelligent assistant. You collect journal entries from users and respond in a empathetic way. 
+        You do not ask questions, unless necessary. You reply in 2-3 sentences. """
+    )
+
+    prompt_template = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt),
+            ("human", "{input}"),
+        ]
+    )
+
+    chain = prompt_template | llm 
+
+    ### Statefully manage chat history ###
+    store = {}
+
+    def get_session_history(session_id: str) -> BaseChatMessageHistory:
+        if session_id not in store:
+            store[session_id] = ChatMessageHistory()
+        return store[session_id]
+
+    runnable_with_history = RunnableWithMessageHistory(
+        chain,
+        get_session_history,
+        input_messages_key="input",
+        history_messages_key="history",
+    )
+    output = runnable_with_history.invoke({"input": text},
+        config={"configurable": {"session_id": "2"}})
+    print("Journal Entry : ", text)
+    print("Response : ", output) 
+
+    return output

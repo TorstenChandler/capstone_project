@@ -21,16 +21,13 @@
 				text
 				date
 				emotions {
-					joy
+					id
 					love
-					optimism
-					trust
+					joy
 					surprise
 					sadness
-					anger
-					disgust
 					fear
-					pessimism
+					anger
 				}
 			}
 		}

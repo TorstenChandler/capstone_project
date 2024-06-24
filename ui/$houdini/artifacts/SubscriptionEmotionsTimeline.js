@@ -1,21 +1,16 @@
 export default {
     "name": "SubscriptionEmotionsTimeline",
     "kind": "HoudiniSubscription",
-    "hash": "4c266e5cbb122d5654d71a21998a1fe46330a3a60f7a4f7fa164985c2476b9d2",
+    "hash": "4090f96dbe2751e3238383cfd57cdbec0d87d2c5d2a6e205ed3140202d065cc0",
 
     "raw": `subscription SubscriptionEmotionsTimeline {
   timeline: emotions_timeline {
     entries
     love
     joy
-    optimism
-    anticipation
     surprise
-    trust
     sadness
-    pessimism
     fear
-    disgust
     anger
   }
 }
@@ -52,30 +47,9 @@ export default {
                             "visible": true
                         },
 
-                        "optimism": {
-                            "type": "json",
-                            "keyRaw": "optimism",
-                            "nullable": true,
-                            "visible": true
-                        },
-
-                        "anticipation": {
-                            "type": "json",
-                            "keyRaw": "anticipation",
-                            "nullable": true,
-                            "visible": true
-                        },
-
                         "surprise": {
                             "type": "json",
                             "keyRaw": "surprise",
-                            "nullable": true,
-                            "visible": true
-                        },
-
-                        "trust": {
-                            "type": "json",
-                            "keyRaw": "trust",
                             "nullable": true,
                             "visible": true
                         },
@@ -87,23 +61,9 @@ export default {
                             "visible": true
                         },
 
-                        "pessimism": {
-                            "type": "json",
-                            "keyRaw": "pessimism",
-                            "nullable": true,
-                            "visible": true
-                        },
-
                         "fear": {
                             "type": "json",
                             "keyRaw": "fear",
-                            "nullable": true,
-                            "visible": true
-                        },
-
-                        "disgust": {
-                            "type": "json",
-                            "keyRaw": "disgust",
                             "nullable": true,
                             "visible": true
                         },
@@ -129,4 +89,4 @@ export default {
     }
 };
 
-"HoudiniHash=08b07dc644520f32e29fc2446b806e37b2b0460ecea8ad6becf0f8f9ac438e0e";
+"HoudiniHash=090713f8886f90a5eda0e5b6f777e9342cb6f0ed60d34d153105dd8618f38908";
