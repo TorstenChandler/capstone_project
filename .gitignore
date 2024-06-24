@@ -3,3 +3,5 @@
 *.python-version
 *__pycache__
 *node_modules
+ollama/ollama
+ollama/ollama-webui
