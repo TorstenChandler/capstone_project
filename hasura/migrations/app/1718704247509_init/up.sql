@@ -23,29 +23,19 @@ CREATE SEQUENCE public.accounts_id_seq
 ALTER SEQUENCE public.accounts_id_seq OWNED BY public.accounts.id;
 CREATE TABLE public.emotion (
     id uuid NOT NULL,
+    anger double precision NOT NULL,
+    fear double precision NOT NULL,
     joy double precision NOT NULL,
     love double precision NOT NULL,
-    optimism double precision NOT NULL,
-    trust double precision NOT NULL,
-    surprise double precision NOT NULL,
-    anticipation double precision NOT NULL,
     sadness double precision NOT NULL,
-    anger double precision NOT NULL,
-    disgust double precision NOT NULL,
-    fear double precision NOT NULL,
-    pessimism double precision NOT NULL,
+    surprise double precision NOT NULL,
     CONSTRAINT emotion_anger_check CHECK (((anger >= (0)::double precision) AND (anger <= (1)::double precision))),
-    CONSTRAINT emotion_anticipation_check CHECK (((anticipation >= (0)::double precision) AND (anticipation <= (1)::double precision))),
-    CONSTRAINT emotion_disgust_check CHECK (((disgust >= (0)::double precision) AND (disgust <= (1)::double precision))),
     CONSTRAINT emotion_fear_check CHECK (((fear >= (0)::double precision) AND (fear <= (1)::double precision))),
     CONSTRAINT emotion_joy_check CHECK (((joy >= (0)::double precision) AND (joy <= (1)::double precision))),
     CONSTRAINT emotion_love_check CHECK (((love >= (0)::double precision) AND (love <= (1)::double precision))),
-    CONSTRAINT emotion_optimism_check CHECK (((optimism >= (0)::double precision) AND (optimism <= (1)::double precision))),
-    CONSTRAINT emotion_pessimism_check CHECK (((pessimism >= (0)::double precision) AND (pessimism <= (1)::double precision))),
     CONSTRAINT emotion_sadness_check CHECK (((sadness >= (0)::double precision) AND (sadness <= (1)::double precision))),
-    CONSTRAINT emotion_surprise_check CHECK (((surprise >= (0)::double precision) AND (surprise <= (1)::double precision))),
-    CONSTRAINT emotion_trust_check CHECK (((trust >= (0)::double precision) AND (trust <= (1)::double precision)))
-);
+    CONSTRAINT emotion_surprise_check CHECK (((surprise >= (0)::double precision) AND (surprise <= (1)::double precision)))
+    );
 CREATE TABLE public.entry (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id integer,
