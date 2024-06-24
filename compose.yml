@@ -48,6 +48,7 @@ services:
     networks:
       - app
 
+
   #ollama-webui:
   #  image: ghcr.io/open-webui/open-webui:main
   #  container_name: ollama-webui
@@ -74,15 +75,17 @@ services:
   #      - 11434:11434
   #  volumes:
   #      - ./ollama/ollama:/root/.ollama
-  #      - ./entrypoint.sh:/entrypoint.sh
-  #  container_name: ollama
+  #      - ./ollama/entrypoint.sh:/entrypoint.sh
   #  pull_policy: always
   #  tty: true
   #  restart: always
   #  entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
+  #  networks:
+  #    - app
 #
 networks:
   app:
 
 volumes:
   dx:
+  ollama:

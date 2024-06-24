@@ -1,6 +1,6 @@
 fastapi
 pydantic
-psycopg2
+psycopg3
 asyncpg
 transformers
 torch

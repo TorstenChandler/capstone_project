@@ -16,6 +16,7 @@ select_permissions:
         - love
         - sadness
         - surprise
+       
       filter:
         entry:
           user_id:
