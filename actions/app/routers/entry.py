@@ -32,8 +32,8 @@ async def entry_inserted(entry:Entry,background_tasks: BackgroundTasks):
 
 async def process(entry):
     emotions = classify_emotions(entry)
-    topics = classify_topics(entry)
-    embedding(entry, emotions,topics)
+    #topics = classify_topics(entry)
+    #embedding(entry, emotions,topics)
 
 
 def classify_emotions(entry):
