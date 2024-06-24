@@ -1,11 +1,9 @@
-import psycopg
+
 from ..dependencies import get_conn_str
 from fastapi import APIRouter,Request, BackgroundTasks
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from threading import Thread
 from pydantic import BaseModel
-import asyncio
 from transformers import pipeline
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
@@ -16,6 +14,8 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_community.chat_message_histories import ChatMessageHistory
 from uuid import uuid4
+import psycopg2
+from threading import Thread
 
 class Entry(BaseModel):
     id: str
@@ -34,45 +34,50 @@ async def process(entry):
     emotions = classify_emotions(entry)
     topics = classify_topics(entry)
     embedding(entry, emotions,topics)
+   
+
+router = APIRouter()
+@router.post("/entry_inserted")
+async def entry_inserted(request:Request, entry:Entry):
+    Thread(target=process, args=(entry,)).start()
+    return JSONResponse(jsonable_encoder({"received": True}))
 
 
 def classify_emotions(entry):
+    conn = psycopg2.connect(get_conn_str())
+    cursor = conn.cursor()
     classifier = pipeline(model="Dimi-G/roberta-base-emotion", top_k=None)
-    emotions = classifier(entry.text)
+    emotions = classifier(entry.text)[0]
 
     #function to sort the order of the dictionary output
-    def order_labels(emotions):
-        labels_order = ['anger', 'fear', 'joy', 'love', 'sadness', 'surprise']
-        order_dict = {label: index for index, label in enumerate(labels_order)}
-        # Sort based on the desired order
-        ordered_output = sorted(emotions[0], key=lambda x: order_dict[x['label'].lower()]) 
-        return ordered_output 
-    
-    ordered_emotions = order_labels(emotions)
+    #def order_labels(emotions):
+    #    labels_order = ['anger', 'fear', 'joy', 'love', 'sadness', 'surprise']
+    #    order_dict = {label: index for index, label in enumerate(labels_order)}
+    #    # Sort based on the desired order
+    #    ordered_output = sorted(emotions[0], key=lambda x: order_dict[x['label'].lower()]) 
+    #    return ordered_output 
+    #
+    #ordered_emotions = order_labels(emotions)
 
     emotionValues = []
     emotionLabels = []
-    for emotion in ordered_emotions:
+    for emotion in emotions:
         emotionLabels.append(emotion["label"])
         emotionValues.append(emotion["score"])
     emotionLabels = ','.join(emotionLabels)
-    with psycopg.connect(get_conn_str()) as conn:
-        with conn.cursor() as cur:
-            # Insert data into the table
-            # column names need to be ordered in accordance to output of classifier!
-            insert_query = f'''
-            INSERT INTO emotion (id, {emotionLabels}) VALUES (%s, %s,%s, %s,%s, %s)
-            '''
-            cur.execute(insert_query, tuple([entry.id] + emotionValues))
-            
-            # Commit the transaction
-            conn.commit()
+    insert_query = f'''
+    INSERT INTO emotion (id, {emotionLabels}) VALUES (%s , %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    '''
+    cursor.execute(insert_query, tuple([entry.id] + emotionValues))
+    conn.commit()
     return emotions
-
 def classify_topics(entry):
+    conn = psycopg2.connect(get_conn_str())
+    cursor = conn.cursor()
     classifier = pipeline("zero-shot-classification", model="eleldar/theme-classification")
+    topics = classifier(entry.text, ['friends', 'relation', 'work', "hobby", "goals"])
     topics = classifier(entry.text, ['friends', 'goals', 'hobby', 'relation', 'work'])
-    
+    labels = ",".join(topics["labels"])
     #bringing the classifier results in the desired order and format
     results = {}
     for result in zip(topics['labels'], topics['scores']):
@@ -87,17 +92,11 @@ def classify_topics(entry):
     labels = ','.join(sorted_results.keys())
     topic_values = list(sorted_results.values())
 
-    with psycopg.connect(get_conn_str()) as conn:
-        with conn.cursor() as cur:
-            # Insert data into the table
-            # column names need to be ordered in accordance to output of classifier!
-            insert_query = f'''
-            INSERT INTO topic (id, {labels}) VALUES (%s, %s,%s, %s,%s, %s)
-            '''
-            cur.execute(insert_query, tuple([entry.id]+ topic_values))
-                    
-            # Commit the transaction
-            conn.commit()
+    insert_query = f'''
+    INSERT INTO topic (id, {labels}) VALUES (%s,%s,%s,%s,%s,%s)
+    '''
+    cursor.execute(insert_query, tuple([entry.id]) + tuple(topics["scores"]))
+    conn.commit()
     return topics
 
 def embedding(entry, emotions, topics):

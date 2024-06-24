@@ -1,5 +1,6 @@
 - "!include public_accounts.yaml"
 - "!include public_emotion.yaml"
+- "!include public_emotions_timeline.yaml"
 - "!include public_entry.yaml"
 - "!include public_sessions.yaml"
 - "!include public_topic.yaml"

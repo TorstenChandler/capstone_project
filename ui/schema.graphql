@@ -1,0 +1,3768 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+
+  """measured in seconds"""
+  ttl: Int! = 60
+) on QUERY
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+"""
+columns and relationships of "accounts"
+"""
+type accounts {
+  access_token: String
+  expires_at: bigint
+  id: Int!
+  id_token: String
+  provider: String
+  providerAccountId: String
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String
+  userId: Int
+}
+
+"""
+aggregated selection of "accounts"
+"""
+type accounts_aggregate {
+  aggregate: accounts_aggregate_fields
+  nodes: [accounts!]!
+}
+
+"""
+aggregate fields of "accounts"
+"""
+type accounts_aggregate_fields {
+  avg: accounts_avg_fields
+  count(columns: [accounts_select_column!], distinct: Boolean): Int!
+  max: accounts_max_fields
+  min: accounts_min_fields
+  stddev: accounts_stddev_fields
+  stddev_pop: accounts_stddev_pop_fields
+  stddev_samp: accounts_stddev_samp_fields
+  sum: accounts_sum_fields
+  var_pop: accounts_var_pop_fields
+  var_samp: accounts_var_samp_fields
+  variance: accounts_variance_fields
+}
+
+"""aggregate avg on columns"""
+type accounts_avg_fields {
+  expires_at: Float
+  id: Float
+  userId: Float
+}
+
+"""
+Boolean expression to filter rows from the table "accounts". All fields are combined with a logical 'AND'.
+"""
+input accounts_bool_exp {
+  _and: [accounts_bool_exp!]
+  _not: accounts_bool_exp
+  _or: [accounts_bool_exp!]
+  access_token: String_comparison_exp
+  expires_at: bigint_comparison_exp
+  id: Int_comparison_exp
+  id_token: String_comparison_exp
+  provider: String_comparison_exp
+  providerAccountId: String_comparison_exp
+  refresh_token: String_comparison_exp
+  scope: String_comparison_exp
+  session_state: String_comparison_exp
+  token_type: String_comparison_exp
+  type: String_comparison_exp
+  userId: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "accounts"
+"""
+enum accounts_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  accounts_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "accounts"
+"""
+input accounts_inc_input {
+  expires_at: bigint
+  id: Int
+  userId: Int
+}
+
+"""
+input type for inserting data into table "accounts"
+"""
+input accounts_insert_input {
+  access_token: String
+  expires_at: bigint
+  id: Int
+  id_token: String
+  provider: String
+  providerAccountId: String
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String
+  userId: Int
+}
+
+"""aggregate max on columns"""
+type accounts_max_fields {
+  access_token: String
+  expires_at: bigint
+  id: Int
+  id_token: String
+  provider: String
+  providerAccountId: String
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String
+  userId: Int
+}
+
+"""aggregate min on columns"""
+type accounts_min_fields {
+  access_token: String
+  expires_at: bigint
+  id: Int
+  id_token: String
+  provider: String
+  providerAccountId: String
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String
+  userId: Int
+}
+
+"""
+response of any mutation on the table "accounts"
+"""
+type accounts_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [accounts!]!
+}
+
+"""
+on_conflict condition type for table "accounts"
+"""
+input accounts_on_conflict {
+  constraint: accounts_constraint!
+  update_columns: [accounts_update_column!]! = []
+  where: accounts_bool_exp
+}
+
+"""Ordering options when selecting data from "accounts"."""
+input accounts_order_by {
+  access_token: order_by
+  expires_at: order_by
+  id: order_by
+  id_token: order_by
+  provider: order_by
+  providerAccountId: order_by
+  refresh_token: order_by
+  scope: order_by
+  session_state: order_by
+  token_type: order_by
+  type: order_by
+  userId: order_by
+}
+
+"""primary key columns input for table: accounts"""
+input accounts_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "accounts"
+"""
+enum accounts_select_column {
+  """column name"""
+  access_token
+
+  """column name"""
+  expires_at
+
+  """column name"""
+  id
+
+  """column name"""
+  id_token
+
+  """column name"""
+  provider
+
+  """column name"""
+  providerAccountId
+
+  """column name"""
+  refresh_token
+
+  """column name"""
+  scope
+
+  """column name"""
+  session_state
+
+  """column name"""
+  token_type
+
+  """column name"""
+  type
+
+  """column name"""
+  userId
+}
+
+"""
+input type for updating data in table "accounts"
+"""
+input accounts_set_input {
+  access_token: String
+  expires_at: bigint
+  id: Int
+  id_token: String
+  provider: String
+  providerAccountId: String
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String
+  userId: Int
+}
+
+"""aggregate stddev on columns"""
+type accounts_stddev_fields {
+  expires_at: Float
+  id: Float
+  userId: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type accounts_stddev_pop_fields {
+  expires_at: Float
+  id: Float
+  userId: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type accounts_stddev_samp_fields {
+  expires_at: Float
+  id: Float
+  userId: Float
+}
+
+"""
+Streaming cursor of the table "accounts"
+"""
+input accounts_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: accounts_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input accounts_stream_cursor_value_input {
+  access_token: String
+  expires_at: bigint
+  id: Int
+  id_token: String
+  provider: String
+  providerAccountId: String
+  refresh_token: String
+  scope: String
+  session_state: String
+  token_type: String
+  type: String
+  userId: Int
+}
+
+"""aggregate sum on columns"""
+type accounts_sum_fields {
+  expires_at: bigint
+  id: Int
+  userId: Int
+}
+
+"""
+update columns of table "accounts"
+"""
+enum accounts_update_column {
+  """column name"""
+  access_token
+
+  """column name"""
+  expires_at
+
+  """column name"""
+  id
+
+  """column name"""
+  id_token
+
+  """column name"""
+  provider
+
+  """column name"""
+  providerAccountId
+
+  """column name"""
+  refresh_token
+
+  """column name"""
+  scope
+
+  """column name"""
+  session_state
+
+  """column name"""
+  token_type
+
+  """column name"""
+  type
+
+  """column name"""
+  userId
+}
+
+input accounts_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: accounts_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: accounts_set_input
+
+  """filter the rows which have to be updated"""
+  where: accounts_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type accounts_var_pop_fields {
+  expires_at: Float
+  id: Float
+  userId: Float
+}
+
+"""aggregate var_samp on columns"""
+type accounts_var_samp_fields {
+  expires_at: Float
+  id: Float
+  userId: Float
+}
+
+"""aggregate variance on columns"""
+type accounts_variance_fields {
+  expires_at: Float
+  id: Float
+  userId: Float
+}
+
+scalar bigint
+
+"""
+Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'.
+"""
+input bigint_comparison_exp {
+  _eq: bigint
+  _gt: bigint
+  _gte: bigint
+  _in: [bigint!]
+  _is_null: Boolean
+  _lt: bigint
+  _lte: bigint
+  _neq: bigint
+  _nin: [bigint!]
+}
+
+"""ordering argument of a cursor"""
+enum cursor_ordering {
+  """ascending ordering of the cursor"""
+  ASC
+
+  """descending ordering of the cursor"""
+  DESC
+}
+
+"""
+columns and relationships of "emotion"
+"""
+type emotion {
+  anger: float8!
+
+  """An object relationship"""
+  entry: entry!
+  fear: float8!
+  id: uuid!
+  joy: float8!
+  love: float8!
+  sadness: float8!
+  surprise: float8!
+}
+
+"""
+aggregated selection of "emotion"
+"""
+type emotion_aggregate {
+  aggregate: emotion_aggregate_fields
+  nodes: [emotion!]!
+}
+
+"""
+aggregate fields of "emotion"
+"""
+type emotion_aggregate_fields {
+  avg: emotion_avg_fields
+  count(columns: [emotion_select_column!], distinct: Boolean): Int!
+  max: emotion_max_fields
+  min: emotion_min_fields
+  stddev: emotion_stddev_fields
+  stddev_pop: emotion_stddev_pop_fields
+  stddev_samp: emotion_stddev_samp_fields
+  sum: emotion_sum_fields
+  var_pop: emotion_var_pop_fields
+  var_samp: emotion_var_samp_fields
+  variance: emotion_variance_fields
+}
+
+"""aggregate avg on columns"""
+type emotion_avg_fields {
+  anger: Float
+  fear: Float
+  joy: Float
+  love: Float
+  sadness: Float
+  surprise: Float
+}
+
+"""
+Boolean expression to filter rows from the table "emotion". All fields are combined with a logical 'AND'.
+"""
+input emotion_bool_exp {
+  _and: [emotion_bool_exp!]
+  _not: emotion_bool_exp
+  _or: [emotion_bool_exp!]
+  anger: float8_comparison_exp
+  entry: entry_bool_exp
+  fear: float8_comparison_exp
+  id: uuid_comparison_exp
+  joy: float8_comparison_exp
+  love: float8_comparison_exp
+  sadness: float8_comparison_exp
+  surprise: float8_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "emotion"
+"""
+enum emotion_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  emotion_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "emotion"
+"""
+input emotion_inc_input {
+  anger: float8
+  fear: float8
+  joy: float8
+  love: float8
+  sadness: float8
+  surprise: float8
+}
+
+"""
+input type for inserting data into table "emotion"
+"""
+input emotion_insert_input {
+  anger: float8
+  entry: entry_obj_rel_insert_input
+  fear: float8
+  id: uuid
+  joy: float8
+  love: float8
+  sadness: float8
+  surprise: float8
+}
+
+"""aggregate max on columns"""
+type emotion_max_fields {
+  anger: float8
+  fear: float8
+  id: uuid
+  joy: float8
+  love: float8
+  sadness: float8
+  surprise: float8
+}
+
+"""aggregate min on columns"""
+type emotion_min_fields {
+  anger: float8
+  fear: float8
+  id: uuid
+  joy: float8
+  love: float8
+  sadness: float8
+  surprise: float8
+}
+
+"""
+response of any mutation on the table "emotion"
+"""
+type emotion_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [emotion!]!
+}
+
+"""
+input type for inserting object relation for remote table "emotion"
+"""
+input emotion_obj_rel_insert_input {
+  data: emotion_insert_input!
+
+  """upsert condition"""
+  on_conflict: emotion_on_conflict
+}
+
+"""
+on_conflict condition type for table "emotion"
+"""
+input emotion_on_conflict {
+  constraint: emotion_constraint!
+  update_columns: [emotion_update_column!]! = []
+  where: emotion_bool_exp
+}
+
+"""Ordering options when selecting data from "emotion"."""
+input emotion_order_by {
+  anger: order_by
+  entry: entry_order_by
+  fear: order_by
+  id: order_by
+  joy: order_by
+  love: order_by
+  sadness: order_by
+  surprise: order_by
+}
+
+"""primary key columns input for table: emotion"""
+input emotion_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "emotion"
+"""
+enum emotion_select_column {
+  """column name"""
+  anger
+
+  """column name"""
+  fear
+
+  """column name"""
+  id
+
+  """column name"""
+  joy
+
+  """column name"""
+  love
+
+  """column name"""
+  sadness
+
+  """column name"""
+  surprise
+}
+
+"""
+input type for updating data in table "emotion"
+"""
+input emotion_set_input {
+  anger: float8
+  fear: float8
+  id: uuid
+  joy: float8
+  love: float8
+  sadness: float8
+  surprise: float8
+}
+
+"""aggregate stddev on columns"""
+type emotion_stddev_fields {
+  anger: Float
+  fear: Float
+  joy: Float
+  love: Float
+  sadness: Float
+  surprise: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type emotion_stddev_pop_fields {
+  anger: Float
+  fear: Float
+  joy: Float
+  love: Float
+  sadness: Float
+  surprise: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type emotion_stddev_samp_fields {
+  anger: Float
+  fear: Float
+  joy: Float
+  love: Float
+  sadness: Float
+  surprise: Float
+}
+
+"""
+Streaming cursor of the table "emotion"
+"""
+input emotion_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: emotion_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input emotion_stream_cursor_value_input {
+  anger: float8
+  fear: float8
+  id: uuid
+  joy: float8
+  love: float8
+  sadness: float8
+  surprise: float8
+}
+
+"""aggregate sum on columns"""
+type emotion_sum_fields {
+  anger: float8
+  fear: float8
+  joy: float8
+  love: float8
+  sadness: float8
+  surprise: float8
+}
+
+"""
+update columns of table "emotion"
+"""
+enum emotion_update_column {
+  """column name"""
+  anger
+
+  """column name"""
+  fear
+
+  """column name"""
+  id
+
+  """column name"""
+  joy
+
+  """column name"""
+  love
+
+  """column name"""
+  sadness
+
+  """column name"""
+  surprise
+}
+
+input emotion_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: emotion_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: emotion_set_input
+
+  """filter the rows which have to be updated"""
+  where: emotion_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type emotion_var_pop_fields {
+  anger: Float
+  fear: Float
+  joy: Float
+  love: Float
+  sadness: Float
+  surprise: Float
+}
+
+"""aggregate var_samp on columns"""
+type emotion_var_samp_fields {
+  anger: Float
+  fear: Float
+  joy: Float
+  love: Float
+  sadness: Float
+  surprise: Float
+}
+
+"""aggregate variance on columns"""
+type emotion_variance_fields {
+  anger: Float
+  fear: Float
+  joy: Float
+  love: Float
+  sadness: Float
+  surprise: Float
+}
+
+"""
+columns and relationships of "emotions_timeline"
+"""
+type emotions_timeline {
+  anger(
+    """JSON select path"""
+    path: String
+  ): json
+  entries(
+    """JSON select path"""
+    path: String
+  ): json
+  fear(
+    """JSON select path"""
+    path: String
+  ): json
+  joy(
+    """JSON select path"""
+    path: String
+  ): json
+  love(
+    """JSON select path"""
+    path: String
+  ): json
+  sadness(
+    """JSON select path"""
+    path: String
+  ): json
+  surprise(
+    """JSON select path"""
+    path: String
+  ): json
+  user_id: Int
+}
+
+"""
+aggregated selection of "emotions_timeline"
+"""
+type emotions_timeline_aggregate {
+  aggregate: emotions_timeline_aggregate_fields
+  nodes: [emotions_timeline!]!
+}
+
+"""
+aggregate fields of "emotions_timeline"
+"""
+type emotions_timeline_aggregate_fields {
+  avg: emotions_timeline_avg_fields
+  count(columns: [emotions_timeline_select_column!], distinct: Boolean): Int!
+  max: emotions_timeline_max_fields
+  min: emotions_timeline_min_fields
+  stddev: emotions_timeline_stddev_fields
+  stddev_pop: emotions_timeline_stddev_pop_fields
+  stddev_samp: emotions_timeline_stddev_samp_fields
+  sum: emotions_timeline_sum_fields
+  var_pop: emotions_timeline_var_pop_fields
+  var_samp: emotions_timeline_var_samp_fields
+  variance: emotions_timeline_variance_fields
+}
+
+"""aggregate avg on columns"""
+type emotions_timeline_avg_fields {
+  user_id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "emotions_timeline". All fields are combined with a logical 'AND'.
+"""
+input emotions_timeline_bool_exp {
+  _and: [emotions_timeline_bool_exp!]
+  _not: emotions_timeline_bool_exp
+  _or: [emotions_timeline_bool_exp!]
+  anger: json_comparison_exp
+  entries: json_comparison_exp
+  fear: json_comparison_exp
+  joy: json_comparison_exp
+  love: json_comparison_exp
+  sadness: json_comparison_exp
+  surprise: json_comparison_exp
+  user_id: Int_comparison_exp
+}
+
+"""aggregate max on columns"""
+type emotions_timeline_max_fields {
+  user_id: Int
+}
+
+"""aggregate min on columns"""
+type emotions_timeline_min_fields {
+  user_id: Int
+}
+
+"""Ordering options when selecting data from "emotions_timeline"."""
+input emotions_timeline_order_by {
+  anger: order_by
+  entries: order_by
+  fear: order_by
+  joy: order_by
+  love: order_by
+  sadness: order_by
+  surprise: order_by
+  user_id: order_by
+}
+
+"""
+select columns of table "emotions_timeline"
+"""
+enum emotions_timeline_select_column {
+  """column name"""
+  anger
+
+  """column name"""
+  entries
+
+  """column name"""
+  fear
+
+  """column name"""
+  joy
+
+  """column name"""
+  love
+
+  """column name"""
+  sadness
+
+  """column name"""
+  surprise
+
+  """column name"""
+  user_id
+}
+
+"""aggregate stddev on columns"""
+type emotions_timeline_stddev_fields {
+  user_id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type emotions_timeline_stddev_pop_fields {
+  user_id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type emotions_timeline_stddev_samp_fields {
+  user_id: Float
+}
+
+"""
+Streaming cursor of the table "emotions_timeline"
+"""
+input emotions_timeline_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: emotions_timeline_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input emotions_timeline_stream_cursor_value_input {
+  anger: json
+  entries: json
+  fear: json
+  joy: json
+  love: json
+  sadness: json
+  surprise: json
+  user_id: Int
+}
+
+"""aggregate sum on columns"""
+type emotions_timeline_sum_fields {
+  user_id: Int
+}
+
+"""aggregate var_pop on columns"""
+type emotions_timeline_var_pop_fields {
+  user_id: Float
+}
+
+"""aggregate var_samp on columns"""
+type emotions_timeline_var_samp_fields {
+  user_id: Float
+}
+
+"""aggregate variance on columns"""
+type emotions_timeline_variance_fields {
+  user_id: Float
+}
+
+"""
+columns and relationships of "entry"
+"""
+type entry {
+  date: timestamptz!
+  embedding: vector
+  embedding_text: String
+
+  """An object relationship"""
+  emotions: emotion
+  id: uuid!
+  text: String!
+
+  """An object relationship"""
+  topics: topic
+
+  """An object relationship"""
+  user: users
+  user_id: Int
+}
+
+"""
+aggregated selection of "entry"
+"""
+type entry_aggregate {
+  aggregate: entry_aggregate_fields
+  nodes: [entry!]!
+}
+
+input entry_aggregate_bool_exp {
+  count: entry_aggregate_bool_exp_count
+}
+
+input entry_aggregate_bool_exp_count {
+  arguments: [entry_select_column!]
+  distinct: Boolean
+  filter: entry_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "entry"
+"""
+type entry_aggregate_fields {
+  avg: entry_avg_fields
+  count(columns: [entry_select_column!], distinct: Boolean): Int!
+  max: entry_max_fields
+  min: entry_min_fields
+  stddev: entry_stddev_fields
+  stddev_pop: entry_stddev_pop_fields
+  stddev_samp: entry_stddev_samp_fields
+  sum: entry_sum_fields
+  var_pop: entry_var_pop_fields
+  var_samp: entry_var_samp_fields
+  variance: entry_variance_fields
+}
+
+"""
+order by aggregate values of table "entry"
+"""
+input entry_aggregate_order_by {
+  avg: entry_avg_order_by
+  count: order_by
+  max: entry_max_order_by
+  min: entry_min_order_by
+  stddev: entry_stddev_order_by
+  stddev_pop: entry_stddev_pop_order_by
+  stddev_samp: entry_stddev_samp_order_by
+  sum: entry_sum_order_by
+  var_pop: entry_var_pop_order_by
+  var_samp: entry_var_samp_order_by
+  variance: entry_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "entry"
+"""
+input entry_arr_rel_insert_input {
+  data: [entry_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: entry_on_conflict
+}
+
+"""aggregate avg on columns"""
+type entry_avg_fields {
+  user_id: Float
+}
+
+"""
+order by avg() on columns of table "entry"
+"""
+input entry_avg_order_by {
+  user_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "entry". All fields are combined with a logical 'AND'.
+"""
+input entry_bool_exp {
+  _and: [entry_bool_exp!]
+  _not: entry_bool_exp
+  _or: [entry_bool_exp!]
+  date: timestamptz_comparison_exp
+  embedding: vector_comparison_exp
+  embedding_text: String_comparison_exp
+  emotions: emotion_bool_exp
+  id: uuid_comparison_exp
+  text: String_comparison_exp
+  topics: topic_bool_exp
+  user: users_bool_exp
+  user_id: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "entry"
+"""
+enum entry_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  entry_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "entry"
+"""
+input entry_inc_input {
+  user_id: Int
+}
+
+"""
+input type for inserting data into table "entry"
+"""
+input entry_insert_input {
+  date: timestamptz
+  embedding: vector
+  embedding_text: String
+  emotions: emotion_obj_rel_insert_input
+  id: uuid
+  text: String
+  topics: topic_obj_rel_insert_input
+  user: users_obj_rel_insert_input
+  user_id: Int
+}
+
+"""aggregate max on columns"""
+type entry_max_fields {
+  date: timestamptz
+  embedding_text: String
+  id: uuid
+  text: String
+  user_id: Int
+}
+
+"""
+order by max() on columns of table "entry"
+"""
+input entry_max_order_by {
+  date: order_by
+  embedding_text: order_by
+  id: order_by
+  text: order_by
+  user_id: order_by
+}
+
+"""aggregate min on columns"""
+type entry_min_fields {
+  date: timestamptz
+  embedding_text: String
+  id: uuid
+  text: String
+  user_id: Int
+}
+
+"""
+order by min() on columns of table "entry"
+"""
+input entry_min_order_by {
+  date: order_by
+  embedding_text: order_by
+  id: order_by
+  text: order_by
+  user_id: order_by
+}
+
+"""
+response of any mutation on the table "entry"
+"""
+type entry_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [entry!]!
+}
+
+"""
+input type for inserting object relation for remote table "entry"
+"""
+input entry_obj_rel_insert_input {
+  data: entry_insert_input!
+
+  """upsert condition"""
+  on_conflict: entry_on_conflict
+}
+
+"""
+on_conflict condition type for table "entry"
+"""
+input entry_on_conflict {
+  constraint: entry_constraint!
+  update_columns: [entry_update_column!]! = []
+  where: entry_bool_exp
+}
+
+"""Ordering options when selecting data from "entry"."""
+input entry_order_by {
+  date: order_by
+  embedding: order_by
+  embedding_text: order_by
+  emotions: emotion_order_by
+  id: order_by
+  text: order_by
+  topics: topic_order_by
+  user: users_order_by
+  user_id: order_by
+}
+
+"""primary key columns input for table: entry"""
+input entry_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "entry"
+"""
+enum entry_select_column {
+  """column name"""
+  date
+
+  """column name"""
+  embedding
+
+  """column name"""
+  embedding_text
+
+  """column name"""
+  id
+
+  """column name"""
+  text
+
+  """column name"""
+  user_id
+}
+
+"""
+input type for updating data in table "entry"
+"""
+input entry_set_input {
+  date: timestamptz
+  embedding: vector
+  embedding_text: String
+  id: uuid
+  text: String
+  user_id: Int
+}
+
+"""aggregate stddev on columns"""
+type entry_stddev_fields {
+  user_id: Float
+}
+
+"""
+order by stddev() on columns of table "entry"
+"""
+input entry_stddev_order_by {
+  user_id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type entry_stddev_pop_fields {
+  user_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "entry"
+"""
+input entry_stddev_pop_order_by {
+  user_id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type entry_stddev_samp_fields {
+  user_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "entry"
+"""
+input entry_stddev_samp_order_by {
+  user_id: order_by
+}
+
+"""
+Streaming cursor of the table "entry"
+"""
+input entry_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: entry_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input entry_stream_cursor_value_input {
+  date: timestamptz
+  embedding: vector
+  embedding_text: String
+  id: uuid
+  text: String
+  user_id: Int
+}
+
+"""aggregate sum on columns"""
+type entry_sum_fields {
+  user_id: Int
+}
+
+"""
+order by sum() on columns of table "entry"
+"""
+input entry_sum_order_by {
+  user_id: order_by
+}
+
+"""
+update columns of table "entry"
+"""
+enum entry_update_column {
+  """column name"""
+  date
+
+  """column name"""
+  embedding
+
+  """column name"""
+  embedding_text
+
+  """column name"""
+  id
+
+  """column name"""
+  text
+
+  """column name"""
+  user_id
+}
+
+input entry_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: entry_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: entry_set_input
+
+  """filter the rows which have to be updated"""
+  where: entry_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type entry_var_pop_fields {
+  user_id: Float
+}
+
+"""
+order by var_pop() on columns of table "entry"
+"""
+input entry_var_pop_order_by {
+  user_id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type entry_var_samp_fields {
+  user_id: Float
+}
+
+"""
+order by var_samp() on columns of table "entry"
+"""
+input entry_var_samp_order_by {
+  user_id: order_by
+}
+
+"""aggregate variance on columns"""
+type entry_variance_fields {
+  user_id: Float
+}
+
+"""
+order by variance() on columns of table "entry"
+"""
+input entry_variance_order_by {
+  user_id: order_by
+}
+
+scalar float8
+
+"""
+Boolean expression to compare columns of type "float8". All fields are combined with logical 'AND'.
+"""
+input float8_comparison_exp {
+  _eq: float8
+  _gt: float8
+  _gte: float8
+  _in: [float8!]
+  _is_null: Boolean
+  _lt: float8
+  _lte: float8
+  _neq: float8
+  _nin: [float8!]
+}
+
+scalar json
+
+"""
+Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'.
+"""
+input json_comparison_exp {
+  _eq: json
+  _gt: json
+  _gte: json
+  _in: [json!]
+  _is_null: Boolean
+  _lt: json
+  _lte: json
+  _neq: json
+  _nin: [json!]
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "accounts"
+  """
+  delete_accounts(
+    """filter the rows which have to be deleted"""
+    where: accounts_bool_exp!
+  ): accounts_mutation_response
+
+  """
+  delete single row from the table: "accounts"
+  """
+  delete_accounts_by_pk(id: Int!): accounts
+
+  """
+  delete data from the table: "emotion"
+  """
+  delete_emotion(
+    """filter the rows which have to be deleted"""
+    where: emotion_bool_exp!
+  ): emotion_mutation_response
+
+  """
+  delete single row from the table: "emotion"
+  """
+  delete_emotion_by_pk(id: uuid!): emotion
+
+  """
+  delete data from the table: "entry"
+  """
+  delete_entry(
+    """filter the rows which have to be deleted"""
+    where: entry_bool_exp!
+  ): entry_mutation_response
+
+  """
+  delete single row from the table: "entry"
+  """
+  delete_entry_by_pk(id: uuid!): entry
+
+  """
+  delete data from the table: "sessions"
+  """
+  delete_sessions(
+    """filter the rows which have to be deleted"""
+    where: sessions_bool_exp!
+  ): sessions_mutation_response
+
+  """
+  delete single row from the table: "sessions"
+  """
+  delete_sessions_by_pk(id: Int!): sessions
+
+  """
+  delete data from the table: "topic"
+  """
+  delete_topic(
+    """filter the rows which have to be deleted"""
+    where: topic_bool_exp!
+  ): topic_mutation_response
+
+  """
+  delete single row from the table: "topic"
+  """
+  delete_topic_by_pk(id: uuid!): topic
+
+  """
+  delete data from the table: "users"
+  """
+  delete_users(
+    """filter the rows which have to be deleted"""
+    where: users_bool_exp!
+  ): users_mutation_response
+
+  """
+  delete single row from the table: "users"
+  """
+  delete_users_by_pk(id: Int!): users
+
+  """
+  delete data from the table: "verification_token"
+  """
+  delete_verification_token(
+    """filter the rows which have to be deleted"""
+    where: verification_token_bool_exp!
+  ): verification_token_mutation_response
+
+  """
+  insert data into the table: "accounts"
+  """
+  insert_accounts(
+    """the rows to be inserted"""
+    objects: [accounts_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: accounts_on_conflict
+  ): accounts_mutation_response
+
+  """
+  insert a single row into the table: "accounts"
+  """
+  insert_accounts_one(
+    """the row to be inserted"""
+    object: accounts_insert_input!
+
+    """upsert condition"""
+    on_conflict: accounts_on_conflict
+  ): accounts
+
+  """
+  insert data into the table: "emotion"
+  """
+  insert_emotion(
+    """the rows to be inserted"""
+    objects: [emotion_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: emotion_on_conflict
+  ): emotion_mutation_response
+
+  """
+  insert a single row into the table: "emotion"
+  """
+  insert_emotion_one(
+    """the row to be inserted"""
+    object: emotion_insert_input!
+
+    """upsert condition"""
+    on_conflict: emotion_on_conflict
+  ): emotion
+
+  """
+  insert data into the table: "entry"
+  """
+  insert_entry(
+    """the rows to be inserted"""
+    objects: [entry_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: entry_on_conflict
+  ): entry_mutation_response
+
+  """
+  insert a single row into the table: "entry"
+  """
+  insert_entry_one(
+    """the row to be inserted"""
+    object: entry_insert_input!
+
+    """upsert condition"""
+    on_conflict: entry_on_conflict
+  ): entry
+
+  """
+  insert data into the table: "sessions"
+  """
+  insert_sessions(
+    """the rows to be inserted"""
+    objects: [sessions_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: sessions_on_conflict
+  ): sessions_mutation_response
+
+  """
+  insert a single row into the table: "sessions"
+  """
+  insert_sessions_one(
+    """the row to be inserted"""
+    object: sessions_insert_input!
+
+    """upsert condition"""
+    on_conflict: sessions_on_conflict
+  ): sessions
+
+  """
+  insert data into the table: "topic"
+  """
+  insert_topic(
+    """the rows to be inserted"""
+    objects: [topic_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: topic_on_conflict
+  ): topic_mutation_response
+
+  """
+  insert a single row into the table: "topic"
+  """
+  insert_topic_one(
+    """the row to be inserted"""
+    object: topic_insert_input!
+
+    """upsert condition"""
+    on_conflict: topic_on_conflict
+  ): topic
+
+  """
+  insert data into the table: "users"
+  """
+  insert_users(
+    """the rows to be inserted"""
+    objects: [users_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: users_on_conflict
+  ): users_mutation_response
+
+  """
+  insert a single row into the table: "users"
+  """
+  insert_users_one(
+    """the row to be inserted"""
+    object: users_insert_input!
+
+    """upsert condition"""
+    on_conflict: users_on_conflict
+  ): users
+
+  """
+  insert data into the table: "verification_token"
+  """
+  insert_verification_token(
+    """the rows to be inserted"""
+    objects: [verification_token_insert_input!]!
+  ): verification_token_mutation_response
+
+  """
+  insert a single row into the table: "verification_token"
+  """
+  insert_verification_token_one(
+    """the row to be inserted"""
+    object: verification_token_insert_input!
+  ): verification_token
+
+  """
+  update data of the table: "accounts"
+  """
+  update_accounts(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: accounts_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: accounts_set_input
+
+    """filter the rows which have to be updated"""
+    where: accounts_bool_exp!
+  ): accounts_mutation_response
+
+  """
+  update single row of the table: "accounts"
+  """
+  update_accounts_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: accounts_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: accounts_set_input
+    pk_columns: accounts_pk_columns_input!
+  ): accounts
+
+  """
+  update multiples rows of table: "accounts"
+  """
+  update_accounts_many(
+    """updates to execute, in order"""
+    updates: [accounts_updates!]!
+  ): [accounts_mutation_response]
+
+  """
+  update data of the table: "emotion"
+  """
+  update_emotion(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: emotion_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: emotion_set_input
+
+    """filter the rows which have to be updated"""
+    where: emotion_bool_exp!
+  ): emotion_mutation_response
+
+  """
+  update single row of the table: "emotion"
+  """
+  update_emotion_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: emotion_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: emotion_set_input
+    pk_columns: emotion_pk_columns_input!
+  ): emotion
+
+  """
+  update multiples rows of table: "emotion"
+  """
+  update_emotion_many(
+    """updates to execute, in order"""
+    updates: [emotion_updates!]!
+  ): [emotion_mutation_response]
+
+  """
+  update data of the table: "entry"
+  """
+  update_entry(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: entry_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: entry_set_input
+
+    """filter the rows which have to be updated"""
+    where: entry_bool_exp!
+  ): entry_mutation_response
+
+  """
+  update single row of the table: "entry"
+  """
+  update_entry_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: entry_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: entry_set_input
+    pk_columns: entry_pk_columns_input!
+  ): entry
+
+  """
+  update multiples rows of table: "entry"
+  """
+  update_entry_many(
+    """updates to execute, in order"""
+    updates: [entry_updates!]!
+  ): [entry_mutation_response]
+
+  """
+  update data of the table: "sessions"
+  """
+  update_sessions(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: sessions_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: sessions_set_input
+
+    """filter the rows which have to be updated"""
+    where: sessions_bool_exp!
+  ): sessions_mutation_response
+
+  """
+  update single row of the table: "sessions"
+  """
+  update_sessions_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: sessions_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: sessions_set_input
+    pk_columns: sessions_pk_columns_input!
+  ): sessions
+
+  """
+  update multiples rows of table: "sessions"
+  """
+  update_sessions_many(
+    """updates to execute, in order"""
+    updates: [sessions_updates!]!
+  ): [sessions_mutation_response]
+
+  """
+  update data of the table: "topic"
+  """
+  update_topic(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: topic_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: topic_set_input
+
+    """filter the rows which have to be updated"""
+    where: topic_bool_exp!
+  ): topic_mutation_response
+
+  """
+  update single row of the table: "topic"
+  """
+  update_topic_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: topic_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: topic_set_input
+    pk_columns: topic_pk_columns_input!
+  ): topic
+
+  """
+  update multiples rows of table: "topic"
+  """
+  update_topic_many(
+    """updates to execute, in order"""
+    updates: [topic_updates!]!
+  ): [topic_mutation_response]
+
+  """
+  update data of the table: "users"
+  """
+  update_users(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: users_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: users_set_input
+
+    """filter the rows which have to be updated"""
+    where: users_bool_exp!
+  ): users_mutation_response
+
+  """
+  update single row of the table: "users"
+  """
+  update_users_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: users_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: users_set_input
+    pk_columns: users_pk_columns_input!
+  ): users
+
+  """
+  update multiples rows of table: "users"
+  """
+  update_users_many(
+    """updates to execute, in order"""
+    updates: [users_updates!]!
+  ): [users_mutation_response]
+
+  """
+  update data of the table: "verification_token"
+  """
+  update_verification_token(
+    """sets the columns of the filtered rows to the given values"""
+    _set: verification_token_set_input
+
+    """filter the rows which have to be updated"""
+    where: verification_token_bool_exp!
+  ): verification_token_mutation_response
+
+  """
+  update multiples rows of table: "verification_token"
+  """
+  update_verification_token_many(
+    """updates to execute, in order"""
+    updates: [verification_token_updates!]!
+  ): [verification_token_mutation_response]
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+type query_root {
+  """
+  fetch data from the table: "accounts"
+  """
+  accounts(
+    """distinct select on columns"""
+    distinct_on: [accounts_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [accounts_order_by!]
+
+    """filter the rows returned"""
+    where: accounts_bool_exp
+  ): [accounts!]!
+
+  """
+  fetch aggregated fields from the table: "accounts"
+  """
+  accounts_aggregate(
+    """distinct select on columns"""
+    distinct_on: [accounts_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [accounts_order_by!]
+
+    """filter the rows returned"""
+    where: accounts_bool_exp
+  ): accounts_aggregate!
+
+  """fetch data from the table: "accounts" using primary key columns"""
+  accounts_by_pk(id: Int!): accounts
+
+  """
+  fetch data from the table: "emotion"
+  """
+  emotion(
+    """distinct select on columns"""
+    distinct_on: [emotion_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotion_order_by!]
+
+    """filter the rows returned"""
+    where: emotion_bool_exp
+  ): [emotion!]!
+
+  """
+  fetch aggregated fields from the table: "emotion"
+  """
+  emotion_aggregate(
+    """distinct select on columns"""
+    distinct_on: [emotion_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotion_order_by!]
+
+    """filter the rows returned"""
+    where: emotion_bool_exp
+  ): emotion_aggregate!
+
+  """fetch data from the table: "emotion" using primary key columns"""
+  emotion_by_pk(id: uuid!): emotion
+
+  """
+  fetch data from the table: "emotions_timeline"
+  """
+  emotions_timeline(
+    """distinct select on columns"""
+    distinct_on: [emotions_timeline_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotions_timeline_order_by!]
+
+    """filter the rows returned"""
+    where: emotions_timeline_bool_exp
+  ): [emotions_timeline!]!
+
+  """
+  fetch aggregated fields from the table: "emotions_timeline"
+  """
+  emotions_timeline_aggregate(
+    """distinct select on columns"""
+    distinct_on: [emotions_timeline_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotions_timeline_order_by!]
+
+    """filter the rows returned"""
+    where: emotions_timeline_bool_exp
+  ): emotions_timeline_aggregate!
+
+  """
+  fetch data from the table: "entry"
+  """
+  entry(
+    """distinct select on columns"""
+    distinct_on: [entry_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [entry_order_by!]
+
+    """filter the rows returned"""
+    where: entry_bool_exp
+  ): [entry!]!
+
+  """
+  fetch aggregated fields from the table: "entry"
+  """
+  entry_aggregate(
+    """distinct select on columns"""
+    distinct_on: [entry_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [entry_order_by!]
+
+    """filter the rows returned"""
+    where: entry_bool_exp
+  ): entry_aggregate!
+
+  """fetch data from the table: "entry" using primary key columns"""
+  entry_by_pk(id: uuid!): entry
+
+  """
+  fetch data from the table: "sessions"
+  """
+  sessions(
+    """distinct select on columns"""
+    distinct_on: [sessions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [sessions_order_by!]
+
+    """filter the rows returned"""
+    where: sessions_bool_exp
+  ): [sessions!]!
+
+  """
+  fetch aggregated fields from the table: "sessions"
+  """
+  sessions_aggregate(
+    """distinct select on columns"""
+    distinct_on: [sessions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [sessions_order_by!]
+
+    """filter the rows returned"""
+    where: sessions_bool_exp
+  ): sessions_aggregate!
+
+  """fetch data from the table: "sessions" using primary key columns"""
+  sessions_by_pk(id: Int!): sessions
+
+  """
+  fetch data from the table: "topic"
+  """
+  topic(
+    """distinct select on columns"""
+    distinct_on: [topic_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [topic_order_by!]
+
+    """filter the rows returned"""
+    where: topic_bool_exp
+  ): [topic!]!
+
+  """
+  fetch aggregated fields from the table: "topic"
+  """
+  topic_aggregate(
+    """distinct select on columns"""
+    distinct_on: [topic_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [topic_order_by!]
+
+    """filter the rows returned"""
+    where: topic_bool_exp
+  ): topic_aggregate!
+
+  """fetch data from the table: "topic" using primary key columns"""
+  topic_by_pk(id: uuid!): topic
+
+  """
+  fetch data from the table: "users"
+  """
+  users(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): [users!]!
+
+  """
+  fetch aggregated fields from the table: "users"
+  """
+  users_aggregate(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): users_aggregate!
+
+  """fetch data from the table: "users" using primary key columns"""
+  users_by_pk(id: Int!): users
+
+  """
+  fetch data from the table: "verification_token"
+  """
+  verification_token(
+    """distinct select on columns"""
+    distinct_on: [verification_token_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [verification_token_order_by!]
+
+    """filter the rows returned"""
+    where: verification_token_bool_exp
+  ): [verification_token!]!
+
+  """
+  fetch aggregated fields from the table: "verification_token"
+  """
+  verification_token_aggregate(
+    """distinct select on columns"""
+    distinct_on: [verification_token_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [verification_token_order_by!]
+
+    """filter the rows returned"""
+    where: verification_token_bool_exp
+  ): verification_token_aggregate!
+}
+
+"""
+columns and relationships of "sessions"
+"""
+type sessions {
+  expires: timestamptz!
+  id: Int!
+  sessionToken: String!
+  userId: Int!
+}
+
+"""
+aggregated selection of "sessions"
+"""
+type sessions_aggregate {
+  aggregate: sessions_aggregate_fields
+  nodes: [sessions!]!
+}
+
+"""
+aggregate fields of "sessions"
+"""
+type sessions_aggregate_fields {
+  avg: sessions_avg_fields
+  count(columns: [sessions_select_column!], distinct: Boolean): Int!
+  max: sessions_max_fields
+  min: sessions_min_fields
+  stddev: sessions_stddev_fields
+  stddev_pop: sessions_stddev_pop_fields
+  stddev_samp: sessions_stddev_samp_fields
+  sum: sessions_sum_fields
+  var_pop: sessions_var_pop_fields
+  var_samp: sessions_var_samp_fields
+  variance: sessions_variance_fields
+}
+
+"""aggregate avg on columns"""
+type sessions_avg_fields {
+  id: Float
+  userId: Float
+}
+
+"""
+Boolean expression to filter rows from the table "sessions". All fields are combined with a logical 'AND'.
+"""
+input sessions_bool_exp {
+  _and: [sessions_bool_exp!]
+  _not: sessions_bool_exp
+  _or: [sessions_bool_exp!]
+  expires: timestamptz_comparison_exp
+  id: Int_comparison_exp
+  sessionToken: String_comparison_exp
+  userId: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "sessions"
+"""
+enum sessions_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  sessions_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "sessions"
+"""
+input sessions_inc_input {
+  id: Int
+  userId: Int
+}
+
+"""
+input type for inserting data into table "sessions"
+"""
+input sessions_insert_input {
+  expires: timestamptz
+  id: Int
+  sessionToken: String
+  userId: Int
+}
+
+"""aggregate max on columns"""
+type sessions_max_fields {
+  expires: timestamptz
+  id: Int
+  sessionToken: String
+  userId: Int
+}
+
+"""aggregate min on columns"""
+type sessions_min_fields {
+  expires: timestamptz
+  id: Int
+  sessionToken: String
+  userId: Int
+}
+
+"""
+response of any mutation on the table "sessions"
+"""
+type sessions_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [sessions!]!
+}
+
+"""
+on_conflict condition type for table "sessions"
+"""
+input sessions_on_conflict {
+  constraint: sessions_constraint!
+  update_columns: [sessions_update_column!]! = []
+  where: sessions_bool_exp
+}
+
+"""Ordering options when selecting data from "sessions"."""
+input sessions_order_by {
+  expires: order_by
+  id: order_by
+  sessionToken: order_by
+  userId: order_by
+}
+
+"""primary key columns input for table: sessions"""
+input sessions_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "sessions"
+"""
+enum sessions_select_column {
+  """column name"""
+  expires
+
+  """column name"""
+  id
+
+  """column name"""
+  sessionToken
+
+  """column name"""
+  userId
+}
+
+"""
+input type for updating data in table "sessions"
+"""
+input sessions_set_input {
+  expires: timestamptz
+  id: Int
+  sessionToken: String
+  userId: Int
+}
+
+"""aggregate stddev on columns"""
+type sessions_stddev_fields {
+  id: Float
+  userId: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type sessions_stddev_pop_fields {
+  id: Float
+  userId: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type sessions_stddev_samp_fields {
+  id: Float
+  userId: Float
+}
+
+"""
+Streaming cursor of the table "sessions"
+"""
+input sessions_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: sessions_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input sessions_stream_cursor_value_input {
+  expires: timestamptz
+  id: Int
+  sessionToken: String
+  userId: Int
+}
+
+"""aggregate sum on columns"""
+type sessions_sum_fields {
+  id: Int
+  userId: Int
+}
+
+"""
+update columns of table "sessions"
+"""
+enum sessions_update_column {
+  """column name"""
+  expires
+
+  """column name"""
+  id
+
+  """column name"""
+  sessionToken
+
+  """column name"""
+  userId
+}
+
+input sessions_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: sessions_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: sessions_set_input
+
+  """filter the rows which have to be updated"""
+  where: sessions_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type sessions_var_pop_fields {
+  id: Float
+  userId: Float
+}
+
+"""aggregate var_samp on columns"""
+type sessions_var_samp_fields {
+  id: Float
+  userId: Float
+}
+
+"""aggregate variance on columns"""
+type sessions_variance_fields {
+  id: Float
+  userId: Float
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "accounts"
+  """
+  accounts(
+    """distinct select on columns"""
+    distinct_on: [accounts_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [accounts_order_by!]
+
+    """filter the rows returned"""
+    where: accounts_bool_exp
+  ): [accounts!]!
+
+  """
+  fetch aggregated fields from the table: "accounts"
+  """
+  accounts_aggregate(
+    """distinct select on columns"""
+    distinct_on: [accounts_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [accounts_order_by!]
+
+    """filter the rows returned"""
+    where: accounts_bool_exp
+  ): accounts_aggregate!
+
+  """fetch data from the table: "accounts" using primary key columns"""
+  accounts_by_pk(id: Int!): accounts
+
+  """
+  fetch data from the table in a streaming manner: "accounts"
+  """
+  accounts_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [accounts_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: accounts_bool_exp
+  ): [accounts!]!
+
+  """
+  fetch data from the table: "emotion"
+  """
+  emotion(
+    """distinct select on columns"""
+    distinct_on: [emotion_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotion_order_by!]
+
+    """filter the rows returned"""
+    where: emotion_bool_exp
+  ): [emotion!]!
+
+  """
+  fetch aggregated fields from the table: "emotion"
+  """
+  emotion_aggregate(
+    """distinct select on columns"""
+    distinct_on: [emotion_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotion_order_by!]
+
+    """filter the rows returned"""
+    where: emotion_bool_exp
+  ): emotion_aggregate!
+
+  """fetch data from the table: "emotion" using primary key columns"""
+  emotion_by_pk(id: uuid!): emotion
+
+  """
+  fetch data from the table in a streaming manner: "emotion"
+  """
+  emotion_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [emotion_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: emotion_bool_exp
+  ): [emotion!]!
+
+  """
+  fetch data from the table: "emotions_timeline"
+  """
+  emotions_timeline(
+    """distinct select on columns"""
+    distinct_on: [emotions_timeline_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotions_timeline_order_by!]
+
+    """filter the rows returned"""
+    where: emotions_timeline_bool_exp
+  ): [emotions_timeline!]!
+
+  """
+  fetch aggregated fields from the table: "emotions_timeline"
+  """
+  emotions_timeline_aggregate(
+    """distinct select on columns"""
+    distinct_on: [emotions_timeline_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [emotions_timeline_order_by!]
+
+    """filter the rows returned"""
+    where: emotions_timeline_bool_exp
+  ): emotions_timeline_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "emotions_timeline"
+  """
+  emotions_timeline_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [emotions_timeline_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: emotions_timeline_bool_exp
+  ): [emotions_timeline!]!
+
+  """
+  fetch data from the table: "entry"
+  """
+  entry(
+    """distinct select on columns"""
+    distinct_on: [entry_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [entry_order_by!]
+
+    """filter the rows returned"""
+    where: entry_bool_exp
+  ): [entry!]!
+
+  """
+  fetch aggregated fields from the table: "entry"
+  """
+  entry_aggregate(
+    """distinct select on columns"""
+    distinct_on: [entry_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [entry_order_by!]
+
+    """filter the rows returned"""
+    where: entry_bool_exp
+  ): entry_aggregate!
+
+  """fetch data from the table: "entry" using primary key columns"""
+  entry_by_pk(id: uuid!): entry
+
+  """
+  fetch data from the table in a streaming manner: "entry"
+  """
+  entry_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [entry_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: entry_bool_exp
+  ): [entry!]!
+
+  """
+  fetch data from the table: "sessions"
+  """
+  sessions(
+    """distinct select on columns"""
+    distinct_on: [sessions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [sessions_order_by!]
+
+    """filter the rows returned"""
+    where: sessions_bool_exp
+  ): [sessions!]!
+
+  """
+  fetch aggregated fields from the table: "sessions"
+  """
+  sessions_aggregate(
+    """distinct select on columns"""
+    distinct_on: [sessions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [sessions_order_by!]
+
+    """filter the rows returned"""
+    where: sessions_bool_exp
+  ): sessions_aggregate!
+
+  """fetch data from the table: "sessions" using primary key columns"""
+  sessions_by_pk(id: Int!): sessions
+
+  """
+  fetch data from the table in a streaming manner: "sessions"
+  """
+  sessions_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [sessions_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: sessions_bool_exp
+  ): [sessions!]!
+
+  """
+  fetch data from the table: "topic"
+  """
+  topic(
+    """distinct select on columns"""
+    distinct_on: [topic_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [topic_order_by!]
+
+    """filter the rows returned"""
+    where: topic_bool_exp
+  ): [topic!]!
+
+  """
+  fetch aggregated fields from the table: "topic"
+  """
+  topic_aggregate(
+    """distinct select on columns"""
+    distinct_on: [topic_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [topic_order_by!]
+
+    """filter the rows returned"""
+    where: topic_bool_exp
+  ): topic_aggregate!
+
+  """fetch data from the table: "topic" using primary key columns"""
+  topic_by_pk(id: uuid!): topic
+
+  """
+  fetch data from the table in a streaming manner: "topic"
+  """
+  topic_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [topic_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: topic_bool_exp
+  ): [topic!]!
+
+  """
+  fetch data from the table: "users"
+  """
+  users(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): [users!]!
+
+  """
+  fetch aggregated fields from the table: "users"
+  """
+  users_aggregate(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): users_aggregate!
+
+  """fetch data from the table: "users" using primary key columns"""
+  users_by_pk(id: Int!): users
+
+  """
+  fetch data from the table in a streaming manner: "users"
+  """
+  users_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [users_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): [users!]!
+
+  """
+  fetch data from the table: "verification_token"
+  """
+  verification_token(
+    """distinct select on columns"""
+    distinct_on: [verification_token_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [verification_token_order_by!]
+
+    """filter the rows returned"""
+    where: verification_token_bool_exp
+  ): [verification_token!]!
+
+  """
+  fetch aggregated fields from the table: "verification_token"
+  """
+  verification_token_aggregate(
+    """distinct select on columns"""
+    distinct_on: [verification_token_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [verification_token_order_by!]
+
+    """filter the rows returned"""
+    where: verification_token_bool_exp
+  ): verification_token_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "verification_token"
+  """
+  verification_token_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [verification_token_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: verification_token_bool_exp
+  ): [verification_token!]!
+}
+
+scalar timestamptz
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+"""
+columns and relationships of "topic"
+"""
+type topic {
+  """An object relationship"""
+  entry: entry!
+  friends: float8!
+  goals: float8!
+  hobby: float8!
+  id: uuid!
+  relation: float8!
+  work: float8!
+}
+
+"""
+aggregated selection of "topic"
+"""
+type topic_aggregate {
+  aggregate: topic_aggregate_fields
+  nodes: [topic!]!
+}
+
+"""
+aggregate fields of "topic"
+"""
+type topic_aggregate_fields {
+  avg: topic_avg_fields
+  count(columns: [topic_select_column!], distinct: Boolean): Int!
+  max: topic_max_fields
+  min: topic_min_fields
+  stddev: topic_stddev_fields
+  stddev_pop: topic_stddev_pop_fields
+  stddev_samp: topic_stddev_samp_fields
+  sum: topic_sum_fields
+  var_pop: topic_var_pop_fields
+  var_samp: topic_var_samp_fields
+  variance: topic_variance_fields
+}
+
+"""aggregate avg on columns"""
+type topic_avg_fields {
+  friends: Float
+  goals: Float
+  hobby: Float
+  relation: Float
+  work: Float
+}
+
+"""
+Boolean expression to filter rows from the table "topic". All fields are combined with a logical 'AND'.
+"""
+input topic_bool_exp {
+  _and: [topic_bool_exp!]
+  _not: topic_bool_exp
+  _or: [topic_bool_exp!]
+  entry: entry_bool_exp
+  friends: float8_comparison_exp
+  goals: float8_comparison_exp
+  hobby: float8_comparison_exp
+  id: uuid_comparison_exp
+  relation: float8_comparison_exp
+  work: float8_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "topic"
+"""
+enum topic_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  topic_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "topic"
+"""
+input topic_inc_input {
+  friends: float8
+  goals: float8
+  hobby: float8
+  relation: float8
+  work: float8
+}
+
+"""
+input type for inserting data into table "topic"
+"""
+input topic_insert_input {
+  entry: entry_obj_rel_insert_input
+  friends: float8
+  goals: float8
+  hobby: float8
+  id: uuid
+  relation: float8
+  work: float8
+}
+
+"""aggregate max on columns"""
+type topic_max_fields {
+  friends: float8
+  goals: float8
+  hobby: float8
+  id: uuid
+  relation: float8
+  work: float8
+}
+
+"""aggregate min on columns"""
+type topic_min_fields {
+  friends: float8
+  goals: float8
+  hobby: float8
+  id: uuid
+  relation: float8
+  work: float8
+}
+
+"""
+response of any mutation on the table "topic"
+"""
+type topic_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [topic!]!
+}
+
+"""
+input type for inserting object relation for remote table "topic"
+"""
+input topic_obj_rel_insert_input {
+  data: topic_insert_input!
+
+  """upsert condition"""
+  on_conflict: topic_on_conflict
+}
+
+"""
+on_conflict condition type for table "topic"
+"""
+input topic_on_conflict {
+  constraint: topic_constraint!
+  update_columns: [topic_update_column!]! = []
+  where: topic_bool_exp
+}
+
+"""Ordering options when selecting data from "topic"."""
+input topic_order_by {
+  entry: entry_order_by
+  friends: order_by
+  goals: order_by
+  hobby: order_by
+  id: order_by
+  relation: order_by
+  work: order_by
+}
+
+"""primary key columns input for table: topic"""
+input topic_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "topic"
+"""
+enum topic_select_column {
+  """column name"""
+  friends
+
+  """column name"""
+  goals
+
+  """column name"""
+  hobby
+
+  """column name"""
+  id
+
+  """column name"""
+  relation
+
+  """column name"""
+  work
+}
+
+"""
+input type for updating data in table "topic"
+"""
+input topic_set_input {
+  friends: float8
+  goals: float8
+  hobby: float8
+  id: uuid
+  relation: float8
+  work: float8
+}
+
+"""aggregate stddev on columns"""
+type topic_stddev_fields {
+  friends: Float
+  goals: Float
+  hobby: Float
+  relation: Float
+  work: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type topic_stddev_pop_fields {
+  friends: Float
+  goals: Float
+  hobby: Float
+  relation: Float
+  work: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type topic_stddev_samp_fields {
+  friends: Float
+  goals: Float
+  hobby: Float
+  relation: Float
+  work: Float
+}
+
+"""
+Streaming cursor of the table "topic"
+"""
+input topic_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: topic_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input topic_stream_cursor_value_input {
+  friends: float8
+  goals: float8
+  hobby: float8
+  id: uuid
+  relation: float8
+  work: float8
+}
+
+"""aggregate sum on columns"""
+type topic_sum_fields {
+  friends: float8
+  goals: float8
+  hobby: float8
+  relation: float8
+  work: float8
+}
+
+"""
+update columns of table "topic"
+"""
+enum topic_update_column {
+  """column name"""
+  friends
+
+  """column name"""
+  goals
+
+  """column name"""
+  hobby
+
+  """column name"""
+  id
+
+  """column name"""
+  relation
+
+  """column name"""
+  work
+}
+
+input topic_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: topic_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: topic_set_input
+
+  """filter the rows which have to be updated"""
+  where: topic_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type topic_var_pop_fields {
+  friends: Float
+  goals: Float
+  hobby: Float
+  relation: Float
+  work: Float
+}
+
+"""aggregate var_samp on columns"""
+type topic_var_samp_fields {
+  friends: Float
+  goals: Float
+  hobby: Float
+  relation: Float
+  work: Float
+}
+
+"""aggregate variance on columns"""
+type topic_variance_fields {
+  friends: Float
+  goals: Float
+  hobby: Float
+  relation: Float
+  work: Float
+}
+
+"""
+columns and relationships of "users"
+"""
+type users {
+  email: String
+  emailVerified: timestamptz
+
+  """An array relationship"""
+  entries(
+    """distinct select on columns"""
+    distinct_on: [entry_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [entry_order_by!]
+
+    """filter the rows returned"""
+    where: entry_bool_exp
+  ): [entry!]!
+
+  """An aggregate relationship"""
+  entries_aggregate(
+    """distinct select on columns"""
+    distinct_on: [entry_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [entry_order_by!]
+
+    """filter the rows returned"""
+    where: entry_bool_exp
+  ): entry_aggregate!
+  id: Int!
+  image: String
+  name: String
+}
+
+"""
+aggregated selection of "users"
+"""
+type users_aggregate {
+  aggregate: users_aggregate_fields
+  nodes: [users!]!
+}
+
+"""
+aggregate fields of "users"
+"""
+type users_aggregate_fields {
+  avg: users_avg_fields
+  count(columns: [users_select_column!], distinct: Boolean): Int!
+  max: users_max_fields
+  min: users_min_fields
+  stddev: users_stddev_fields
+  stddev_pop: users_stddev_pop_fields
+  stddev_samp: users_stddev_samp_fields
+  sum: users_sum_fields
+  var_pop: users_var_pop_fields
+  var_samp: users_var_samp_fields
+  variance: users_variance_fields
+}
+
+"""aggregate avg on columns"""
+type users_avg_fields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'.
+"""
+input users_bool_exp {
+  _and: [users_bool_exp!]
+  _not: users_bool_exp
+  _or: [users_bool_exp!]
+  email: String_comparison_exp
+  emailVerified: timestamptz_comparison_exp
+  entries: entry_bool_exp
+  entries_aggregate: entry_aggregate_bool_exp
+  id: Int_comparison_exp
+  image: String_comparison_exp
+  name: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "users"
+"""
+enum users_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  user_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "users"
+"""
+input users_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "users"
+"""
+input users_insert_input {
+  email: String
+  emailVerified: timestamptz
+  entries: entry_arr_rel_insert_input
+  id: Int
+  image: String
+  name: String
+}
+
+"""aggregate max on columns"""
+type users_max_fields {
+  email: String
+  emailVerified: timestamptz
+  id: Int
+  image: String
+  name: String
+}
+
+"""aggregate min on columns"""
+type users_min_fields {
+  email: String
+  emailVerified: timestamptz
+  id: Int
+  image: String
+  name: String
+}
+
+"""
+response of any mutation on the table "users"
+"""
+type users_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [users!]!
+}
+
+"""
+input type for inserting object relation for remote table "users"
+"""
+input users_obj_rel_insert_input {
+  data: users_insert_input!
+
+  """upsert condition"""
+  on_conflict: users_on_conflict
+}
+
+"""
+on_conflict condition type for table "users"
+"""
+input users_on_conflict {
+  constraint: users_constraint!
+  update_columns: [users_update_column!]! = []
+  where: users_bool_exp
+}
+
+"""Ordering options when selecting data from "users"."""
+input users_order_by {
+  email: order_by
+  emailVerified: order_by
+  entries_aggregate: entry_aggregate_order_by
+  id: order_by
+  image: order_by
+  name: order_by
+}
+
+"""primary key columns input for table: users"""
+input users_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "users"
+"""
+enum users_select_column {
+  """column name"""
+  email
+
+  """column name"""
+  emailVerified
+
+  """column name"""
+  id
+
+  """column name"""
+  image
+
+  """column name"""
+  name
+}
+
+"""
+input type for updating data in table "users"
+"""
+input users_set_input {
+  email: String
+  emailVerified: timestamptz
+  id: Int
+  image: String
+  name: String
+}
+
+"""aggregate stddev on columns"""
+type users_stddev_fields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type users_stddev_pop_fields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type users_stddev_samp_fields {
+  id: Float
+}
+
+"""
+Streaming cursor of the table "users"
+"""
+input users_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: users_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input users_stream_cursor_value_input {
+  email: String
+  emailVerified: timestamptz
+  id: Int
+  image: String
+  name: String
+}
+
+"""aggregate sum on columns"""
+type users_sum_fields {
+  id: Int
+}
+
+"""
+update columns of table "users"
+"""
+enum users_update_column {
+  """column name"""
+  email
+
+  """column name"""
+  emailVerified
+
+  """column name"""
+  id
+
+  """column name"""
+  image
+
+  """column name"""
+  name
+}
+
+input users_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: users_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: users_set_input
+
+  """filter the rows which have to be updated"""
+  where: users_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type users_var_pop_fields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type users_var_samp_fields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type users_variance_fields {
+  id: Float
+}
+
+scalar uuid
+
+"""
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
+"""
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
+}
+
+scalar vector
+
+"""
+Boolean expression to compare columns of type "vector". All fields are combined with logical 'AND'.
+"""
+input vector_comparison_exp {
+  _eq: vector
+  _gt: vector
+  _gte: vector
+  _in: [vector!]
+  _is_null: Boolean
+  _lt: vector
+  _lte: vector
+  _neq: vector
+  _nin: [vector!]
+}
+
+"""
+columns and relationships of "verification_token"
+"""
+type verification_token {
+  expires: timestamptz!
+  identifier: String!
+  token: String!
+}
+
+"""
+aggregated selection of "verification_token"
+"""
+type verification_token_aggregate {
+  aggregate: verification_token_aggregate_fields
+  nodes: [verification_token!]!
+}
+
+"""
+aggregate fields of "verification_token"
+"""
+type verification_token_aggregate_fields {
+  count(columns: [verification_token_select_column!], distinct: Boolean): Int!
+  max: verification_token_max_fields
+  min: verification_token_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "verification_token". All fields are combined with a logical 'AND'.
+"""
+input verification_token_bool_exp {
+  _and: [verification_token_bool_exp!]
+  _not: verification_token_bool_exp
+  _or: [verification_token_bool_exp!]
+  expires: timestamptz_comparison_exp
+  identifier: String_comparison_exp
+  token: String_comparison_exp
+}
+
+"""
+input type for inserting data into table "verification_token"
+"""
+input verification_token_insert_input {
+  expires: timestamptz
+  identifier: String
+  token: String
+}
+
+"""aggregate max on columns"""
+type verification_token_max_fields {
+  expires: timestamptz
+  identifier: String
+  token: String
+}
+
+"""aggregate min on columns"""
+type verification_token_min_fields {
+  expires: timestamptz
+  identifier: String
+  token: String
+}
+
+"""
+response of any mutation on the table "verification_token"
+"""
+type verification_token_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [verification_token!]!
+}
+
+"""Ordering options when selecting data from "verification_token"."""
+input verification_token_order_by {
+  expires: order_by
+  identifier: order_by
+  token: order_by
+}
+
+"""
+select columns of table "verification_token"
+"""
+enum verification_token_select_column {
+  """column name"""
+  expires
+
+  """column name"""
+  identifier
+
+  """column name"""
+  token
+}
+
+"""
+input type for updating data in table "verification_token"
+"""
+input verification_token_set_input {
+  expires: timestamptz
+  identifier: String
+  token: String
+}
+
+"""
+Streaming cursor of the table "verification_token"
+"""
+input verification_token_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: verification_token_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input verification_token_stream_cursor_value_input {
+  expires: timestamptz
+  identifier: String
+  token: String
+}
+
+input verification_token_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: verification_token_set_input
+
+  """filter the rows which have to be updated"""
+  where: verification_token_bool_exp!
+}

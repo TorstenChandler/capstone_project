@@ -1,15 +1,34 @@
-<!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
+<script>
+	import { graphql } from '$houdini';
+	import TimeLine from './TimeLine.svelte';
+	// will start listening onMount (browser only)
+	const updates = graphql(`
+		subscription SubscriptionEmotionsTimeline {
+			timeline: emotions_timeline {
+				entries
+				love
+				joy
+				surprise
+				sadness
+				fear
+				anger
+			}
+		}
+	`);
+	let show = false;
+	$: updates.listen();
+	$: $updates, render();
+	$: input = $updates?.data?.timeline[0];
+	async function render() {
+		show = !show;
+		await delay(100);
+		if (show == false) {
+			render();
+		}
+	}
+	const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+</script>
 
-<div class="container h-full mx-auto flex justify-center items-center">
-	<div class="space-y-5">
-		<h1 class="h1">Let's get cracking bones!</h1>
-		<p>Start by exploring:</p>
-		<ul>
-			<li><code class="code">/src/routes/+layout.svelte</code> - barebones layout</li>
-			<li><code class="code">/src/app.postcss</code> - app wide css</li>
-			<li>
-				<code class="code">/src/routes/+page.svelte</code> - this page, you can replace the contents
-			</li>
-		</ul>
-	</div>
-</div>
+{#if show && input !== undefined}
+	<TimeLine {input} />
+{/if}

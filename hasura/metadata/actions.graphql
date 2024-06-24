@@ -1,7 +1,3 @@
-type Query {
-  emotions: TimeLine
-}
-
 type TimeLine {
   entries: [String!]!
   series: [Series!]!

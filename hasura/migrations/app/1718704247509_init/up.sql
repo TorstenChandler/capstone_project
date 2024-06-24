@@ -122,3 +122,29 @@ ALTER TABLE ONLY public.entry
     ADD CONSTRAINT entry_user_id_fkey FOREIGN KEY (user_id) REFERENCES public."users"(id);
 ALTER TABLE ONLY public.topic
     ADD CONSTRAINT topic_id_fkey FOREIGN KEY (id) REFERENCES public.entry(id) ON DELETE CASCADE;
+
+CREATE OR REPLACE VIEW emotions_timeline AS
+SELECT
+    u.id AS user_id,
+    json_agg(e.id ORDER BY en.date ) AS entries,
+    json_agg(e.joy ORDER BY en.date ASC) AS joy,
+    json_agg(e.optimism ORDER BY en.date ASC) AS optimism,
+    json_agg(e.trust ORDER BY en.date ASC) AS trust,
+    json_agg(e.surprise ORDER BY en.date ASC) AS surprise,
+    json_agg(e.anticipation ORDER BY en.date ASC) AS anticipation,
+    json_agg(e.sadness ORDER BY en.date ASC) AS sadness,
+    json_agg(e.disgust ORDER BY en.date ASC) AS disgust,
+    json_agg(e.fear ORDER BY en.date ASC) AS fear,
+    json_agg(e.pessimism ORDER BY en.date ASC) AS pessimism,
+    json_agg(e.love ORDER BY en.date ASC) AS love,
+    json_agg(e.anger ORDER BY en.date ASC) AS anger
+FROM
+    users u
+LEFT JOIN
+    entry en ON u.id = en.user_id
+LEFT JOIN
+    emotion e ON en.id = e.id
+WHERE
+    e.id IS NOT NULL
+GROUP BY
+    u.id
