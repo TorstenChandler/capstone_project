@@ -1,4 +1,4 @@
-from fastapi import  FastAPI
+from fastapi import FastAPI
 from .routers import entry
 from .routers import ask
 app = FastAPI()

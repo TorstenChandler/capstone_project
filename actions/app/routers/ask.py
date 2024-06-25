@@ -58,7 +58,7 @@ def populate_vector_table(user_id):
         connection= "postgresql+psycopg://user:password@database:5432/db"
         #connection= "postgresql+psycopg://user:password@localhost:5432/db"
         collection_name = "embeddings"
-        embeddings = OllamaEmbeddings(model=default_model_name, base_url="http://host.docker.internal:11434")
+        embeddings = OllamaEmbeddings(model=default_model_name, base_url="http://localhost:11434")
 
         vectorstore = PGVector(
             collection_name="embeddings",
@@ -78,7 +78,7 @@ def populate_vector_table(user_id):
         return vectorstore
     
 def init_ollama(model_name=default_model_name):
-    return Ollama(model=model_name, base_url="http://host.docker.internal:11434") 
+    return Ollama(model=model_name, base_url="http://localhost:11434") 
 
 def init_rag_chain(retriever, model_name=default_model_name):
     #1. initialise LLM model

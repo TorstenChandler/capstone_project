@@ -23,17 +23,17 @@ class Entry(BaseModel):
     text: str
     date: str
 
-router = APIRouter()
-@router.post("/entry_inserted")
-async def entry_inserted(entry:Entry,background_tasks: BackgroundTasks):
-    background_tasks.add_task(process,entry)
-    response = generate_entry_response(entry.text)
-    return JSONResponse(jsonable_encoder({"received": response}))
+# router = APIRouter()
+# @router.post("/entry_inserted")
+# async def entry_inserted(entry:Entry,background_tasks: BackgroundTasks):
+#     background_tasks.add_task(process,entry)
+#     response = generate_entry_response(entry.text)
+#     return JSONResponse(jsonable_encoder({"received": response}))
 
 def process(entry):
     emotions = classify_emotions(entry)
-    #topics = classify_topics(entry)
-    topics = []
+    topics = classify_topics(entry)
+    #topics = []
     embedding(entry, emotions,topics)
    
 
@@ -43,6 +43,22 @@ async def entry_inserted(request:Request, entry:Entry):
     Thread(target=process, args=(entry,)).start()
     return JSONResponse(jsonable_encoder({"received": True}))
 
+@router.post("/save_entry")
+async def save_entry(request: Request):
+    body = await request.json()
+    text = body['input']['entry']['text']
+    date = body['input']['entry']['date']
+    user_id = int(body['session_variables']['x-hasura-user-id'])
+    response = generate_entry_response(text)
+    with psycopg.connect(get_conn_str()) as conn:
+        with conn.cursor() as cursor:
+            insert_query = f'''
+            INSERT INTO entry (user_id, text, date ) VALUES (%s,%s,%s)
+            '''
+            cursor.execute(insert_query, (user_id, text, date))
+            conn.commit()
+            conn.close()
+    return JSONResponse(jsonable_encoder({"response": response}))
 
 def classify_emotions(entry):
     with psycopg.connect(get_conn_str()) as conn:
@@ -73,6 +89,7 @@ def classify_emotions(entry):
             conn.commit()
             conn.close()
             return emotions
+        
 def classify_topics(entry):
     with psycopg.connect(get_conn_str()) as conn:
         with conn.cursor() as cursor:
@@ -108,7 +125,7 @@ def embedding(entry, emotions, topics):
             relevant_emotions =  [emotion for emotion in emotions if emotion['score'] > 0.5]
             emotion_labels = [emotion["label"] for emotion in relevant_emotions]
             embedding_text = f"date: {entry.date}; emotions:{emotion_labels}; topics:{topics}; text:{entry.text}"
-            engine = OllamaEmbeddings(model='llama3', base_url="http://host.docker.internal:11434")
+            engine = OllamaEmbeddings(model='llama3', base_url="http://localhost:11434")
             embedding = engine.embed_query(embedding_text)
             insert_query = "UPDATE entry set embedding_text = %s, embedding = %s where id = %s"
             cursor.execute(insert_query, (embedding_text, embedding, entry.id))
@@ -117,7 +134,7 @@ def embedding(entry, emotions, topics):
     
 
 def generate_entry_response(text):
-    llm = Ollama(model="llama3",  base_url="http://host.docker.internal:11434", verbose=False)
+    llm = Ollama(model="llama3",  base_url="http://localhost:11434", verbose=False)
 
     #Start a question answer chat prompt
     system_prompt = (
