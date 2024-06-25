@@ -11,17 +11,17 @@ services:
     networks:
       - app
 
-  #actions:
-  #  image: actions
-  #  build: actions
-  #  restart: always
-  #  ports:
-  #    - 9000:80
-  #  depends_on:
-  #    - database
-  #  networks:
-  #    - app
-#
+  actions:
+    image: actions
+    build: actions
+    restart: always
+    ports:
+      - 9000:80
+    depends_on:
+      - database
+    networks:
+      - app
+
   graphql:
     image: hasura/graphql-engine:v2.40.0.cli-migrations-v3
     volumes:

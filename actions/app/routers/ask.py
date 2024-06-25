@@ -19,14 +19,17 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 from ..dependencies import get_conn_str
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 default_model_name="llama3"
 
 @router.post("/ask")
-async def ask(request:Request,question:str):
+async def ask(request:Request):
     body = await request.json()
     user_id = body["session_variables"]["x-hasura-user-id"]
+    question = body["input"]["question"]
     vectorstore = populate_vector_table(user_id)
     retriever = vectorstore.as_retriever(
         search_type='similarity',#“similarity” (default), “mmr”, or “similarity_score_threshold”.
@@ -36,7 +39,7 @@ async def ask(request:Request,question:str):
     response = rag_chain.invoke({"input": question})
     print("\nQuestion : ", input)
     print("Answer : ", response)#["answer"]
-    return response["answer"]
+    return JSONResponse(jsonable_encoder({"answer":response["answer"]}))
 
 def generate_entry_response(text):
     llm = init_ollama("llama3")
@@ -85,14 +88,14 @@ def populate_vector_table(user_id):
 
         load_dotenv()
 
-        connection = f"postgresql+psycopg://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
-        #connection= "postgresql+psycopg://postgres:password@database:5432/postgres"
+        #connection = f"postgresql+psycopg://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
+        connection= "postgresql+psycopg://postgres:password@database:5432/postgres"
         collection_name = "embeddings"
         embeddings = OllamaEmbeddings(model=default_model_name)
 
         vectorstore = PGVector(
             collection_name="embeddings",
-            connection=connection,
+            connection=get_conn_str,
             embeddings=embeddings,
             pre_delete_collection=True,
             distance_strategy='cosine'

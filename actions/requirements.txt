@@ -1,12 +1,11 @@
 fastapi
 pydantic
-psycopg3
+psycopg[binary]
 asyncpg
 transformers
 torch
 python-dotenv
 numpy==1.26.4
-
 langchain
 langchain_community
 langchain_core
