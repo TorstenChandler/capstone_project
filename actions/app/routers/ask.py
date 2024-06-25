@@ -9,6 +9,7 @@ from langchain_community.llms import Ollama
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_community.chat_message_histories import ChatMessageHistory
+from datetime import datetime
 import psycopg
 import ast
 import pandas as pd
@@ -28,13 +29,17 @@ default_model_name="llama3"
 @router.post("/ask")
 async def ask(request:Request):
     body = await request.json()
-    user_id = body["session_variables"]["x-hasura-user-id"]
+    user_id = int(body["session_variables"]["x-hasura-user-id"])
     question = body["input"]["question"]
+    print(user_id)
     vectorstore = populate_vector_table(user_id)
+    #vectorstore.similarity_search_with_score("At which music shows did I perform", k=3, filter={"user_id": {"$in": [21]}})
     retriever = vectorstore.as_retriever(
         search_type='similarity',#“similarity” (default), “mmr”, or “similarity_score_threshold”.
         search_kwargs={"k": 3, 'filter':{'user_id':user_id}}
         )
+    
+    
     rag_chain = init_rag_chain(retriever)
     response = rag_chain.invoke({"input": question})
     print("\nQuestion : ", input)
@@ -47,10 +52,11 @@ def populate_vector_table(user_id):
         sql = f"SELECT id, user_id, text, date, embedding_text, embedding FROM public.entry where user_id = {user_id}"
         df = pd.read_sql(sql=sql, con=conn)
         df.embedding = df.embedding.map(ast.literal_eval)
-
+        print(df)
         load_dotenv()
 
         connection= "postgresql+psycopg://user:password@database:5432/db"
+        #connection= "postgresql+psycopg://user:password@localhost:5432/db"
         collection_name = "embeddings"
         embeddings = OllamaEmbeddings(model=default_model_name, base_url="http://host.docker.internal:11434")
 
@@ -80,11 +86,11 @@ def init_rag_chain(retriever, model_name=default_model_name):
 
     # 3. Incorporate the retriever into a question-answering chain.
     system_prompt = (
-        "You are an assistant for question-answering tasks. "
-        "Use the following pieces of retrieved context to answer the question."
-        "But if questions are asked where there is no relevant context available, please answer from what you know. "
-        "If you don't know the answer, say that you don't know. "
-        " Use three sentences maximum and keep the answer concise."
+        "You are an assistant helping users to interact with their diary "
+        "Use the following information retrieved from the diary entries to answer the question."
+        "If you can't give an answer based on the provided information, let the user know"
+        " Use three to five sentences maximum and keep the answer concise."
+        f"today is {datetime.today().strftime('%Y-%m-%d')}"
         "\n\n"
         "{context}"
     )

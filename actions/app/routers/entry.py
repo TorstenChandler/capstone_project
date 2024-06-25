@@ -107,7 +107,7 @@ def embedding(entry, emotions, topics):
         with conn.cursor() as cursor:
             relevant_emotions =  [emotion for emotion in emotions if emotion['score'] > 0.5]
             emotion_labels = [emotion["label"] for emotion in relevant_emotions]
-            embedding_text = f"date: {entry.date}; emotions:{emotion_labels}, topics:{topics} text:{entry.text}"
+            embedding_text = f"date: {entry.date}; emotions:{emotion_labels}; topics:{topics}; text:{entry.text}"
             engine = OllamaEmbeddings(model='llama3', base_url="http://host.docker.internal:11434")
             embedding = engine.embed_query(embedding_text)
             insert_query = "UPDATE entry set embedding_text = %s, embedding = %s where id = %s"
