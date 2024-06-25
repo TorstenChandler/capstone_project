@@ -1,6 +1,7 @@
 fastapi
 pydantic
 psycopg[binary]
+uvicorn
 asyncpg
 transformers
 torch
@@ -12,3 +13,4 @@ langchain_core
 langchain_postgres 
 langchain_cohere
 pandas
+debugpy

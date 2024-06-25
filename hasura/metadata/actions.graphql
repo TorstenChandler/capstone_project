@@ -1,3 +1,9 @@
+type Query {
+  ask(
+    question: String!
+  ): QuestionResponse
+}
+
 type TimeLine {
   entries: [String!]!
   series: [Series!]!
@@ -6,5 +12,9 @@ type TimeLine {
 type Series {
   name: String!
   data: [Float!]!
+}
+
+type QuestionResponse {
+  answer: String!
 }
 

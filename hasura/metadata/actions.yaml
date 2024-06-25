@@ -1,8 +1,16 @@
-actions: []
+actions:
+  - name: ask
+    definition:
+      kind: ""
+      handler: http://actions:80/ask
+      forward_client_headers: true
+    permissions:
+      - role: user
 custom_types:
   enums: []
   input_objects: []
   objects:
     - name: TimeLine
     - name: Series
+    - name: QuestionResponse
   scalars: []

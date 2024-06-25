@@ -21,6 +21,7 @@ services:
       - database
     networks:
       - app
+    
 
   graphql:
     image: hasura/graphql-engine:v2.40.0.cli-migrations-v3

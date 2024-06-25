@@ -41,44 +41,6 @@ async def ask(request:Request):
     print("Answer : ", response)#["answer"]
     return JSONResponse(jsonable_encoder({"answer":response["answer"]}))
 
-def generate_entry_response(text):
-    llm = init_ollama("llama3")
-
-    #Start a question answer chat prompt
-    system_prompt = (
-        """You are an emotionally intelligent assistant. You collect journal entries from users and respond in a empathetic way. 
-        You do not ask questions, unless necessary. You reply in 2-3 sentences. """
-    )
-
-    prompt_template = ChatPromptTemplate.from_messages(
-        [
-            ("system", system_prompt),
-            ("human", "{input}"),
-        ]
-    )
-
-    chain = prompt_template | llm 
-
-    ### Statefully manage chat history ###
-    store = {}
-
-    def get_session_history(session_id: str) -> BaseChatMessageHistory:
-        if session_id not in store:
-            store[session_id] = ChatMessageHistory()
-        return store[session_id]
-
-    runnable_with_history = RunnableWithMessageHistory(
-        chain,
-        get_session_history,
-        input_messages_key="input",
-        history_messages_key="history",
-    )
-    output = runnable_with_history.invoke({"input": text},
-        config={"configurable": {"session_id": "2"}})
-    print("Journal Entry : ", text)
-    print("Response : ", output) 
-
-    return output
 
 def populate_vector_table(user_id):
     with psycopg.connect(get_conn_str()) as conn:
@@ -88,14 +50,13 @@ def populate_vector_table(user_id):
 
         load_dotenv()
 
-        #connection = f"postgresql+psycopg://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
-        connection= "postgresql+psycopg://postgres:password@database:5432/postgres"
+        connection= "postgresql+psycopg://user:password@database:5432/db"
         collection_name = "embeddings"
-        embeddings = OllamaEmbeddings(model=default_model_name)
+        embeddings = OllamaEmbeddings(model=default_model_name, base_url="http://host.docker.internal:11434")
 
         vectorstore = PGVector(
             collection_name="embeddings",
-            connection=get_conn_str,
+            connection=connection,
             embeddings=embeddings,
             pre_delete_collection=True,
             distance_strategy='cosine'
@@ -141,3 +102,41 @@ def init_rag_chain(retriever, model_name=default_model_name):
 
 
 
+def generate_entry_response(text):
+    llm = init_ollama("llama3")
+
+    #Start a question answer chat prompt
+    system_prompt = (
+        """You are an emotionally intelligent assistant. You collect journal entries from users and respond in a empathetic way. 
+        You do not ask questions, unless necessary. You reply in 2-3 sentences. """
+    )
+
+    prompt_template = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt),
+            ("human", "{input}"),
+        ]
+    )
+
+    chain = prompt_template | llm 
+
+    ### Statefully manage chat history ###
+    store = {}
+
+    def get_session_history(session_id: str) -> BaseChatMessageHistory:
+        if session_id not in store:
+            store[session_id] = ChatMessageHistory()
+        return store[session_id]
+
+    runnable_with_history = RunnableWithMessageHistory(
+        chain,
+        get_session_history,
+        input_messages_key="input",
+        history_messages_key="history",
+    )
+    output = runnable_with_history.invoke({"input": text},
+        config={"configurable": {"session_id": "2"}})
+    print("Journal Entry : ", text)
+    print("Response : ", output) 
+
+    return output
