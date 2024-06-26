@@ -1,5 +1,5 @@
 
-from ..dependencies import get_conn_str
+from ..dependencies import get_conn_str,  get_ollama_url
 from fastapi import APIRouter,Request, BackgroundTasks
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -108,7 +108,7 @@ def embedding(entry, emotions, topics):
             relevant_emotions =  [emotion for emotion in emotions if emotion['score'] > 0.5]
             emotion_labels = [emotion["label"] for emotion in relevant_emotions]
             embedding_text = f"date: {entry.date}; emotions:{emotion_labels}; topics:{topics}; text:{entry.text}"
-            engine = OllamaEmbeddings(model='llama3', base_url="http://host.docker.internal:11434")
+            engine = OllamaEmbeddings(model='llama3', base_url=get_ollama_url())
             embedding = engine.embed_query(embedding_text)
             insert_query = "UPDATE entry set embedding_text = %s, embedding = %s where id = %s"
             cursor.execute(insert_query, (embedding_text, embedding, entry.id))
@@ -117,7 +117,7 @@ def embedding(entry, emotions, topics):
     
 
 def generate_entry_response(text):
-    llm = Ollama(model="llama3",  base_url="http://host.docker.internal:11434", verbose=False)
+    llm = Ollama(model="llama3",  base_url=get_ollama_url(), verbose=False)
 
     #Start a question answer chat prompt
     system_prompt = (
