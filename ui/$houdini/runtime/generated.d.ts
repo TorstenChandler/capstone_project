@@ -304,6 +304,18 @@ type verification_token_bool_exp = {
 
 export declare type CacheTypeDef = {
     types: {
+        EntryResponse: {
+            idFields: {
+                id: any;
+            };
+            fields: {
+                id: {
+                    type: any;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
         QuestionResponse: {
             idFields: never;
             fields: {

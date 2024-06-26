@@ -13,6 +13,10 @@ directive @cached(
   ttl: Int! = 60
 ) on QUERY
 
+type EntryResponse {
+  id: uuid!
+}
+
 """
 Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
 """
@@ -468,6 +472,11 @@ input bigint_comparison_exp {
   _lte: bigint
   _neq: bigint
   _nin: [bigint!]
+}
+
+input create_entry_input {
+  date: String!
+  text: String!
 }
 
 """ordering argument of a cursor"""
@@ -1333,6 +1342,8 @@ input json_comparison_exp {
 
 """mutation root"""
 type mutation_root {
+  create_entry_one(object: create_entry_input!): EntryResponse
+
   """
   delete data from the table: "accounts"
   """

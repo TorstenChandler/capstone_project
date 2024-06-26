@@ -7,11 +7,20 @@ actions:
       timeout: 900000
     permissions:
       - role: user
+  - name: create_entry_one
+    definition:
+      kind: synchronous
+      handler: http://actions:80/save_entry
+      forward_client_headers: true
+    permissions:
+      - role: user
 custom_types:
   enums: []
-  input_objects: []
+  input_objects:
+    - name: create_entry_input
   objects:
     - name: TimeLine
     - name: Series
     - name: QuestionResponse
+    - name: EntryResponse
   scalars: []

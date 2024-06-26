@@ -4,6 +4,17 @@ type Query {
   ): QuestionResponse
 }
 
+type Mutation {
+  create_entry_one(
+    object: create_entry_input!
+  ): EntryResponse
+}
+
+input create_entry_input {
+  text: String!
+  date: String!
+}
+
 type TimeLine {
   entries: [String!]!
   series: [Series!]!
@@ -16,5 +27,9 @@ type Series {
 
 type QuestionResponse {
   answer: String!
+}
+
+type EntryResponse {
+  id: uuid!
 }
 
