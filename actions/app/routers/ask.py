@@ -20,21 +20,33 @@ from fastapi import APIRouter,Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
-from ..dependencies import get_conn_str, get_conn_str_vector
+from ..dependencies import get_conn_str, get_conn_str_vector, get_ollama_url
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 import re
 import json
+from pydantic import BaseModel, Field
 
 router = APIRouter()
 default_model_name="llama3"
 
+class QuestionInput(BaseModel):
+    question:str
+
+class SessionVariables(BaseModel):
+    x_hasura_user_id: str=Field(alias="x-hasura-user-id")
+
+class QuestionPayload(BaseModel):
+    input: QuestionInput
+    session_variables: SessionVariables
+
+
+
 @router.post("/ask")
-async def ask(request:Request):
-    body = await request.json()
-    user_id = int(body["session_variables"]["x-hasura-user-id"])
-    question = body["input"]["question"]
-    print(user_id)
+async def ask(payload:QuestionPayload):
+    print("Payload ", payload)
+    user_id = int(payload["session_variables"]["x_hasura_user_id"])
+    question = payload["input"]["question"]
     
     vectorstore = populate_vector_table(user_id, question)
     #vectorstore.similarity_search_with_score("At which music shows did I perform", k=3, filter={"user_id": {"$in": [21]}})
@@ -56,7 +68,7 @@ def populate_vector_table(user_id, question):
         sql = f"SELECT id, user_id, text, date, embedding_text, embedding FROM public.entry where user_id = {user_id}"
         if contains_date(question):
             start_date, end_date = extract_date_from_question(question)
-            sql = f"SELECT id, user_id, text, date, embedding_text, embedding FROM public.entry where user_id = {user_id} and date BETWEEN {start_date} and {end_date}"
+            sql = f"SELECT id, user_id, text, date, embedding_text, embedding FROM public.entry where user_id = {user_id} and date BETWEEN '{start_date}' and '{end_date}'"
         
         df = pd.read_sql(sql=sql, con=conn)
         df.embedding = df.embedding.map(ast.literal_eval)
@@ -65,7 +77,7 @@ def populate_vector_table(user_id, question):
 
         connection= get_conn_str_vector()
         collection_name = "embeddings"
-        embeddings = OllamaEmbeddings(model=default_model_name, base_url="http://localhost:11434")
+        embeddings = OllamaEmbeddings(model=default_model_name, base_url=get_ollama_url())
 
         vectorstore = PGVector(
             collection_name="embeddings",
@@ -85,7 +97,7 @@ def populate_vector_table(user_id, question):
         return vectorstore
     
 def init_ollama(model_name=default_model_name):
-    return Ollama(model=model_name, base_url="http://localhost:11434") 
+    return Ollama(model=model_name, base_url=get_ollama_url()) 
 
 def init_rag_chain(retriever, model_name=default_model_name):
     #1. initialise LLM model
@@ -166,7 +178,7 @@ def contains_date(text):
         r'\b(Today|Tomorrow|Yesterday|Month|Year|Week)\b'
     )
     # Check if the text contains a year or a month name
-    if re.search(year_pattern, text) or re.search(month_pattern, text) or re.search(relative_pattern):
+    if re.search(year_pattern, text) or re.search(month_pattern, text) or re.search(relative_pattern, text):
         return True
     else:
         return False
