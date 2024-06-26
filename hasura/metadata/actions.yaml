@@ -4,6 +4,7 @@ actions:
       kind: ""
       handler: http://actions:80/ask
       forward_client_headers: true
+      timeout: 900000
     permissions:
       - role: user
 custom_types:

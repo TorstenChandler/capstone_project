@@ -153,30 +153,6 @@ export default {
                 "_nin": "Int"
             },
 
-            "entry_aggregate_bool_exp_count": {
-                "arguments": "entry_select_column",
-                "distinct": "Boolean",
-                "filter": "entry_bool_exp",
-                "predicate": "Int_comparison_exp"
-            },
-
-            "entry_aggregate_bool_exp": {
-                "count": "entry_aggregate_bool_exp_count"
-            },
-
-            "users_bool_exp": {
-                "_and": "users_bool_exp",
-                "_not": "users_bool_exp",
-                "_or": "users_bool_exp",
-                "email": "String_comparison_exp",
-                "emailVerified": "timestamptz_comparison_exp",
-                "entries": "entry_bool_exp",
-                "entries_aggregate": "entry_aggregate_bool_exp",
-                "id": "Int_comparison_exp",
-                "image": "String_comparison_exp",
-                "name": "String_comparison_exp"
-            },
-
             "entry_bool_exp": {
                 "_and": "entry_bool_exp",
                 "_not": "entry_bool_exp",
@@ -188,7 +164,6 @@ export default {
                 "id": "uuid_comparison_exp",
                 "text": "String_comparison_exp",
                 "topics": "topic_bool_exp",
-                "user": "users_bool_exp",
                 "user_id": "Int_comparison_exp"
             },
 
@@ -246,31 +221,6 @@ export default {
                 "on_conflict": "topic_on_conflict"
             },
 
-            "entry_arr_rel_insert_input": {
-                "data": "entry_insert_input",
-                "on_conflict": "entry_on_conflict"
-            },
-
-            "users_insert_input": {
-                "email": "String",
-                "emailVerified": "timestamptz",
-                "entries": "entry_arr_rel_insert_input",
-                "id": "Int",
-                "image": "String",
-                "name": "String"
-            },
-
-            "users_on_conflict": {
-                "constraint": "users_constraint",
-                "update_columns": "users_update_column",
-                "where": "users_bool_exp"
-            },
-
-            "users_obj_rel_insert_input": {
-                "data": "users_insert_input",
-                "on_conflict": "users_on_conflict"
-            },
-
             "entry_insert_input": {
                 "date": "timestamptz",
                 "embedding": "vector",
@@ -279,7 +229,6 @@ export default {
                 "id": "uuid",
                 "text": "String",
                 "topics": "topic_obj_rel_insert_input",
-                "user": "users_obj_rel_insert_input",
                 "user_id": "Int"
             }
         },

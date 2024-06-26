@@ -103,77 +103,6 @@ type topic_order_by = {
     work?: ValueOf<typeof order_by> | null | undefined;
 };
 
-type entry_avg_order_by = {
-    user_id?: ValueOf<typeof order_by> | null | undefined;
-};
-
-type entry_max_order_by = {
-    date?: ValueOf<typeof order_by> | null | undefined;
-    embedding_text?: ValueOf<typeof order_by> | null | undefined;
-    id?: ValueOf<typeof order_by> | null | undefined;
-    text?: ValueOf<typeof order_by> | null | undefined;
-    user_id?: ValueOf<typeof order_by> | null | undefined;
-};
-
-type entry_min_order_by = {
-    date?: ValueOf<typeof order_by> | null | undefined;
-    embedding_text?: ValueOf<typeof order_by> | null | undefined;
-    id?: ValueOf<typeof order_by> | null | undefined;
-    text?: ValueOf<typeof order_by> | null | undefined;
-    user_id?: ValueOf<typeof order_by> | null | undefined;
-};
-
-type entry_stddev_order_by = {
-    user_id?: ValueOf<typeof order_by> | null | undefined;
-};
-
-type entry_stddev_pop_order_by = {
-    user_id?: ValueOf<typeof order_by> | null | undefined;
-};
-
-type entry_stddev_samp_order_by = {
-    user_id?: ValueOf<typeof order_by> | null | undefined;
-};
-
-type entry_sum_order_by = {
-    user_id?: ValueOf<typeof order_by> | null | undefined;
-};
-
-type entry_var_pop_order_by = {
-    user_id?: ValueOf<typeof order_by> | null | undefined;
-};
-
-type entry_var_samp_order_by = {
-    user_id?: ValueOf<typeof order_by> | null | undefined;
-};
-
-type entry_variance_order_by = {
-    user_id?: ValueOf<typeof order_by> | null | undefined;
-};
-
-type entry_aggregate_order_by = {
-    avg?: entry_avg_order_by | null | undefined;
-    count?: ValueOf<typeof order_by> | null | undefined;
-    max?: entry_max_order_by | null | undefined;
-    min?: entry_min_order_by | null | undefined;
-    stddev?: entry_stddev_order_by | null | undefined;
-    stddev_pop?: entry_stddev_pop_order_by | null | undefined;
-    stddev_samp?: entry_stddev_samp_order_by | null | undefined;
-    sum?: entry_sum_order_by | null | undefined;
-    var_pop?: entry_var_pop_order_by | null | undefined;
-    var_samp?: entry_var_samp_order_by | null | undefined;
-    variance?: entry_variance_order_by | null | undefined;
-};
-
-type users_order_by = {
-    email?: ValueOf<typeof order_by> | null | undefined;
-    emailVerified?: ValueOf<typeof order_by> | null | undefined;
-    entries_aggregate?: entry_aggregate_order_by | null | undefined;
-    id?: ValueOf<typeof order_by> | null | undefined;
-    image?: ValueOf<typeof order_by> | null | undefined;
-    name?: ValueOf<typeof order_by> | null | undefined;
-};
-
 type entry_order_by = {
     date?: ValueOf<typeof order_by> | null | undefined;
     embedding?: ValueOf<typeof order_by> | null | undefined;
@@ -182,7 +111,6 @@ type entry_order_by = {
     id?: ValueOf<typeof order_by> | null | undefined;
     text?: ValueOf<typeof order_by> | null | undefined;
     topics?: topic_order_by | null | undefined;
-    user?: users_order_by | null | undefined;
     user_id?: ValueOf<typeof order_by> | null | undefined;
 };
 
@@ -258,30 +186,6 @@ type topic_bool_exp = {
     work?: float8_comparison_exp | null | undefined;
 };
 
-type entry_aggregate_bool_exp_count = {
-    arguments?: (ValueOf<typeof entry_select_column>)[] | null | undefined;
-    distinct?: boolean | null | undefined;
-    filter?: entry_bool_exp | null | undefined;
-    predicate: Int_comparison_exp;
-};
-
-type entry_aggregate_bool_exp = {
-    count?: entry_aggregate_bool_exp_count | null | undefined;
-};
-
-type users_bool_exp = {
-    _and?: (users_bool_exp)[] | null | undefined;
-    _not?: users_bool_exp | null | undefined;
-    _or?: (users_bool_exp)[] | null | undefined;
-    email?: String_comparison_exp | null | undefined;
-    emailVerified?: timestamptz_comparison_exp | null | undefined;
-    entries?: entry_bool_exp | null | undefined;
-    entries_aggregate?: entry_aggregate_bool_exp | null | undefined;
-    id?: Int_comparison_exp | null | undefined;
-    image?: String_comparison_exp | null | undefined;
-    name?: String_comparison_exp | null | undefined;
-};
-
 type entry_bool_exp = {
     _and?: (entry_bool_exp)[] | null | undefined;
     _not?: entry_bool_exp | null | undefined;
@@ -293,7 +197,6 @@ type entry_bool_exp = {
     id?: uuid_comparison_exp | null | undefined;
     text?: String_comparison_exp | null | undefined;
     topics?: topic_bool_exp | null | undefined;
-    user?: users_bool_exp | null | undefined;
     user_id?: Int_comparison_exp | null | undefined;
 };
 
@@ -365,6 +268,25 @@ type sessions_bool_exp = {
     userId?: Int_comparison_exp | null | undefined;
 };
 
+type users_order_by = {
+    email?: ValueOf<typeof order_by> | null | undefined;
+    emailVerified?: ValueOf<typeof order_by> | null | undefined;
+    id?: ValueOf<typeof order_by> | null | undefined;
+    image?: ValueOf<typeof order_by> | null | undefined;
+    name?: ValueOf<typeof order_by> | null | undefined;
+};
+
+type users_bool_exp = {
+    _and?: (users_bool_exp)[] | null | undefined;
+    _not?: users_bool_exp | null | undefined;
+    _or?: (users_bool_exp)[] | null | undefined;
+    email?: String_comparison_exp | null | undefined;
+    emailVerified?: timestamptz_comparison_exp | null | undefined;
+    id?: Int_comparison_exp | null | undefined;
+    image?: String_comparison_exp | null | undefined;
+    name?: String_comparison_exp | null | undefined;
+};
+
 type verification_token_order_by = {
     expires?: ValueOf<typeof order_by> | null | undefined;
     identifier?: ValueOf<typeof order_by> | null | undefined;
@@ -382,6 +304,16 @@ type verification_token_bool_exp = {
 
 export declare type CacheTypeDef = {
     types: {
+        QuestionResponse: {
+            idFields: never;
+            fields: {
+                answer: {
+                    type: string;
+                    args: never;
+                };
+            };
+            fragments: [];
+        };
         accounts: {
             idFields: {
                 id: number;
@@ -1476,10 +1408,6 @@ export declare type CacheTypeDef = {
                     type: Record<CacheTypeDef, "topic"> | null;
                     args: never;
                 };
-                user: {
-                    type: Record<CacheTypeDef, "users"> | null;
-                    args: never;
-                };
                 user_id: {
                     type: number | null;
                     args: never;
@@ -1731,6 +1659,12 @@ export declare type CacheTypeDef = {
                     type: Record<CacheTypeDef, "accounts"> | null;
                     args: {
                         id: number;
+                    };
+                };
+                ask: {
+                    type: Record<CacheTypeDef, "QuestionResponse"> | null;
+                    args: {
+                        question: string;
                     };
                 };
                 emotion: {
@@ -2588,26 +2522,6 @@ export declare type CacheTypeDef = {
                 emailVerified: {
                     type: any | null;
                     args: never;
-                };
-                entries: {
-                    type: (Record<CacheTypeDef, "entry">)[];
-                    args: {
-                        distinct_on?: (ValueOf<typeof entry_select_column>)[] | null | undefined;
-                        limit?: number | null | undefined;
-                        offset?: number | null | undefined;
-                        order_by?: (entry_order_by)[] | null | undefined;
-                        where?: entry_bool_exp | null | undefined;
-                    };
-                };
-                entries_aggregate: {
-                    type: Record<CacheTypeDef, "entry_aggregate">;
-                    args: {
-                        distinct_on?: (ValueOf<typeof entry_select_column>)[] | null | undefined;
-                        limit?: number | null | undefined;
-                        offset?: number | null | undefined;
-                        order_by?: (entry_order_by)[] | null | undefined;
-                        where?: entry_bool_exp | null | undefined;
-                    };
                 };
                 id: {
                     type: number;

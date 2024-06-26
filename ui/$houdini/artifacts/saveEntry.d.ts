@@ -1,10 +1,7 @@
-import type { users_update_column } from "$houdini/graphql/enums";
-import type { users_constraint } from "$houdini/graphql/enums";
 import type { topic_update_column } from "$houdini/graphql/enums";
 import type { topic_constraint } from "$houdini/graphql/enums";
 import type { emotion_update_column } from "$houdini/graphql/enums";
 import type { emotion_constraint } from "$houdini/graphql/enums";
-import type { entry_select_column } from "$houdini/graphql/enums";
 import type { entry_update_column } from "$houdini/graphql/enums";
 import type { ValueOf } from "$houdini/runtime/lib/types";
 import type { entry_constraint } from "$houdini/graphql/enums";
@@ -132,30 +129,6 @@ type Int_comparison_exp = {
     _nin?: (number)[] | null | undefined;
 };
 
-type entry_aggregate_bool_exp_count = {
-    arguments?: (ValueOf<typeof entry_select_column>)[] | null | undefined;
-    distinct?: boolean | null | undefined;
-    filter?: entry_bool_exp | null | undefined;
-    predicate: Int_comparison_exp;
-};
-
-type entry_aggregate_bool_exp = {
-    count?: entry_aggregate_bool_exp_count | null | undefined;
-};
-
-type users_bool_exp = {
-    _and?: (users_bool_exp)[] | null | undefined;
-    _not?: users_bool_exp | null | undefined;
-    _or?: (users_bool_exp)[] | null | undefined;
-    email?: String_comparison_exp | null | undefined;
-    emailVerified?: timestamptz_comparison_exp | null | undefined;
-    entries?: entry_bool_exp | null | undefined;
-    entries_aggregate?: entry_aggregate_bool_exp | null | undefined;
-    id?: Int_comparison_exp | null | undefined;
-    image?: String_comparison_exp | null | undefined;
-    name?: String_comparison_exp | null | undefined;
-};
-
 type entry_bool_exp = {
     _and?: (entry_bool_exp)[] | null | undefined;
     _not?: entry_bool_exp | null | undefined;
@@ -167,7 +140,6 @@ type entry_bool_exp = {
     id?: uuid_comparison_exp | null | undefined;
     text?: String_comparison_exp | null | undefined;
     topics?: topic_bool_exp | null | undefined;
-    user?: users_bool_exp | null | undefined;
     user_id?: Int_comparison_exp | null | undefined;
 };
 
@@ -225,31 +197,6 @@ type topic_obj_rel_insert_input = {
     on_conflict?: topic_on_conflict | null | undefined;
 };
 
-type entry_arr_rel_insert_input = {
-    data: (entry_insert_input)[];
-    on_conflict?: entry_on_conflict | null | undefined;
-};
-
-type users_insert_input = {
-    email?: string | null | undefined;
-    emailVerified?: any | null | undefined;
-    entries?: entry_arr_rel_insert_input | null | undefined;
-    id?: number | null | undefined;
-    image?: string | null | undefined;
-    name?: string | null | undefined;
-};
-
-type users_on_conflict = {
-    constraint: ValueOf<typeof users_constraint>;
-    update_columns: (ValueOf<typeof users_update_column>)[];
-    where?: users_bool_exp | null | undefined;
-};
-
-type users_obj_rel_insert_input = {
-    data: users_insert_input;
-    on_conflict?: users_on_conflict | null | undefined;
-};
-
 type entry_insert_input = {
     date?: any | null | undefined;
     embedding?: any | null | undefined;
@@ -258,7 +205,6 @@ type entry_insert_input = {
     id?: any | null | undefined;
     text?: string | null | undefined;
     topics?: topic_obj_rel_insert_input | null | undefined;
-    user?: users_obj_rel_insert_input | null | undefined;
     user_id?: number | null | undefined;
 };
 
@@ -414,27 +360,6 @@ export type saveEntry$artifact = {
                 "_neq": "Int";
                 "_nin": "Int";
             };
-            "entry_aggregate_bool_exp_count": {
-                "arguments": "entry_select_column";
-                "distinct": "Boolean";
-                "filter": "entry_bool_exp";
-                "predicate": "Int_comparison_exp";
-            };
-            "entry_aggregate_bool_exp": {
-                "count": "entry_aggregate_bool_exp_count";
-            };
-            "users_bool_exp": {
-                "_and": "users_bool_exp";
-                "_not": "users_bool_exp";
-                "_or": "users_bool_exp";
-                "email": "String_comparison_exp";
-                "emailVerified": "timestamptz_comparison_exp";
-                "entries": "entry_bool_exp";
-                "entries_aggregate": "entry_aggregate_bool_exp";
-                "id": "Int_comparison_exp";
-                "image": "String_comparison_exp";
-                "name": "String_comparison_exp";
-            };
             "entry_bool_exp": {
                 "_and": "entry_bool_exp";
                 "_not": "entry_bool_exp";
@@ -446,7 +371,6 @@ export type saveEntry$artifact = {
                 "id": "uuid_comparison_exp";
                 "text": "String_comparison_exp";
                 "topics": "topic_bool_exp";
-                "user": "users_bool_exp";
                 "user_id": "Int_comparison_exp";
             };
             "entry_on_conflict": {
@@ -495,27 +419,6 @@ export type saveEntry$artifact = {
                 "data": "topic_insert_input";
                 "on_conflict": "topic_on_conflict";
             };
-            "entry_arr_rel_insert_input": {
-                "data": "entry_insert_input";
-                "on_conflict": "entry_on_conflict";
-            };
-            "users_insert_input": {
-                "email": "String";
-                "emailVerified": "timestamptz";
-                "entries": "entry_arr_rel_insert_input";
-                "id": "Int";
-                "image": "String";
-                "name": "String";
-            };
-            "users_on_conflict": {
-                "constraint": "users_constraint";
-                "update_columns": "users_update_column";
-                "where": "users_bool_exp";
-            };
-            "users_obj_rel_insert_input": {
-                "data": "users_insert_input";
-                "on_conflict": "users_on_conflict";
-            };
             "entry_insert_input": {
                 "date": "timestamptz";
                 "embedding": "vector";
@@ -524,7 +427,6 @@ export type saveEntry$artifact = {
                 "id": "uuid";
                 "text": "String";
                 "topics": "topic_obj_rel_insert_input";
-                "user": "users_obj_rel_insert_input";
                 "user_id": "Int";
             };
         };

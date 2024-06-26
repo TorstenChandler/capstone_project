@@ -28,6 +28,10 @@ input Int_comparison_exp {
   _nin: [Int!]
 }
 
+type QuestionResponse {
+  answer: String!
+}
+
 """
 Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 """
@@ -1022,9 +1026,6 @@ type entry {
 
   """An object relationship"""
   topics: topic
-
-  """An object relationship"""
-  user: users
   user_id: Int
 }
 
@@ -1034,17 +1035,6 @@ aggregated selection of "entry"
 type entry_aggregate {
   aggregate: entry_aggregate_fields
   nodes: [entry!]!
-}
-
-input entry_aggregate_bool_exp {
-  count: entry_aggregate_bool_exp_count
-}
-
-input entry_aggregate_bool_exp_count {
-  arguments: [entry_select_column!]
-  distinct: Boolean
-  filter: entry_bool_exp
-  predicate: Int_comparison_exp!
 }
 
 """
@@ -1064,43 +1054,9 @@ type entry_aggregate_fields {
   variance: entry_variance_fields
 }
 
-"""
-order by aggregate values of table "entry"
-"""
-input entry_aggregate_order_by {
-  avg: entry_avg_order_by
-  count: order_by
-  max: entry_max_order_by
-  min: entry_min_order_by
-  stddev: entry_stddev_order_by
-  stddev_pop: entry_stddev_pop_order_by
-  stddev_samp: entry_stddev_samp_order_by
-  sum: entry_sum_order_by
-  var_pop: entry_var_pop_order_by
-  var_samp: entry_var_samp_order_by
-  variance: entry_variance_order_by
-}
-
-"""
-input type for inserting array relation for remote table "entry"
-"""
-input entry_arr_rel_insert_input {
-  data: [entry_insert_input!]!
-
-  """upsert condition"""
-  on_conflict: entry_on_conflict
-}
-
 """aggregate avg on columns"""
 type entry_avg_fields {
   user_id: Float
-}
-
-"""
-order by avg() on columns of table "entry"
-"""
-input entry_avg_order_by {
-  user_id: order_by
 }
 
 """
@@ -1117,7 +1073,6 @@ input entry_bool_exp {
   id: uuid_comparison_exp
   text: String_comparison_exp
   topics: topic_bool_exp
-  user: users_bool_exp
   user_id: Int_comparison_exp
 }
 
@@ -1149,7 +1104,6 @@ input entry_insert_input {
   id: uuid
   text: String
   topics: topic_obj_rel_insert_input
-  user: users_obj_rel_insert_input
   user_id: Int
 }
 
@@ -1162,17 +1116,6 @@ type entry_max_fields {
   user_id: Int
 }
 
-"""
-order by max() on columns of table "entry"
-"""
-input entry_max_order_by {
-  date: order_by
-  embedding_text: order_by
-  id: order_by
-  text: order_by
-  user_id: order_by
-}
-
 """aggregate min on columns"""
 type entry_min_fields {
   date: timestamptz
@@ -1180,17 +1123,6 @@ type entry_min_fields {
   id: uuid
   text: String
   user_id: Int
-}
-
-"""
-order by min() on columns of table "entry"
-"""
-input entry_min_order_by {
-  date: order_by
-  embedding_text: order_by
-  id: order_by
-  text: order_by
-  user_id: order_by
 }
 
 """
@@ -1232,7 +1164,6 @@ input entry_order_by {
   id: order_by
   text: order_by
   topics: topic_order_by
-  user: users_order_by
   user_id: order_by
 }
 
@@ -1281,35 +1212,14 @@ type entry_stddev_fields {
   user_id: Float
 }
 
-"""
-order by stddev() on columns of table "entry"
-"""
-input entry_stddev_order_by {
-  user_id: order_by
-}
-
 """aggregate stddev_pop on columns"""
 type entry_stddev_pop_fields {
   user_id: Float
 }
 
-"""
-order by stddev_pop() on columns of table "entry"
-"""
-input entry_stddev_pop_order_by {
-  user_id: order_by
-}
-
 """aggregate stddev_samp on columns"""
 type entry_stddev_samp_fields {
   user_id: Float
-}
-
-"""
-order by stddev_samp() on columns of table "entry"
-"""
-input entry_stddev_samp_order_by {
-  user_id: order_by
 }
 
 """
@@ -1336,13 +1246,6 @@ input entry_stream_cursor_value_input {
 """aggregate sum on columns"""
 type entry_sum_fields {
   user_id: Int
-}
-
-"""
-order by sum() on columns of table "entry"
-"""
-input entry_sum_order_by {
-  user_id: order_by
 }
 
 """
@@ -1384,35 +1287,14 @@ type entry_var_pop_fields {
   user_id: Float
 }
 
-"""
-order by var_pop() on columns of table "entry"
-"""
-input entry_var_pop_order_by {
-  user_id: order_by
-}
-
 """aggregate var_samp on columns"""
 type entry_var_samp_fields {
   user_id: Float
 }
 
-"""
-order by var_samp() on columns of table "entry"
-"""
-input entry_var_samp_order_by {
-  user_id: order_by
-}
-
 """aggregate variance on columns"""
 type entry_variance_fields {
   user_id: Float
-}
-
-"""
-order by variance() on columns of table "entry"
-"""
-input entry_variance_order_by {
-  user_id: order_by
 }
 
 scalar float8
@@ -1973,6 +1855,7 @@ type query_root {
 
   """fetch data from the table: "accounts" using primary key columns"""
   accounts_by_pk(id: Int!): accounts
+  ask(question: String!): QuestionResponse
 
   """
   fetch data from the table: "emotion"
@@ -3309,42 +3192,6 @@ columns and relationships of "users"
 type users {
   email: String
   emailVerified: timestamptz
-
-  """An array relationship"""
-  entries(
-    """distinct select on columns"""
-    distinct_on: [entry_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [entry_order_by!]
-
-    """filter the rows returned"""
-    where: entry_bool_exp
-  ): [entry!]!
-
-  """An aggregate relationship"""
-  entries_aggregate(
-    """distinct select on columns"""
-    distinct_on: [entry_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [entry_order_by!]
-
-    """filter the rows returned"""
-    where: entry_bool_exp
-  ): entry_aggregate!
   id: Int!
   image: String
   name: String
@@ -3389,8 +3236,6 @@ input users_bool_exp {
   _or: [users_bool_exp!]
   email: String_comparison_exp
   emailVerified: timestamptz_comparison_exp
-  entries: entry_bool_exp
-  entries_aggregate: entry_aggregate_bool_exp
   id: Int_comparison_exp
   image: String_comparison_exp
   name: String_comparison_exp
@@ -3419,7 +3264,6 @@ input type for inserting data into table "users"
 input users_insert_input {
   email: String
   emailVerified: timestamptz
-  entries: entry_arr_rel_insert_input
   id: Int
   image: String
   name: String
@@ -3455,16 +3299,6 @@ type users_mutation_response {
 }
 
 """
-input type for inserting object relation for remote table "users"
-"""
-input users_obj_rel_insert_input {
-  data: users_insert_input!
-
-  """upsert condition"""
-  on_conflict: users_on_conflict
-}
-
-"""
 on_conflict condition type for table "users"
 """
 input users_on_conflict {
@@ -3477,7 +3311,6 @@ input users_on_conflict {
 input users_order_by {
   email: order_by
   emailVerified: order_by
-  entries_aggregate: entry_aggregate_order_by
   id: order_by
   image: order_by
   name: order_by

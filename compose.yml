@@ -2,12 +2,15 @@ services:
   database:
     image: ankane/pgvector
     restart: always
-    env_file:
-      - .env
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_PORT: ${DATABASE_INTERNAL_PORT}
     volumes:
       - dx:/var/lib/postgresql
     ports:
-      - ${POSTGRES_PORT}:5432
+      - ${DATABASE_PUBLIC_PORT}:${DATABASE_INTERNAL_PORT}
     networks:
       - app
 
@@ -18,10 +21,11 @@ services:
     ports:
       - 9000:80
     environment:
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_USER:  ${POSTGRES_USER}
-      POSTGRES_DB:  ${POSTGRES_DB}
+      POSTGRES_HOST: ${DATABASE_HOST}
+      POSTGRES_PORT: ${DATABASE_INTERNAL_PORT}
+      POSTGRES_USER:  ${DATABASE_USER}
+      POSTGRES_DB:  ${DATABASE_NAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       OLLAMA_HOST: ${OLLAMA_HOST}
     depends_on:
       - database
@@ -36,60 +40,26 @@ services:
       - ./hasura/metadata:/hasura-metadata
       - ./hasura/seeds:/hasura-seeds
     ports:
-      - "8080:8080"
+      - ${GRAPQHL_PORT}:8080
     depends_on:
       - database
     restart: always
     environment:
       ## postgres database to store Hasura metadata
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}
       ## this env var can be used to add the above postgres database to Hasura as a data source. this can be removed/updated based on your needs
-      PG_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
+      PG_DATABASE_URL: postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}
       ## enable the console served by server
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
       ## enable debugging mode. It is recommended to disable this in production
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
-      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${GRAPQHL_SECRET}
     networks:
       - app
 
 
-  #ollama-webui:
-  #  image: ghcr.io/open-webui/open-webui:main
-  #  container_name: ollama-webui
-  #  volumes:
-  #    - ./ollama/ollama-webui:/app/backend/data
-  #  depends_on:
-  #    - ollama
-  #  ports:
-  #    - 8090:8080
-  #  environment: # https://docs.openwebui.com/getting-started/env-configuration#default_models
-  #    - OLLAMA_BASE_URLS=http://localhost:11434
-  #    - WEBUI_URL=http://localhost:8090
-  #    - ENV=dev
-  #    - WEBUI_AUTH=False
-  #    - WEBUI_NAME=team_standup
-  #    - WEBUI_SECRET_KEY=t0p-s3cr3t
-  #  restart: unless-stopped
-  #  networks:
-  #     - app
-#
-  #ollama:
-  #  image: ollama/ollama:latest
-  #  ports:
-  #      - 11434:11434
-  #  volumes:
-  #      - ./ollama/ollama:/root/.ollama
-  #      - ./ollama/entrypoint.sh:/entrypoint.sh
-  #  pull_policy: always
-  #  tty: true
-  #  restart: always
-  #  entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
-  #  networks:
-  #    - app
-#
 networks:
   app:
 
