@@ -114,7 +114,7 @@ def init_rag_chain(retriever, model_name=default_model_name):
         "Use the following information retrieved from the diary entries to answer the question."
         "If you can't give an answer based on the provided information, let the user know."
         "Use three to five sentences maximum and keep the answer concise."
-        f"today is {datetime.today().strftime('%Y-%m-%d')}"
+        f"Today is {datetime.today().strftime('%Y-%m-%d')}"
         "\n\n"
         "{context}"
     )
@@ -203,13 +203,14 @@ def extract_date_from_question(question):
     dates = []
     try : 
         llm = init_ollama()
-        prompt_template = PromptTemplate.from_template("""
-        You are an intelligent assistant. From the user input, identify and extract the date range suitable for an SQL query and
-        return it in your output in a json structured format that includes the start and end dates in the format YYYY-mm-dd.
-        Output format : {{"start": "YYYY-mm-dd", "end": "YYYY-mm-dd"}}.
-        Ensure to cover various time frames such as specific days, months, years, or combinations thereof.
-        Answer only with the output json, skip other details. If you do not know the answer, return the dates as 0000-00-00. 
-        User input: {question} """)
+        prompt_template = PromptTemplate.from_template(
+        "You are an intelligent assistant. From the user input, identify and extract the date range suitable for an SQL query and"
+        "return it in your output in a json structured format that includes the start and end dates in the format YYYY-mm-dd."
+        "Output format : {{\"start\": \"YYYY-mm-dd\", \"end\": \"YYYY-mm-dd\"}}."
+        "Ensure to cover various time frames such as specific days, months, years, or combinations thereof."
+        "Answer only with the output json, skip other details. If you do not know the answer, return the dates as 0000-00-00. "
+        f"Today is {datetime.today().strftime('%Y-%m-%d')}"
+        "User input: {question} ")
 
 
         chain = prompt_template | llm
