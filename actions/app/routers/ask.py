@@ -44,9 +44,8 @@ class QuestionPayload(BaseModel):
 
 @router.post("/ask")
 async def ask(payload:QuestionPayload):
-    print("Payload ", payload)
-    user_id = int(payload["session_variables"]["x_hasura_user_id"])
-    question = payload["input"]["question"]
+    user_id = int(payload.session_variables.x_hasura_user_id)
+    question = payload.input.question
     
     vectorstore = populate_vector_table(user_id, question)
     #vectorstore.similarity_search_with_score("At which music shows did I perform", k=3, filter={"user_id": {"$in": [21]}})
