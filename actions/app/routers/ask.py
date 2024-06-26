@@ -65,7 +65,7 @@ def populate_vector_table(user_id, question):
 
         connection= get_conn_str_vector()
         collection_name = "embeddings"
-        embeddings = OllamaEmbeddings(model=default_model_name, base_url="http://host.docker.internal:11434")
+        embeddings = OllamaEmbeddings(model=default_model_name, base_url="http://localhost:11434")
 
         vectorstore = PGVector(
             collection_name="embeddings",
@@ -85,7 +85,7 @@ def populate_vector_table(user_id, question):
         return vectorstore
     
 def init_ollama(model_name=default_model_name):
-    return Ollama(model=model_name, base_url="http://host.docker.internal:11434") 
+    return Ollama(model=model_name, base_url="http://localhost:11434") 
 
 def init_rag_chain(retriever, model_name=default_model_name):
     #1. initialise LLM model
