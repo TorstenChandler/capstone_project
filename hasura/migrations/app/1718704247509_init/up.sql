@@ -108,8 +108,6 @@ ALTER TABLE ONLY public."users"
     ADD CONSTRAINT user_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.emotion
     ADD CONSTRAINT emotion_id_fkey FOREIGN KEY (id) REFERENCES public.entry(id) ON DELETE CASCADE;
-ALTER TABLE ONLY public.entry
-    ADD CONSTRAINT entry_user_id_fkey FOREIGN KEY (user_id) REFERENCES public."users"(id);
 ALTER TABLE ONLY public.topic
     ADD CONSTRAINT topic_id_fkey FOREIGN KEY (id) REFERENCES public.entry(id) ON DELETE CASCADE;
 

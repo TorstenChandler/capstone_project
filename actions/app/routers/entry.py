@@ -34,12 +34,6 @@ class Payload(BaseModel):
     input: SaveEventInput
     session_variables: SessionVariables
 
-# router = APIRouter()
-# @router.post("/entry_inserted")
-# async def entry_inserted(entry:Entry,background_tasks: BackgroundTasks):
-#     background_tasks.add_task(process,entry)
-#     response = generate_entry_response(entry.text)
-#     return JSONResponse(jsonable_encoder({"received": response}))
 
 def process(entry):
     emotions = classify_emotions(entry)

@@ -17,6 +17,11 @@ services:
     restart: always
     ports:
       - 9000:80
+    environment:
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: user
+      POSTGRES_DB: db
     depends_on:
       - database
     networks:
