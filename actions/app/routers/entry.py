@@ -3,7 +3,7 @@ from ..dependencies import get_conn_str
 from fastapi import APIRouter,Request, BackgroundTasks
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from transformers import pipeline
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
@@ -19,9 +19,20 @@ from threading import Thread
 
 class Entry(BaseModel):
     id: str
-    user_id: int
+    user_id: str
     text: str
     date: str
+
+class SaveEventInput(BaseModel):
+    text: str
+    date: str
+
+class SessionVariables(BaseModel):
+    x_hasura_user_id: str =Field(alias = "x-hasura-user-id")
+
+class Payload(BaseModel):
+    input: SaveEventInput
+    session_variables: SessionVariables
 
 # router = APIRouter()
 # @router.post("/entry_inserted")
@@ -32,8 +43,8 @@ class Entry(BaseModel):
 
 def process(entry):
     emotions = classify_emotions(entry)
-    topics = classify_topics(entry)
-    #topics = []
+    #topics = classify_topics(entry)
+    topics = []
     embedding(entry, emotions,topics)
    
 
@@ -44,11 +55,12 @@ async def entry_inserted(request:Request, entry:Entry):
     return JSONResponse(jsonable_encoder({"received": True}))
 
 @router.post("/save_entry")
-async def save_entry(request: Request):
-    body = await request.json()
-    text = body['input']['entry']['text']
-    date = body['input']['entry']['date']
-    user_id = int(body['session_variables']['x-hasura-user-id'])
+async def save_entry(payload:Payload):
+    text = payload.input.text
+    date = payload.input.date
+    user_id = int(payload.session_variables.x_hasura_user_id)
+
+
     response = generate_entry_response(text)
     with psycopg.connect(get_conn_str()) as conn:
         with conn.cursor() as cursor:
