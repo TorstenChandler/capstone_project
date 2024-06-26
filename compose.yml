@@ -7,7 +7,7 @@ services:
     volumes:
       - dx:/var/lib/postgresql
     ports:
-      - $POSTGRES_PORT:5432
+      - ${POSTGRES_PORT}:5432
     networks:
       - app
 
@@ -18,10 +18,11 @@ services:
     ports:
       - 9000:80
     environment:
-      POSTGRES_HOST: database
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: user
-      POSTGRES_DB: db
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_USER:  ${POSTGRES_USER}
+      POSTGRES_DB:  ${POSTGRES_DB}
+      OLLAMA_HOST: ${OLLAMA_HOST}
     depends_on:
       - database
     networks:

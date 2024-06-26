@@ -15,4 +15,4 @@ def get_conn_str_vector():
     return f"postgresql+psycopg://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:port={os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
     
 def get_ollama_url():
-    return "http://host.docker.internal:11434"
+    return f"http://{os.getenv('OLLAMA_HOST')}:11434"
