@@ -9,7 +9,7 @@ DATABASE_PUBLIC_PORT=5432
 DATABASE_USER=user
 DATABASE_PASSWORD=password
 DATABASE_NAME=db
-OLLAMA_HOST=internal.docker.host
+OLLAMA_HOST=host.docker.internal
 GRAPQHL_PORT=8080
 GRAPQHL_SECRET=myadminsecret
 ```

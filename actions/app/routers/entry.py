@@ -53,19 +53,17 @@ async def save_entry(payload:Payload):
     text = payload.input.text
     date = payload.input.date
     user_id = int(payload.session_variables.x_hasura_user_id)
-
-
+    entry_id = uuid4()
     response = generate_entry_response(text)
     with psycopg.connect(get_conn_str()) as conn:
         with conn.cursor() as cursor:
             insert_query = f'''
-            INSERT INTO entry (user_id, text, date ) VALUES (%s,%s,%s)
+            INSERT INTO entry (id, user_id, text, date ) VALUES (%s,%s,%s,%s)
             '''
-            cursor.execute(insert_query, (user_id, text, date))
+            cursor.execute(insert_query, (entry_id,user_id, text, date))
             conn.commit()
             conn.close()
-    return JSONResponse(jsonable_encoder({"response": response}))
-
+    return JSONResponse(jsonable_encoder({"id":entry_id, "response":response})) 
 def classify_emotions(entry):
     with psycopg.connect(get_conn_str()) as conn:
         with conn.cursor() as cursor:

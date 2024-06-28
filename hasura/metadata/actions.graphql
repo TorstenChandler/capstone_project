@@ -6,7 +6,8 @@ type Query {
 
 type Mutation {
   create_entry_one(
-    object: create_entry_input!
+    date: String!
+    text: String!
   ): EntryResponse
 }
 
@@ -31,5 +32,6 @@ type QuestionResponse {
 
 type EntryResponse {
   id: uuid!
+  response: String!
 }
 
