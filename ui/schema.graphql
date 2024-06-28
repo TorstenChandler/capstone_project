@@ -15,6 +15,7 @@ directive @cached(
 
 type EntryResponse {
   id: uuid!
+  response: String!
 }
 
 """
@@ -472,11 +473,6 @@ input bigint_comparison_exp {
   _lte: bigint
   _neq: bigint
   _nin: [bigint!]
-}
-
-input create_entry_input {
-  date: String!
-  text: String!
 }
 
 """ordering argument of a cursor"""
@@ -1342,7 +1338,7 @@ input json_comparison_exp {
 
 """mutation root"""
 type mutation_root {
-  create_entry_one(object: create_entry_input!): EntryResponse
+  create_entry_one(date: String!, text: String!): EntryResponse
 
   """
   delete data from the table: "accounts"
