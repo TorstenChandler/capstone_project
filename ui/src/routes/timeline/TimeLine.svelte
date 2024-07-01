@@ -58,11 +58,12 @@
 	});
 </script>
 
-<canvas id="myChart" class="w-full"></canvas>
+<canvas id="myChart" class="w-full m-10"></canvas>
 
 <style>
 	canvas {
 		display: block;
+		position: absolute;
 
 		height: 400px;
 	}

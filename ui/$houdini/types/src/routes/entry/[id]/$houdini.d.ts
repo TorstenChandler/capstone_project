@@ -11,8 +11,8 @@ type OutputDataShape<T> = MaybeWithVoid<Omit<App.PageData, RequiredKeys<T>> & Pa
 type EnsureDefined<T> = T extends null | undefined ? {} : T;
 type OptionalUnion<U extends Record<string, any>, A extends keyof U = U extends U ? keyof U : never> = U extends unknown ? { [P in Exclude<A, keyof U>]?: never } & U : never;
 export type Snapshot<T = any> = Kit.Snapshot<T>;
-type PageServerParentData = EnsureDefined<import('../../$houdini').LayoutServerData>;
-type PageParentData = EnsureDefined<import('../../$houdini').LayoutData>;
+type PageServerParentData = Omit<EnsureDefined<import('../../$houdini').LayoutServerData>, keyof import('../$houdini').LayoutServerData> & EnsureDefined<import('../$houdini').LayoutServerData>;
+type PageParentData = Omit<EnsureDefined<import('../../$houdini').LayoutData>, keyof import('../$houdini').LayoutData> & EnsureDefined<import('../$houdini').LayoutData>;
 						type MakeOptional<Target, Keys extends keyof Target> = Omit<Target, Keys> & {
 							[Key in Keys]?: Target[Key] | undefined | null
 						}

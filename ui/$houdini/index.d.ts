@@ -1,3 +1,4 @@
+export * from "./artifacts/Ask";
 export * from "./artifacts/deleteEntry";
 export * from "./artifacts/EmotionsTimeline";
 export * from "./artifacts/Entry";

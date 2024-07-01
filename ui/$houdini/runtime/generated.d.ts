@@ -1,8 +1,10 @@
 import type { Record } from "./public/record";
-import { Entry$result, Entry$input } from "../artifacts/Entry";
-import { EntryStore } from "../plugins/houdini-svelte/stores/Entry";
 import { EmotionsTimeline$result, EmotionsTimeline$input } from "../artifacts/EmotionsTimeline";
 import { EmotionsTimelineStore } from "../plugins/houdini-svelte/stores/EmotionsTimeline";
+import { Ask$result, Ask$input } from "../artifacts/Ask";
+import { AskStore } from "../plugins/houdini-svelte/stores/Ask";
+import { Entry$result, Entry$input } from "../artifacts/Entry";
+import { EntryStore } from "../plugins/houdini-svelte/stores/Entry";
 import type { verification_token_select_column } from "$houdini/graphql/enums";
 import type { users_select_column } from "$houdini/graphql/enums";
 import type { topic_select_column } from "$houdini/graphql/enums";
@@ -2892,5 +2894,5 @@ export declare type CacheTypeDef = {
         };
     };
     lists: {};
-    queries: [[EmotionsTimelineStore, EmotionsTimeline$result, EmotionsTimeline$input], [EntryStore, Entry$result, Entry$input]];
+    queries: [[EntryStore, Entry$result, Entry$input], [AskStore, Ask$result, Ask$input], [EmotionsTimelineStore, EmotionsTimeline$result, EmotionsTimeline$input]];
 };

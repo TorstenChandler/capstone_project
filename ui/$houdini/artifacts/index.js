@@ -1,4 +1,5 @@
 
+ export { default as Ask} from './Ask'
  export { default as deleteEntry} from './deleteEntry'
  export { default as EmotionsTimeline} from './EmotionsTimeline'
  export { default as Entry} from './Entry'

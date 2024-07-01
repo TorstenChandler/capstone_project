@@ -1,3 +1,4 @@
+export * from './Ask'
 export * from './deleteEntry'
 export * from './EmotionsTimeline'
 export * from './Entry'

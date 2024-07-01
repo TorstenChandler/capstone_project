@@ -49,6 +49,7 @@
   "dependencies": {
     "@auth/pg-adapter": "^1.2.0",
     "@auth/sveltekit": "^1.2.0",
+    "@sveltejs/adapter-node": "^5.2.0",
     "chart.js": "^4.4.3",
     "graphql-sse": "^2.5.3",
     "graphql-ws": "^5.16.0",

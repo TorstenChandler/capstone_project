@@ -1,0 +1,5 @@
+query Ask($question:String!){
+    ask(question:$question){
+        answer
+    }
+}

@@ -17,6 +17,7 @@ GRAPQHL_SECRET=myadminsecret
 ```sh 
 docker compose build
 docker compose up
+cd 
 ```
 
 ## Architecture

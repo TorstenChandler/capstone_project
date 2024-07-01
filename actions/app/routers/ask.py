@@ -16,7 +16,7 @@ import ast
 import pandas as pd
 import os
 import psycopg
-from fastapi import APIRouter,Request
+from fastapi import APIRouter,status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
@@ -44,56 +44,63 @@ class QuestionPayload(BaseModel):
 
 @router.post("/ask")
 async def ask(payload:QuestionPayload):
-    user_id = int(payload.session_variables.x_hasura_user_id)
-    question = payload.input.question
+    try :
+        user_id = int(payload.session_variables.x_hasura_user_id)
+        
+        question = payload.input.question
+        user_entries = get_user_entries(user_id, question)
+        if user_entries is not None and len(user_entries) > 0:
+            vectorstore = populate_vector_table(user_entries)
+            #vectorstore.similarity_search_with_score("At which music shows did I perform", k=3, filter={"user_id": {"$in": [21]}})
+            retriever = vectorstore.as_retriever(
+                search_type='similarity',#“similarity” (default), “mmr”, or “similarity_score_threshold”.
+                search_kwargs={"k": 3, 'filter':{'user_id':user_id}}
+                )
+            
+            rag_chain = init_rag_chain(retriever)
+            response = rag_chain.invoke({"input": question})["answer"]
+            return JSONResponse(jsonable_encoder({"answer":response}))
+        else:
+            return JSONResponse(jsonable_encoder({"message":"We're sorry. We were unable to find any records related to your query."})) 
+    except Exception as e:
+        print(e)
+        return JSONResponse(status_code=405, content=jsonable_encoder({"message":"We're sorry. Something went wrong while trying to answer your question."}))
     
-    vectorstore = populate_vector_table(user_id, question)
-    #vectorstore.similarity_search_with_score("At which music shows did I perform", k=3, filter={"user_id": {"$in": [21]}})
-    retriever = vectorstore.as_retriever(
-        search_type='similarity',#“similarity” (default), “mmr”, or “similarity_score_threshold”.
-        search_kwargs={"k": 3, 'filter':{'user_id':user_id}}
-        )
-    
-    
-    rag_chain = init_rag_chain(retriever)
-    response = rag_chain.invoke({"input": question})
-    print("\nQuestion : ", input)
-    print("Answer : ", response)#["answer"]
-    return JSONResponse(jsonable_encoder({"answer":response["answer"]}))
 
-
-def populate_vector_table(user_id, question):
+def get_user_entries(user_id, question):
     with psycopg.connect(get_conn_str()) as conn:
         sql = f"SELECT id, user_id, text, date, embedding_text, embedding FROM public.entry where user_id = {user_id}"
         if contains_date(question):
-            start_date, end_date = extract_date_from_question(question)
-            sql = f"SELECT id, user_id, text, date, embedding_text, embedding FROM public.entry where user_id = {user_id} and date BETWEEN '{start_date}' and '{end_date}'"
+            dates = extract_date_from_question(question)
+            if len(dates) == 2 : 
+                sql = f"SELECT id, user_id, text, date, embedding_text, embedding FROM public.entry where user_id = {user_id} and date BETWEEN '{dates[0]}' and '{dates[1]}'"
         
         df = pd.read_sql(sql=sql, con=conn)
         df.embedding = df.embedding.map(ast.literal_eval)
-        print(df)
-        load_dotenv()
-
-        connection= get_conn_str_vector()
-        collection_name = "embeddings"
-        embeddings = OllamaEmbeddings(model=default_model_name, base_url=get_ollama_url())
-
-        vectorstore = PGVector(
-            collection_name="embeddings",
-            connection=connection,
-            embeddings=embeddings,
-            pre_delete_collection=True,
-            distance_strategy='cosine'
-        )
-        
-        vectorstore.add_embeddings(
-            ids=df.id.values.tolist(),
-            metadatas=df[["user_id"]].to_dict("records"),
-            texts=df.embedding_text.values.tolist(),
-            embeddings=df.embedding.values.tolist(),   
-        )
         conn.close()
-        return vectorstore
+        print(f"Found {len(df)} data for user")
+        return df
+
+def populate_vector_table(user_entries):
+    connection= get_conn_str_vector()
+    collection_name = "embeddings"
+    embeddings = OllamaEmbeddings(model=default_model_name, base_url=get_ollama_url())
+
+    vectorstore = PGVector(
+        collection_name="embeddings",
+        connection=connection,
+        embeddings=embeddings,
+        pre_delete_collection=True,
+        distance_strategy='cosine'
+    )
+            
+    vectorstore.add_embeddings(
+        ids=user_entries.id.values.tolist(),
+        metadatas=user_entries[["user_id"]].to_dict("records"),
+        texts=user_entries.embedding_text.values.tolist(),
+        embeddings=user_entries.embedding.values.tolist(),   
+    )
+    return vectorstore
     
 def init_ollama(model_name=default_model_name):
     return Ollama(model=model_name, base_url=get_ollama_url()) 
@@ -108,7 +115,7 @@ def init_rag_chain(retriever, model_name=default_model_name):
         "Use the following information retrieved from the diary entries to answer the question."
         "If you can't give an answer based on the provided information, let the user know."
         "Use three to five sentences maximum and keep the answer concise."
-        f"today is {datetime.today().strftime('%Y-%m-%d')}"
+        f"Today is {datetime.today().strftime('%Y-%m-%d')}"
         "\n\n"
         "{context}"
     )
@@ -166,43 +173,83 @@ def generate_entry_response(text):
     return output
 
 def contains_date(text):
+    print("Checking if question contains date")
+    
     # Regular expression to match a four-digit year (e.g., 2020)
     year_pattern = r'\b(19|20)\d{2}\b'
+    
     # Regular expression to match month names (full names)
     month_pattern = (
         r'\b(January|February|March|April|May|June|'
         r'July|August|September|October|November|December)\b'
     )
+    
+    # Regular expression to match relative time references
     relative_pattern = (
-        r'\b(Today|Tomorrow|Yesterday|Month|Year|Week)\b'
+        r'\b(Today|Tomorrow|Yesterday|Last|Next|Previous|This|'
+        r'Month|Year|Week|Day|Hour|Minute|Second|Months|Years|Weeks|Days'
+        r'Season|Spring|Summer|Autumn|Fall|Winter)\b'
     )
-    # Check if the text contains a year or a month name
-    if re.search(year_pattern, text) or re.search(month_pattern, text) or re.search(relative_pattern, text):
+    
+    # Check if the text contains a year, a month name, or a relative time reference
+    if re.search(year_pattern, text, re.IGNORECASE) or re.search(month_pattern, text, re.IGNORECASE) or re.search(relative_pattern, text, re.IGNORECASE):
+        print("A date was found in the user query")
         return True
     else:
+        print("No date was found in the user query")
         return False
 
+
 def extract_date_from_question(question):
-    llm = init_ollama()
-    prompt_template = PromptTemplate.from_template("""
-    You are an intelligent assistant. From the user input, identify and extract the date range suitable for an SQL query and
-    return it in your output in a json structured format that includes the start and end dates in the format YYYY-mm-dd.
-    Output format : {{"start": "YYYY-mm-dd", "end": "YYYY-mm-dd"}}.
-    Ensure to cover various time frames such as specific days, months, years, or combinations thereof.
-    Answer only with the output json, skip other details. If you do not know the answer, return the dates as 0000-00-00 """)
-    chain = prompt_template | llm
-    output = chain.invoke({"date": "Why was I sad in March 2024?"})
-    print("Result", output)
-    start_index = output.find('{"start":')
-    end_index = output.find('"}', start_index) + 2
-    json_string = output[start_index:end_index]
-    print(start_index, end_index, json_string)
-    # Parse the JSON string into a Python dictionary
-    parsed_data = json.loads(json_string)
-    # Access the values
-    start_date = parsed_data["start"]
-    end_date = parsed_data["end"]
-    # Print the values
-    print("Start Date:", start_date)
-    print("End Date:", end_date)
-    return start_date, end_date
+    dates = []
+    try : 
+        llm = init_ollama()
+        prompt_template = PromptTemplate.from_template(
+        "You are an intelligent assistant. From the user input, identify and extract the date range suitable for an SQL query and"
+        "return it in your output in a json structured format that includes the start and end dates in the format YYYY-mm-dd."
+        "Output format : {{\"start\": \"YYYY-mm-dd\", \"end\": \"YYYY-mm-dd\"}}."
+        "Ensure to cover various time frames such as specific days, months, years, or combinations thereof."
+        "Answer only with the output json, skip other details. If you do not know the answer, return the dates as 0000-00-00. "
+        f"Today is {datetime.today().strftime('%Y-%m-%d')}"
+        "User input: {question} ")
+
+
+        chain = prompt_template | llm
+        output = chain.invoke({"question": question})
+        print("Result", output)
+        start_index = output.find('{"start":')
+        end_index = output.find('"}', start_index) + 2
+         # Extract the JSON string
+        if start_index != -1 and end_index != -1:
+            json_string = output[start_index:end_index]
+            print(start_index, end_index, json_string)
+            # Parse the JSON string into a Python dictionary
+            parsed_data = json.loads(json_string)
+            # Access the values
+            start_date = parsed_data.get("start", "0000-00-00")
+            end_date = parsed_data.get("end", "0000-00-00")
+            # Print the values
+            print("Start Date:", start_date)
+            print("End Date:", end_date)
+            if validate_dates:
+                dates.append(start_date)
+                dates.append(end_date)
+    except Exception as e:
+        print("Error occured in extracting dates: {e}. Not filtering by date")
+    return dates
+
+
+def validate_dates(dates_list):
+    # Check if dates_list is not None and has exactly 2 elements
+    if dates_list is None or len(dates_list) != 2:
+        print("Received invalid dates from Ollama")
+        return False
+    
+    # Check if both dates are not None and are instances of datetime.date or datetime.datetime
+    for date in dates_list:
+        if date is None or not isinstance(date, (datetime, datetime.date)) or date == "0000-00-00" or not re.match(r'\d{4}-\d{2}-\d{2}', date):
+            print("Received invalid dates from Ollama")
+            return False
+    
+    print("Ollama returned successful dates")
+    return True

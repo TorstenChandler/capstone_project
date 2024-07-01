@@ -18,7 +18,7 @@ export const actions = {
 
         const result = await actionMutation.mutate({ entry: { date, text } }, { event })
         console.log(result)
-        return redirect(302, "/entry/" + result.data?.create_entry_one?.id)
+        return redirect(302, "/entry/" + result.data?.insert_entry_one?.id)
 
     }
 }

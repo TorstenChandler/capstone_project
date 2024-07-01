@@ -35,7 +35,7 @@
 						/></svg
 					>
 				</AppRailAnchor>
-				<AppRailAnchor href="/chat">
+				<AppRailAnchor href="/timeline">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="2em"
@@ -46,10 +46,7 @@
 						stroke-width="2"
 						stroke-linecap="round"
 						stroke-linejoin="round"
-						class="mx-auto"
-						><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /><path
-							d="M13 8H7"
-						/><path d="M17 12H7" /></svg
+						class="mx-auto"><path d="M3 3v18h18" /><path d="m19 9-5 5-4-4-3 3" /></svg
 					>
 				</AppRailAnchor>
 			</svelte:fragment>
@@ -77,7 +74,7 @@
 				</AppRailAnchor>
 			</svelte:fragment>
 		</AppRail>
-		<div class="grow p-5">
+		<div class="grow">
 			<slot />
 		</div>
 	</div>

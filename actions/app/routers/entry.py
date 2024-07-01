@@ -19,9 +19,11 @@ from threading import Thread
 
 class Entry(BaseModel):
     id: str
-    user_id: str
+    user_id: int
     text: str
     date: str
+    embedding_text: None
+    embedding: None
 
 class SaveEventInput(BaseModel):
     text: str
@@ -44,7 +46,7 @@ def process(entry):
 
 router = APIRouter()
 @router.post("/entry_inserted")
-async def entry_inserted(request:Request, entry:Entry):
+async def entry_inserted(entry:Entry):
     Thread(target=process, args=(entry,)).start()
     return JSONResponse(jsonable_encoder({"received": True}))
 

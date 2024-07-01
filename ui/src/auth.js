@@ -3,7 +3,7 @@ import GitHub from "@auth/sveltekit/providers/github"
 
 import PostgresAdapter from "@auth/pg-adapter"
 import pkg from 'pg';
-const {Pool} = pkg;
+const { Pool } = pkg;
 
 const pool = new Pool({
   host: "localhost",
@@ -16,9 +16,10 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
 })
 
-export const { handle, signIn,signOut } = SvelteKitAuth({
+export const { handle, signIn, signOut } = SvelteKitAuth({
   adapter: PostgresAdapter(pool),
   providers: [GitHub],
+  trustHost: true,
   callbacks: {
     session({ session, user }) {
       session.user.id = user.id

@@ -7,6 +7,7 @@ export type Result<DataType> = {
 	data?: DataType | null
 	error?: Error | null
 }
+export * from './Ask'
 export * from './deleteEntry'
 export * from './EmotionsTimeline'
 export * from './Entry'
