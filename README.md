@@ -17,11 +17,13 @@ GRAPQHL_SECRET=myadminsecret
 ```sh 
 docker compose build
 docker compose up
-cd 
+cd ui
+npm run i
+npm run dev
 ```
 
 ## Architecture
 
 ![architecture](specs/Architecture.svg)
 
-http://localhost:8080
+http://localhost:5173
