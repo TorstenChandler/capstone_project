@@ -29,7 +29,7 @@ st.title("Mood Tracking Dashboard")
 with st.form(key='Dates'):
     # User input fields for start and end dates
     start_date = st.text_input("Start date", value="2023-06-24")
-    end_date = st.text_input("End date", value="2024-12-24")
+    end_date = st.text_input("End date", value="2023-12-24")
 
     # Submit button
     submit_button = st.form_submit_button(label='Submit')
@@ -73,14 +73,14 @@ if submit_button:
         st.plotly_chart(fig)
         
         #Wordcloud
-        st.header("Wordcloud of emotions")
-        wordcloud = word_cloud(column= dff['emotion'],title= None)
-        fig, ax = plt.subplots(figsize=(10, 6))
-        fig.patch.set_facecolor('#0E1117')  # Set the background color of the figure
-        ax.imshow(wordcloud, interpolation='bilinear')
-        ax.axis('off')
-        ax.set_facecolor('#0E1117')  # Set the background color of the axis
-        st.pyplot(fig)
+        #st.header("Wordcloud of emotions")
+        #wordcloud = word_cloud(column= dff['emotion'],title= None)
+        #fig, ax = plt.subplots(figsize=(10, 6))
+        #fig.patch.set_facecolor('#0E1117')  # Set the background color of the figure
+        #ax.imshow(wordcloud, interpolation='bilinear')
+        #ax.axis('off')
+        #ax.set_facecolor('#0E1117')  # Set the background color of the axis
+        #st.pyplot(fig)
         st.header("Wordcloud of journal text")
         wordcloud2 = word_cloud(column= dff['text'],title= None)
         fig, ax = plt.subplots(figsize=(10, 6))
