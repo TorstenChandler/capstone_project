@@ -28,16 +28,16 @@
 	}
 </script>
 
-<div class="chat flex flex-col gap-5">
+<div class="chat flex flex-col gap-5 text-4xl">
 	<div class="w-full grow overflow-y-scroll messages">
 		<div class="px-4 max-w-5xl mx-auto">
 			{#each conversation as { agent, message }, i}
-				<div class="my-5" id="chat-{i}">
+				<div class="my-8" id="chat-{i}">
 					{#if agent == 'user'}
 						<div class="grid grid-cols-[auto_1fr] gap-2 w-full">
 							<div class="w-20 md:w-40 lg:w-96" />
 							<div
-								class="card p-4 variant-soft-tertiary shadow-lg !border-gray-300 rounded space-y-2"
+								class="!text-white card p-4 variant-soft-tertiary shadow-lg !border-gray-300 rounded space-y-2"
 							>
 								<p>{message}</p>
 							</div>
@@ -45,7 +45,7 @@
 					{:else}
 						<div class="grid grid-cols-[1fr_auto] gap-2 w-full">
 							<div
-								class=" p-4 {message
+								class="!text-white p-4 {message
 									? 'card variant-soft-error  shadow-lg'
 									: ''}  !border-gray-300 rounded space-y-2"
 							>
@@ -75,7 +75,7 @@
 			<div class="grow p-2">
 				<textarea
 					bind:value={question}
-					class="textarea resize-none !bg-transparent !border-0"
+					class="textarea resize-none !bg-transparent !border-0 text-4xl"
 					name="question"
 					placeholder="Ask your diary"
 				/>

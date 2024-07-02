@@ -11,12 +11,12 @@
 {#if emotions}
 	{#each Object.entries(sorted) as [emotion, score]}
 		{#if emotion != 'id' && score > 0.5}
-			<span class="chip variant-filled">{emotion}</span>
+			<span class="chip variant-filled text-lg">{emotion}</span>
 		{/if}
 	{/each}
 {:else}
 	<ProgressRadial
-		width="w-8"
+		width="w-10"
 		stroke={100}
 		meter="stroke-white"
 		track="stroke-surface-400/30"

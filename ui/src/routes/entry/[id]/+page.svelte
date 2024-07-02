@@ -43,17 +43,19 @@
 <div class="card">
 	<div class="flex p-4 border-b border-surface-500">
 		<div class="grow flex gap-3">
-			<span class="chip variant-filled">{new Date(entry.date).toISOString().split('T')[0]}</span>
+			<span class="chip variant-filled text-xl"
+				>{new Date(entry.date).toISOString().split('T')[0]}</span
+			>
 
 			<Emotions emotions={entry.emotions} />
 		</div>
 		<div class="flex gap-2">
-			<button class="btn btn-sm variant-filled-error" on:click={remove}>Delete</button>
-			<button class="btn btn-sm variant-filled-primary" type="button">Save</button>
+			<button class="btn btn-sm variant-filled-error text-xl" on:click={remove}>Delete</button>
+			<button class="btn btn-sm variant-filled-primary text-xl" type="button">Save</button>
 		</div>
 	</div>
 	<textarea
-		class="textarea rounded-none rounded-b h-full focus:outline-none"
+		class="textarea rounded-none rounded-b h-full focus:outline-none text-4xl"
 		name="text"
 		value={entry.text}
 	></textarea>

@@ -6,13 +6,13 @@
 <form class="card" method="POST">
 	<div class="flex p-4 border-b border-surface-500">
 		<div class="grow">
-			<span class="chip variant-filled">{date.split('T')[0]}</span>
+			<span class="chip variant-filled text-xl">{date.split('T')[0]}</span>
 		</div>
-		<button class="btn btn-sm variant-filled-primary">Save</button>
+		<button class="btn btn-sm variant-filled-primary text-xl">Save</button>
 	</div>
 	<input value={date} name="date" class="hidden" />
 	<textarea
-		class="textarea rounded-none rounded-b h-full focus:outline-none"
+		class="textarea rounded-none rounded-b h-full focus:outline-none text-4xl"
 		name="text"
 		value={text}
 	></textarea>
