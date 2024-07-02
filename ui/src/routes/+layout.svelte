@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { signOut } from '@auth/sveltekit/client';
+	import { page } from '$app/stores';
 	import '../app.postcss';
 	import { AppRail, AppRailTile, AppRailAnchor, Avatar } from '@skeletonlabs/skeleton';
 	export let data;
@@ -74,7 +75,7 @@
 				</AppRailAnchor>
 			</svelte:fragment>
 		</AppRail>
-		<div class="grow">
+		<div class="grow {$page.url.pathname == '/' ? '' : 'p-5'}">
 			<slot />
 		</div>
 	</div>

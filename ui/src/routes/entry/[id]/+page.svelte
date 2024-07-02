@@ -37,7 +37,7 @@
 		deleteEntry.mutate({ id: entry.id });
 	}
 	$: updates.listen({ id });
-	$: entry = $updates?.data?.entry ? $updates.data.entry : data.data.entry;
+	$: entry = $updates?.data?.entry ? $updates.data.entry : data?.data?.entry;
 </script>
 
 <div class="card">

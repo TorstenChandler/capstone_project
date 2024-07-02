@@ -61,10 +61,9 @@ async def ask(payload:QuestionPayload):
             response = rag_chain.invoke({"input": question})["answer"]
             return JSONResponse(jsonable_encoder({"answer":response}))
         else:
-            return JSONResponse(jsonable_encoder({"message":"We're sorry. We were unable to find any records related to your query."})) 
+            return JSONResponse(jsonable_encoder({"answer":"We're sorry. We were unable to find any records related to your query."})) 
     except Exception as e:
-        print(e)
-        return JSONResponse(status_code=405, content=jsonable_encoder({"message":"We're sorry. Something went wrong while trying to answer your question."}))
+        return JSONResponse(jsonable_encoder({"answer":"We're sorry. Something went wrong while trying to answer your question."}))
     
 
 def get_user_entries(user_id, question):
@@ -73,7 +72,7 @@ def get_user_entries(user_id, question):
         if contains_date(question):
             dates = extract_date_from_question(question)
             if len(dates) == 2 : 
-                sql = f"SELECT id, user_id, text, date, embedding_text, embedding FROM public.entry where user_id = {user_id} and date BETWEEN '{dates[0]}' and '{dates[1]}'"
+                sql = f"SELECT id, user_id, text, date, embedding_text, embedding FROM public.entry where user_id = {user_id} and date::date BETWEEN '{dates[0]}' and '{dates[1]}'"
         
         df = pd.read_sql(sql=sql, con=conn)
         df.embedding = df.embedding.map(ast.literal_eval)
