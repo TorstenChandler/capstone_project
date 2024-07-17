@@ -18,6 +18,8 @@ services:
     image: actions
     build: actions
     restart: always
+    ports:
+      - "8000:80" 
     environment:
       DATABASE_HOST: ${DATABASE_HOST}
       DATABASE_PORT: ${DATABASE_PORT}
